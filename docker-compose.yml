@@ -10,7 +10,7 @@ services:
       - ./back/tmp/db:/var/lib/postgresql/data
 
   back:
-    container_name: exp_ruby
+    container_name: exp_rails
     build: back/
     volumes:
       - ./back:/app
@@ -27,3 +27,5 @@ services:
       - ./front:/app
     ports:
       - 8080:3000
+    depends_on:
+      - back
