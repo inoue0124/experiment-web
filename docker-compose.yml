@@ -8,6 +8,8 @@ services:
       - TZ=Asia/Tokyo
     volumes:
       - ./back/tmp/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
 
   back:
     container_name: exp_rails
