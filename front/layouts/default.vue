@@ -57,7 +57,10 @@
       </v-list>
     </v-navigation-drawer>
     <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; {{ new Date().getFullYear() }}
+        東京大学 大学院総合文化研究科
+        グローバルコミュニケーション研究センター
+      </span>
     </v-footer>
   </v-app>
 </template>
