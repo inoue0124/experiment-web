@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_044911) do
+ActiveRecord::Schema.define(version: 2020_12_27_131523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,10 @@ ActiveRecord::Schema.define(version: 2020_12_27_044911) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "t_experiment_id"
+    t.bigint "done_workflow_id"
+    t.index ["done_workflow_id"], name: "index_t_users_on_done_workflow_id"
+    t.index ["t_experiment_id"], name: "index_t_users_on_t_experiment_id"
   end
 
   create_table "t_workflows", force: :cascade do |t|
@@ -107,6 +111,8 @@ ActiveRecord::Schema.define(version: 2020_12_27_044911) do
   add_foreign_key "t_agreements", "t_workflows"
   add_foreign_key "t_assessments", "t_workflows"
   add_foreign_key "t_questionnaires", "t_workflows"
+  add_foreign_key "t_users", "t_experiments"
+  add_foreign_key "t_users", "t_workflows", column: "done_workflow_id"
   add_foreign_key "t_workflows", "m_works"
   add_foreign_key "t_workflows", "t_experiments"
 end
