@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_before_action :check_is_login, only: [:create]
 
   def new
   end
@@ -7,7 +8,8 @@ class SessionsController < ApplicationController
     @t_user = TUser.find_by(email: params[:session][:email].downcase)
     if @t_user && @t_user.authenticate(params[:session][:password])
       log_in @t_user
-      render json: @t_user
+      session[:user_id] = @t_user.id
+      render json: @t_user, status: :ok
     else
       render status: :not_found
     end

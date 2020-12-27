@@ -1,11 +1,14 @@
 class ApplicationController < ActionController::API
+  include ActionController::Cookies
   include SessionsHelper
+  before_action :check_is_login
 
   private
    # ログイン済みユーザーかどうか確認
-    def logged_in_user
+    def check_is_login
       unless logged_in?
-        redirect_to login_url
+        render json: { message: "unauthorized" }, status: :unauthorized
+        return
       end
     end
 end

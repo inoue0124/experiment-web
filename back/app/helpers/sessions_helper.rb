@@ -19,7 +19,7 @@ module SessionsHelper
 
   # ユーザーがログインしていればtrue、その他ならfalseを返す
   def logged_in?
-    !current_user.nil?
+    p session[:user_id]
   end
 
   # 現在のユーザーをログアウトする
