@@ -8,22 +8,25 @@
 MWork.create!(
   [
     {
-      name: 'AGREEMENT'
+      name: 'login'
     },
     {
-      name: 'FACESHEET'
+      name: 'agreement'
     },
     {
-      name: 'ASSESSMENT'
+      name: 'facesheet'
     },
     {
-      name: 'QUESTIONNAIRE'
+      name: 'assessment'
     },
     {
-      name: 'TRANSFER'
+      name: 'questionnaire'
     },
     {
-      name: 'THANKS'
+      name: 'transfer'
+    },
+    {
+      name: 'thanks'
     }
   ]
 )
@@ -43,6 +46,41 @@ TWorkflow.create!(
       t_experiment_id: 1,
       m_work_id: 2,
       next_workflow_id: 3
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 3,
+      next_workflow_id: 4
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 4,
+      next_workflow_id: 5
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 4,
+      next_workflow_id: 6
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 4,
+      next_workflow_id: 7
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 5,
+      next_workflow_id: 8
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 6,
+      next_workflow_id: 9
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 7,
+      next_workflow_id: 10
     }
   ]
 )
@@ -50,7 +88,7 @@ TWorkflow.create!(
 TUser.create!(
   uuid: 'testtesttest',
   email: 'test@mail.com',
-  password: 'test123',
+  password: 'test@123',
   t_experiment_id: 1,
   done_workflow_id: 1
 )
