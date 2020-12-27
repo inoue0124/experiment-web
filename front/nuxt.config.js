@@ -21,6 +21,7 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     '~/plugins/vue-pdf.js',
+    '~/plugins/axios/index.js'
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -38,7 +39,13 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/toast'
   ],
+  
+  toast: {
+    position: 'bottom-right',  //トーストの表示位置
+    duration: 2000           //トーストの表示されている時間（今回は2秒に設定）
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},

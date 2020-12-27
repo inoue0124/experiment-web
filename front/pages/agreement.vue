@@ -52,6 +52,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
+import WorkflowApi from '@/plugins/axios/modules/workflow'
 
 export default {
   mixins: [validationMixin],
@@ -81,7 +82,10 @@ export default {
     next() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        this.$router.push(`facesheet`)
+        // this.$router.push(`facesheet`)
+        WorkflowApi.getNextWork().then((res) => {
+          console.log(res)
+        })
       }
     }
   }

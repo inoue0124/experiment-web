@@ -4,9 +4,6 @@
       <h1>New user</h1>
       <form @submit.prevent="post">
 
-        <label for="name">Name: </label>
-        <input id="name" v-model="name" type="text" name="name" />
-
         <label for="email">Email: </label>
         <input id="email" v-model="email" type="text" name="email" />
 
@@ -23,10 +20,11 @@
 </template>
 
 <script>
+import UserApi from '@/plugins/axios/modules/user'
+
 export default {
   data() {
     return {
-      name: '',
       email: '',
       password: '',
       password_confirmation: ''
@@ -34,16 +32,8 @@ export default {
   },
   methods: {
     post() {
-      this.$axios.post(
-        'http://localhost:3000/users',
-        {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          password_confirmation: this.password_confirmation
-        }
-      ).then((res) => {
-        this.$router.push(`users/${res.data.id}`)
+      UserApi.createUser(this.email, this.password, this.password_confirmation).then((res) => {
+        this.$router.push(`users/${res.id}`)
       })
     }
   }
