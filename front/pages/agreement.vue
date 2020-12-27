@@ -69,6 +69,12 @@ export default {
     isAgree: false
   }),
 
+  mounted () {
+    WorkflowApi.getNextWork().then((res) => {
+      this.$router.push(res.name.toLowerCase())
+    })
+  },
+
   computed: {
     checkboxErrors () {
       const errors = []
@@ -82,9 +88,8 @@ export default {
     next() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        // this.$router.push(`facesheet`)
-        WorkflowApi.getNextWork().then((res) => {
-          console.log(res)
+        WorkflowApi.completeWork().then((res) => {
+          this.$router.push(res.name.toLowerCase())
         })
       }
     }

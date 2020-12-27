@@ -17,7 +17,7 @@
             required
           ></v-text-field>
 
-          <v-btn color="primary" type="submit">次へ進む</v-btn>
+          <v-btn color="primary" @click="next">次へ進む</v-btn>
 
         </v-form>
 
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import WorkflowApi from '@/plugins/axios/modules/workflow'
+
 export default {
   data() {
     return {
@@ -33,9 +35,18 @@ export default {
       phone_number: ''
     }
   },
+  
+  mounted () {
+    WorkflowApi.getNextWork().then((res) => {
+      this.$router.push(res.name.toLowerCase())
+    })
+  },
+
   methods: {
-    submit() {
-      this.$router.push(`practice`)
+    next() {
+      WorkflowApi.completeWork().then((res) => {
+        this.$router.push(res.name.toLowerCase())
+      })
     }
   }
 }

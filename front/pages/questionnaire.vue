@@ -14,15 +14,24 @@
 </template>
 
 <script>
+import WorkflowApi from '@/plugins/axios/modules/workflow'
+
 export default {
   data() {
     return {
       form_url: "https://docs.google.com/forms/d/e/1FAIpQLSfcbMBs6cSXpzfqvtLo0kCSlxotB_5SYZnRtjz49GziPOus5w/viewform?embedded=true"
     }
   },
+  mounted () {
+    WorkflowApi.getNextWork().then((res) => {
+      this.$router.push(res.name.toLowerCase())
+    })
+  },
   methods: {
     next() {
-      this.$router.push(`thanks`)
+      WorkflowApi.completeWork().then((res) => {
+        this.$router.push(res.name.toLowerCase())
+      })
     }
   }
 }

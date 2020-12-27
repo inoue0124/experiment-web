@@ -18,9 +18,16 @@
 </template>
 
 <script>
+import WorkflowApi from '@/plugins/axios/modules/workflow'
+
 export default {
   data() {
     return {}
+  },
+  mounted () {
+    WorkflowApi.getNextWork().then((res) => {
+      this.$router.push(res.name.toLowerCase())
+    })
   },
   methods: {
   }

@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import WorkflowApi from '@/plugins/axios/modules/workflow'
+
 export default {
   data() {
     return {
@@ -47,7 +49,9 @@ export default {
           password: this.password
         }
       ).then((res) => {
-        this.$router.push(`agreement`)
+        WorkflowApi.getNextWork().then((res) => {
+          this.$router.push(res.name.toLowerCase())
+        })
       })
     }
   }

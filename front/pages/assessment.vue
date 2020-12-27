@@ -27,12 +27,16 @@
         </template>
       </v-simple-table>
 
+      <v-btn color="primary" @click="prev">前へ戻る</v-btn>
       <v-btn color="primary" @click="next">次へ進む</v-btn>
+
     </v-col>
   </v-row>
 </template>
 
 <script>
+import WorkflowApi from '@/plugins/axios/modules/workflow'
+
 export default {
   data() {
     return {
@@ -56,9 +60,21 @@ export default {
       }
     }
   },
+  mounted () {
+    WorkflowApi.getNextWork().then((res) => {
+      this.$router.push(res.name.toLowerCase())
+    })
+  },
   methods: {
     next() {
-      this.$router.push(`questionnaire`)
+      WorkflowApi.completeWork().then((res) => {
+        this.$router.push(res.name.toLowerCase())
+      })
+    },
+    prev() {
+      WorkflowApi.undoWork().then((res) => {
+        this.$router.push(res.name.toLowerCase())
+      })
     }
   }
 }
