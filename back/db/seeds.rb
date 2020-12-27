@@ -27,3 +27,30 @@ MWork.create!(
     }
   ]
 )
+
+TExperiment.create!(
+  name: 'テスト実験'
+)
+
+TWorkflow.create!(
+  [
+    {
+      t_experiment_id: 1,
+      m_work_id: 1,
+      next_workflow_id: 2
+    },
+    {
+      t_experiment_id: 1,
+      m_work_id: 2,
+      next_workflow_id: 3
+    }
+  ]
+)
+
+TUser.create!(
+  uuid: 'testtesttest',
+  email: 'test@mail.com',
+  password: 'test123',
+  t_experiment_id: 1,
+  done_workflow_id: 1
+)
