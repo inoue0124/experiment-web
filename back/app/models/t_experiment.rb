@@ -1,0 +1,2 @@
+class TExperiment < ApplicationRecord
+end

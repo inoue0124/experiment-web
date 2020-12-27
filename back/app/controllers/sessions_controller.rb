@@ -4,10 +4,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:session][:email].downcase)
-    if @user && @user.authenticate(params[:session][:password])
-      log_in @user
-      render json: @user
+    @t_user = TUser.find_by(email: params[:session][:email].downcase)
+    if @t_user && @t_user.authenticate(params[:session][:password])
+      log_in @t_user
+      render json: @t_user
     else
       render status: :not_found
     end

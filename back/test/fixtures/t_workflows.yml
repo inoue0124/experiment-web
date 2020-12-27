@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  t_experiment: one
+  m_work: one
+  next_workflow_id: 1
+
+two:
+  t_experiment: two
+  m_work: two
+  next_workflow_id: 1

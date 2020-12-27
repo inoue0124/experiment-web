@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  assessment: one
+  user: one
+  file_number: 1
+  score: 1
+  comment: MyString
+
+two:
+  assessment: two
+  user: two
+  file_number: 1
+  score: 1
+  comment: MyString

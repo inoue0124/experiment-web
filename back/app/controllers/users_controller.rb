@@ -1,52 +1,52 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  wrap_parameters :user, include: [:name, :email, :password, :password_confirmation]
+  wrap_parameters :t_user, include: [:uuid, :email, :password, :password_confirmation]
 
   # GET /users
   def index
-    @users = User.all
+    @t_users = TUser.all
 
-    render json: @users
+    render json: @t_users
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @t_user
   end
 
   # POST /users
   def create
-    @user = User.new(user_params)
+    @t_user = TUser.new(user_params)
 
-    if @user.save
-      render json: @user, status: :created, location: @user
+    if @t_user.save
+      render json: @t_user, status: :created, location: @t_user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @t_user.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
+    if @t_user.update(user_params)
+      render json: @t_user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @t_user.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+    @t_user.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @t_user = TUser.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:t_user).permit(:uuid, :email, :password, :password_confirmation)
     end
 end

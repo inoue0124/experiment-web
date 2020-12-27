@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  t_workflow: one
+  is_practice: false
+  point: 1
+  num_files: 1
+  pdf_url: MyString
+
+two:
+  t_workflow: two
+  is_practice: false
+  point: 1
+  num_files: 1
+  pdf_url: MyString
