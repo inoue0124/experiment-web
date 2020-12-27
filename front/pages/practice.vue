@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     next() {
-      this.$router.push(`experiment`)
+      this.$router.push(`assessment`)
     }
   }
 }
