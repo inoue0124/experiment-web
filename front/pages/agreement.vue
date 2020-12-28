@@ -55,6 +55,7 @@ import { required } from 'vuelidate/lib/validators'
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 
 export default {
+  middleware: 'redirector',
   mixins: [validationMixin],
 
   validations: {
@@ -69,12 +70,6 @@ export default {
     isAgree: false
   }),
 
-  mounted () {
-    WorkflowApi.getNextWork().then((res) => {
-      this.$router.push(res.name.toLowerCase())
-    })
-  },
-
   computed: {
     checkboxErrors () {
       const errors = []
@@ -88,7 +83,7 @@ export default {
     next() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        WorkflowApi.completeWork().then((res) => {
+        WorkflowApi.complete().then((res) => {
           this.$router.push(res.name.toLowerCase())
         })
       }

@@ -17,19 +17,17 @@
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 
 export default {
+  middleware: 'redirector',
+
   data() {
     return {
       form_url: "https://docs.google.com/forms/d/e/1FAIpQLSfcbMBs6cSXpzfqvtLo0kCSlxotB_5SYZnRtjz49GziPOus5w/viewform?embedded=true"
     }
   },
-  mounted () {
-    WorkflowApi.getNextWork().then((res) => {
-      this.$router.push(res.name.toLowerCase())
-    })
-  },
+
   methods: {
     next() {
-      WorkflowApi.completeWork().then((res) => {
+      WorkflowApi.complete().then((res) => {
         this.$router.push(res.name.toLowerCase())
       })
     }

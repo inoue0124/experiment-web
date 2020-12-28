@@ -1,31 +1,54 @@
 class WorkflowsController < ApplicationController
 
-  def getNextWork
-    @t_user = current_user
-    @done_workflow = TWorkflow.find(@t_user.done_workflow_id)
-    @next_workflow = TWorkflow.find(@done_workflow.next_workflow_id)
-    @next_work = MWork.find(@next_workflow.m_work_id)
-    render json: @next_work, status: :ok
+  # GET /workflow
+  def getWork
+    @user = current_user
+
+    @done_wf = TWorkflow.find(@user.done_workflow_id)
+    @workflow = TWorkflow.find(@done_wf.next_workflow_id)
+    @work = MWork.find(@workflow.m_work_id)
+
+    render json: @work, status: :ok
   end
 
+
+  # PUT /workflow/complete
   def complete
-    @t_user = current_user
-    @done_workflow = TWorkflow.find(@t_user.done_workflow_id)
-    @current_workflow = TWorkflow.find(@done_workflow.next_workflow_id)
-    @t_user.update(done_workflow_id: @current_workflow.id)
-    getNextWork
+    # t_userのdone workflowを次のworkflowに更新する
+    @user = current_user
+    
+    @done_wf = TWorkflow.find(@user.done_workflow_id)
+    @current_wf = TWorkflow.find(@done_wf.next_workflow_id)
+
+    if @user.update(done_workflow_id: @current_wf.id)
+      getWork
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
 
+
+  # PUT /workflow/undo
   def undo
-    @t_user = current_user
-    @done_workflow = TWorkflow.find(@t_user.done_workflow_id)
-    @previous_workflow = TWorkflow.find_by(next_workflow_id: @done_workflow.id)
-    @t_user.update(done_workflow_id: @previous_workflow.id)
-    getNextWork
+    # t_userのdone workflowを前のworkflowに更新する
+    @user = current_user
+    
+    @done_wf = TWorkflow.find(@user.done_workflow_id)
+    @prev_wf = TWorkflow.find_by(next_workflow_id: @done_wf.id)
+
+    if @user.update(done_workflow_id: @prev_wf.id)
+      getWork
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+
+    getWork
   end
+
 
   def create
   end
+
 
   def destroy
   end

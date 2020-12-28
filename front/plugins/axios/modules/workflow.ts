@@ -2,19 +2,15 @@ import { axios } from '../index.js';
 
 export default {
 
-  completeWork() {
+  getWork() {
+    return axios.$get(`workflow`)
+  },
+
+  complete() {
     return axios.$put(`workflow/complete`)
   },
 
-  undoWork() {
+  undo() {
     return axios.$put(`workflow/undo`)
-  },
-
-  getNextWork() {
-    return axios.$get(`workflow/next`)
-  },
-
-  getUsers() {
-    return axios.$get(`users`)
   }
 }

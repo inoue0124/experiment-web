@@ -49,7 +49,7 @@ export default {
           password: this.password
         }
       ).then((res) => {
-        WorkflowApi.getNextWork().then((res) => {
+        WorkflowApi.getWork().then((res) => {
           this.$router.push(res.name.toLowerCase())
         })
       })

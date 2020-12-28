@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   wrap_parameters :t_user, include: [:uuid, :email, :password, :password_confirmation]
-  skip_before_action :check_is_login, only: [:create]
+  skip_before_action :isAuthenticated, only: [:create]
 
   # GET /users
   def index

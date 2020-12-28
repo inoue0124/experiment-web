@@ -38,6 +38,8 @@
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 
 export default {
+  middleware: 'redirector',
+  
   data() {
     return {
       samples: {
@@ -60,19 +62,14 @@ export default {
       }
     }
   },
-  mounted () {
-    WorkflowApi.getNextWork().then((res) => {
-      this.$router.push(res.name.toLowerCase())
-    })
-  },
   methods: {
     next() {
-      WorkflowApi.completeWork().then((res) => {
+      WorkflowApi.complete().then((res) => {
         this.$router.push(res.name.toLowerCase())
       })
     },
     prev() {
-      WorkflowApi.undoWork().then((res) => {
+      WorkflowApi.undo().then((res) => {
         this.$router.push(res.name.toLowerCase())
       })
     }
