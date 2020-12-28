@@ -92,3 +92,67 @@ TUser.create!(
   t_experiment_id: 1,
   done_workflow_id: 1
 )
+
+TAgreement.create!(
+  t_workflow_id: 2,
+  text: '<h1 align="center">協力同意書</h1>
+
+      <h2>評価実験の説明</h2>
+
+      <p class="text-justify">
+        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
+        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
+        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
+      </p>
+
+      <p class="text-justify">
+        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
+        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
+        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
+      </p>
+
+      <h2>協力同意書</h2>
+
+      <p class="text-justify">
+        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
+        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
+        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
+      </p>
+
+      <p class="text-justify">
+        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
+        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
+        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
+      </p>'
+)
+
+TAssessment.create!(
+  [
+    {
+      t_workflow_id: 4,
+      is_practice: true,
+      point: 6,
+      num_files: 10,
+      pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
+    },
+    {
+      t_workflow_id: 5,
+      is_practice: false,
+      point: 6,
+      num_files: 30,
+      pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
+    },
+    {
+      t_workflow_id: 4,
+      is_practice: false,
+      point: 6,
+      num_files: 30,
+      pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
+    }
+  ]
+)
+
+TQuestionnaire.create!(
+  t_workflow_id: 7,
+  url: 'https://docs.google.com/forms/d/e/1FAIpQLSfcbMBs6cSXpzfqvtLo0kCSlxotB_5SYZnRtjz49GziPOus5w/viewform?embedded=true'
+)
