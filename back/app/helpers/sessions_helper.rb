@@ -27,4 +27,11 @@ module SessionsHelper
     session.delete(:user_id)
     @current_user = nil
   end
+
+  def getCurrentWorkflow
+    @user = current_user
+
+    @done_wf = TWorkflow.find(@user.done_workflow_id)
+    @workflow = TWorkflow.find(@done_wf.next_workflow_id)
+  end
 end
