@@ -152,6 +152,39 @@ TAssessment.create!(
   ]
 )
 
+DAssessment.create!(
+  [
+    {
+      t_assessment_id: 1,
+      t_user_id: 1,
+      file_number: 1,
+      score: 4,
+      comment: 'test comment'
+    },
+    {
+      t_assessment_id: 1,
+      t_user_id: 1,
+      file_number: 2,
+      score: 1,
+      comment: 'test comment'
+    },
+    {
+      t_assessment_id: 1,
+      t_user_id: 1,
+      file_number: 4,
+      score: 5,
+      comment: 'test comment'
+    },
+    {
+      t_assessment_id: 1,
+      t_user_id: 1,
+      file_number: 7,
+      score: 3,
+      comment: 'test comment'
+    }
+  ]
+)
+
 TQuestionnaire.create!(
   t_workflow_id: 7,
   url: 'https://docs.google.com/forms/d/e/1FAIpQLSfcbMBs6cSXpzfqvtLo0kCSlxotB_5SYZnRtjz49GziPOus5w/viewform?embedded=true'
