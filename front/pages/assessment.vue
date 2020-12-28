@@ -7,7 +7,7 @@
           <tbody>
             <tr
               v-for="item in samples"
-              :key="item.key"
+              :key="item.file_number"
             >
               <td>
                 <audio controls>
@@ -36,32 +36,24 @@
 
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
+import AssessmentApi from '@/plugins/axios/modules/assessment'
 
 export default {
   middleware: 'redirector',
   
   data() {
     return {
-      samples: {
-        1 : {
-          url: "a",
-          score: 0
-        },
-        2 : {
-          url: "",
-          score: 0
-        },
-        3 : {
-          url: "",
-          score: 0
-        },
-        4 : {
-          url: "",
-          score: 0
-        }
-      }
+      samples: null
     }
   },
+
+  mounted() {
+    AssessmentApi.getAssessmentWork().then((res) => {
+      console.log(res)
+      this.samples = res
+    })
+  },
+
   methods: {
     next() {
       WorkflowApi.complete().then((res) => {
