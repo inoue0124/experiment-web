@@ -6,8 +6,8 @@ export default {
     return axios.$get(`workflow`)
   },
 
-  complete() {
-    return axios.$put(`workflow/complete`)
+  complete(id:number) {
+    return axios.$put(`workflow/${id}/complete`)
   },
 
   undo() {

@@ -4,7 +4,7 @@ class WorkflowsController < ApplicationController
   def getWork
     @workflow = getCurrentWorkflow
     @work = MWork.find(@workflow.m_work_id)
-    render json: @work, status: :ok
+    render json: {work: @work, workflow: @workflow}, status: :ok
   end
 
 

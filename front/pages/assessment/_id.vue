@@ -48,21 +48,23 @@ export default {
   },
 
   mounted() {
-    AssessmentApi.getAssessmentWork().then((res) => {
-      console.log(res)
-      this.samples = res
-    })
+    this.getAssessmentWork()
   },
 
   methods: {
     next() {
-      WorkflowApi.complete().then((res) => {
-        this.$router.push(res.name.toLowerCase())
+      WorkflowApi.complete(this.$route.params.id).then((res) => {
+        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })
     },
     prev() {
       WorkflowApi.undo().then((res) => {
         this.$router.push(res.name.toLowerCase())
+      })
+    },
+    getAssessmentWork() {
+      AssessmentApi.getAssessmentWork(this.$route.params.id).then((res) => {
+        this.samples = res
       })
     }
   }

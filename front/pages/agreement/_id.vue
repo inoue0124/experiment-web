@@ -83,8 +83,8 @@ export default {
     next() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        WorkflowApi.complete().then((res) => {
-          this.$router.push(res.name.toLowerCase())
+        WorkflowApi.complete(this.$route.params.id).then((res) => {
+          this.$router.push(res.work.name.toLowerCase())
         })
       }
     }

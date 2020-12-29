@@ -20,8 +20,8 @@ export default {
 
   methods: {
     next() {
-      WorkflowApi.complete().then((res) => {
-        this.$router.push(res.name.toLowerCase())
+      WorkflowApi.complete(this.$route.params.id).then((res) => {
+        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })
     }
   }

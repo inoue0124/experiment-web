@@ -2,7 +2,7 @@ import { axios } from '../index.js';
 
 export default {
 
-  getAssessmentWork() {
-    return axios.$get(`assessments`)
+  getAssessmentWork(id:number) {
+    return axios.$get(`assessments/${id}`)
   }
 }
