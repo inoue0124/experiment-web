@@ -49,13 +49,18 @@ export default {
 
   mounted() {
     this.getAssessmentWork()
+    setInterval(() => {
+      AssessmentApi.update(this.$route.params.id, this.samples)
+    }, 10000)
   },
 
   methods: {
     next() {
-      WorkflowApi.complete(this.$route.params.id).then((res) => {
-        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
-      })
+      AssessmentApi.update(this.$route.params.id, this.samples).then(() => {
+        WorkflowApi.complete(this.$route.params.id).then((res) => {
+          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+        })
+      })  
     },
     prev() {
       WorkflowApi.undo().then((res) => {
@@ -65,6 +70,7 @@ export default {
     getAssessmentWork() {
       AssessmentApi.getAssessmentWork(this.$route.params.id).then((res) => {
         this.samples = res
+        console.log(res)
       })
     }
   }
