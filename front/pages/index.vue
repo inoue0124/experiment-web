@@ -32,6 +32,7 @@
 
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
+import SessionApi from '@/plugins/axios/modules/session'
 
 export default {
   data() {
@@ -42,13 +43,7 @@ export default {
   },
   methods: {
     post() {
-      this.$axios.post(
-        'http://localhost:3000/login',
-        {
-          email: this.email,
-          password: this.password
-        }
-      ).then((res) => {
+      SessionApi.login(this.email, this.password).then((res) => {
         WorkflowApi.getWork().then((res) => {
           this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
         })
