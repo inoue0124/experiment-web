@@ -59,7 +59,7 @@ export default {
     },
     prev() {
       WorkflowApi.undo().then((res) => {
-        this.$router.push(res.name.toLowerCase())
+        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })
     },
     getAssessmentWork() {
