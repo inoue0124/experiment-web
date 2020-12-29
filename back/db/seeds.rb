@@ -143,7 +143,7 @@ TAssessment.create!(
       pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
     },
     {
-      t_workflow_id: 4,
+      t_workflow_id: 6,
       is_practice: false,
       point: 6,
       num_files: 30,
