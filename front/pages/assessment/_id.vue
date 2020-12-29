@@ -43,15 +43,20 @@ export default {
   
   data() {
     return {
-      samples: null
+      samples: null,
+      autoSaveTimer: null
     }
   },
 
   mounted() {
     this.getAssessmentWork()
-    setInterval(() => {
+    this.autoSaveTimer = setInterval(() => {
       AssessmentApi.update(this.$route.params.id, this.samples)
     }, 10000)
+  },
+
+  destroyed() {
+    clearInterval(this.autoSaveTimer)
   },
 
   methods: {
