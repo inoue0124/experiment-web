@@ -5,7 +5,7 @@
         <v-card-title class="headline">
           ログイン
         </v-card-title>
-        <v-cart-text>
+        <v-card-text>
           <v-form @submit.prevent="post">
             <v-text-field
               v-model="email"
@@ -24,7 +24,7 @@
             <v-btn color="primary" type="submit">ログイン</v-btn>
 
           </v-form>
-        </v-cart-text>
+        </v-card-text>
       </v-card>
     </v-col>
   </v-row>

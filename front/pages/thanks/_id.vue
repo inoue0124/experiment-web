@@ -6,11 +6,11 @@
           実験にご参加いただき誠にありがとうございました。
         </v-card-title>
 
-        <v-cart-text>
+        <v-card-text>
           お問い合わせは
           <a href="mailto:example@mail.com" target="_blank">example@mail.com</a>
           までお願いします。
-        </v-cart-text>
+        </v-card-text>
 
       </v-card>
     </v-col>
