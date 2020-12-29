@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   # workflow
   get    '/workflow',          to: 'workflows#getWork'
-  put    '/workflow/:id/complete', to: 'workflows#complete'
+  put    '/workflow/:workflow_id/complete', to: 'workflows#complete'
   put    '/workflow/undo',     to: 'workflows#undo'
   
   # user
@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :experiments
 
   # assessment
-  get    '/assessments/:id',       to: 'assessments#getAssessmentWork'
+  get    '/assessments/:workflow_id', to: 'assessments#getAssessmentWork'
+  post   '/assessments/:workflow_id', to: 'assessments#update'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

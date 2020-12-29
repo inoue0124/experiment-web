@@ -11,8 +11,8 @@ class WorkflowsController < ApplicationController
   # PUT /workflow/complete
   def complete
     # t_userのdone workflowを次のworkflowに更新する
-    @current_wf = getCurrentWorkflow
-    if @user.update(done_workflow_id: @current_wf.id)
+    @user = current_user
+    if @user.update(done_workflow_id: params[:workflow_id])
       getWork
     else
       render json: @user.errors, status: :unprocessable_entity

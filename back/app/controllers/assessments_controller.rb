@@ -1,15 +1,14 @@
 class AssessmentsController < ApplicationController
 
   def getAssessmentWork
-    @workflow = getCurrentWorkflow
-    @t_assessment = TAssessment.find_by(t_workflow_id: @workflow.id)
+    @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
     @d_assessments = DAssessment.where(t_assessment_id: @t_assessment.id)
 
     @res = []
     for file_num in 1..@t_assessment.num_files do
       
       if @d_assessments.exists?(file_number: file_num)
-        
+
         @data = @d_assessments.find_by(file_number: file_num).attributes
         @data[:url] = "https://example.com/"+file_num.to_s
       else
