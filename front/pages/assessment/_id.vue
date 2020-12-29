@@ -22,6 +22,13 @@
                   </div>
                 </v-radio-group>
               </td>
+
+              <td>
+                <v-text-field
+                  v-model="item.comment"
+                  label="コメント"
+                ></v-text-field>
+              </td>
             </tr>
           </tbody>
         </template>
