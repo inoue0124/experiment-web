@@ -9,26 +9,21 @@
       <v-toolbar flat>
         <v-toolbar-title>ユーザ管理</v-toolbar-title>
         <v-spacer></v-spacer>
-
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
+        <v-btn
+          color="primary"
+          dark
+          class="mb-2"
+          @click="openRegisterDialog()"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >
-              新規登録
-            </v-btn>
-          </template>
+          新規登録
+        </v-btn>
 
+        <RegisterUserDialog ref="register" @generate="reloadData"></RegisterUserDialog>
+
+        <v-dialog v-model="dialogEdit" max-width="500px">
           <v-card>
             <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
+              <span class="headline">編集</span>
             </v-card-title>
 
             <v-card-text>
@@ -58,143 +53,118 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">キャンセル</v-btn>
-              <v-btn color="blue darken-1" text @click="save">保存</v-btn>
+              <v-btn color="blue darken-1" text @click="closeEdit">キャンセル</v-btn>
+              <v-btn color="primary" dark @click="confirmEdit">保存</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="headline">削除してよろしいですか?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">キャンセル</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">削除</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <ConfirmDialog
+          ref="confirm"
+          title="削除確認"
+          :message="deleteMessage"
+          buttonMessage="削除"
+          @confirm="confirmDelete"
+        >
+        </ConfirmDialog>
       </v-toolbar>
     </template>
 
-    <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-icon small class="mr-2" @click="openEditDialog(item)">mdi-pencil</v-icon>
+      <v-icon small @click="openDeleteDialog(item)">mdi-delete</v-icon>
     </template>
 
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">再読み込み</v-btn>
+      データがありません
     </template>
   </v-data-table>
 </template>
 
 <script>
 import UserApi from '@/plugins/axios/modules/user'
+import RegisterUserDialog from '@/components/dialogs/RegisterUserDialog'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 
-  export default {
-    layout: 'admin',
-    middleware: 'admin-redirector',
-    
-    data: () => ({
-      dialog: false,
-      dialogDelete: false,
-      headers: [
-        {
-          text: 'id',
-          align: 'start',
-          sortable: false,
-          value: 'id',
-        },
-        { text: 'uuid', value: 'uuid' },
-        { text: 'メールアドレス', value: 'email' },
-        { text: '実験ID', value: 't_experiment_id' },
-        { text: '終了したワークフローID', value: 'done_workflow_id' },
-        { text: '終了したワークフロー名', value: 'done_workflow_name' },
-        { text: '操作', value: 'actions', sortable: false },
-      ],
-      users: [],
-      editedIndex: -1,
-      editedItem: {
-        uuid: '',
-        email: '',
-        t_experiment_id: 0
-      },
-      defaultItem: {
-        uuid: '',
-        email: '',
-        t_experiment_id: ''
-      },
-    }),
+export default {
+  layout: 'admin',
+  middleware: 'admin-redirector',
 
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? '新規登録' : '編集'
-      },
+  components: {
+    ConfirmDialog,
+    RegisterUserDialog
+  },
+  
+  data: () => ({
+    dialogEdit: false,
+    headers: [
+      { text: 'id', value: 'id'},
+      { text: 'uuid', value: 'uuid' },
+      { text: 'メールアドレス', value: 'email' },
+      { text: '実験ID', value: 't_experiment_id' },
+      { text: '操作', value: 'actions', sortable: false },
+    ],
+    users: [],
+    editedIndex: -1,
+    editedItem: {
+      uuid: '',
+      email: '',
+      t_experiment_id: 0
+    }
+  }),
+
+  computed: {
+    deleteMessage() {
+      return `${this.editedItem.uuid} のユーザ情報を削除します。よろしいですか。`
+    }
+  },
+
+  mounted () {
+    this.reloadData()
+  },
+
+  methods: {
+    reloadData() {
+      UserApi.getUsers().then((res) => {
+        this.users = res
+      })
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
+    openRegisterDialog(){
+      this.$refs.register.open()
     },
 
-    created () {
-      this.initialize()
+    openEditDialog (item) {
+      this.editedIndex = this.users.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogEdit = true
     },
 
-    methods: {
-      initialize () {
-        UserApi.getUsers().then((res) => {
-          this.users = res
-          console.log(this.users)
-        })
-      },
-
-      editItem (item) {
-        this.editedIndex = this.users.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        this.editedIndex = this.users.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.users.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.users[this.editedIndex], this.editedItem)
-        } else {
-          this.users.push(this.editedItem)
-        }
-        this.close()
-      },
+    openDeleteDialog (item) {
+      this.editedIndex = this.users.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.$refs.confirm.open()
     },
-  }
+
+    confirmEdit () {
+      UserApi.updateUser(this.users[this.editedIndex].id, this.editedItem).then(()=>{
+        Object.assign(this.users[this.editedIndex], this.editedItem)
+      })
+      this.closeEdit()
+    },
+
+    confirmDelete () {
+      this.users.splice(this.editedIndex, 1)
+    },
+
+    closeEdit () {
+      this.dialogEdit = false
+    },
+
+    closeDelete () {
+      this.dialogDelete = false
+    }
+  },
+}
 </script>
 

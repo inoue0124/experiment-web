@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   
   # user
   resources :users
+  post    '/users/bulk',       to: 'users#bulkCreate'
 
   # experiment
   resources :experiments

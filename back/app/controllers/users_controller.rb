@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  wrap_parameters :t_user, include: [:uuid, :email, :password, :password_confirmation]
+  wrap_parameters :t_user, include: [:uuid, :email, :password, :password_confirmation, :t_experiment_id]
   skip_before_action :isAuthenticated, only: [:create]
 
   # GET /users
@@ -11,8 +11,18 @@ class UsersController < ApplicationController
     @work = MWork.all
 
     for i in 0..@users_h.length-1 do
-      @done_wf = TWorkflow.find(@users_h[i]["done_workflow_id"])
-      @work_name = @work.find(@done_wf[:m_work_id])[:name]
+      @done_wf = TWorkflow.find_by_id(@users_h[i]["done_workflow_id"])
+      if @done_wf.nil?
+        @users_h[i]["done_workflow_name"] = nil
+        next
+      end
+
+      @work_name = @work.find_by_id(@done_wf[:m_work_id])[:name]
+      if @work_name.nil? 
+        @users_h[i]["done_workflow_name"] = nil
+        next
+      end
+      
       @users_h[i]["done_workflow_name"] = @work_name
     end
 
@@ -33,6 +43,15 @@ class UsersController < ApplicationController
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+  end
+
+  # POST /users/bulk
+  def bulkCreate
+    @users = []
+    for user in params[:_json] do
+      @users << TUser.new(user.permit(:uuid, :email, :password, :password_confirmation, :t_experiment_id).to_h)
+    end
+    TUser.import @users
   end
 
   # PATCH/PUT /users/1
@@ -57,6 +76,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:t_user).permit(:uuid, :email, :password, :password_confirmation)
+      params.require(:t_user).permit(:uuid, :email, :password, :password_confirmation, :t_experiment_id)
     end
 end
