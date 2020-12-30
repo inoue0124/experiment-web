@@ -1,5 +1,6 @@
 class ExperimentsController < ApplicationController
   before_action :set_experiment, only: [:show, :update, :destroy]
+  wrap_parameters :t_experiment, include: [:name]
 
   # GET /experiments
   def index

@@ -1,6 +1,7 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="10" md="10">
+      <h1 align="center" class="mb-16">評価実験</h1>
 
       <v-simple-table>
         <template v-slot:default>
@@ -34,8 +35,10 @@
         </template>
       </v-simple-table>
 
-      <v-btn color="primary" @click="prev">前へ戻る</v-btn>
-      <v-btn color="primary" @click="next">次へ進む</v-btn>
+      <div align="center" class="mt-10">
+        <v-btn color="primary" @click="prev">前へ戻る</v-btn>
+        <v-btn color="primary" @click="next">次へ進む</v-btn>
+      </div>
 
     </v-col>
   </v-row>

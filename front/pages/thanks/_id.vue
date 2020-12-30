@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <v-card class="pa-md-10 mx-lg-auto">
+      <v-card class="pa-md-10 mt-16">
         <v-card-title class="headline">
           実験にご参加いただき誠にありがとうございました。
         </v-card-title>

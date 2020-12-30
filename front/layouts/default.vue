@@ -5,7 +5,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <v-footer :absolute="true" app>
+    <v-footer :absolute="true" app dark>
       <span>&copy; {{ new Date().getFullYear() }}
         東京大学 大学院総合文化研究科
         グローバルコミュニケーション研究センター

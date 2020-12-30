@@ -3,7 +3,7 @@
     :headers="headers"
     :items="users"
     sort-by="id"
-    class="elevation-1"
+    class="elevation-1 my-16"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -20,7 +20,7 @@
 
         <RegisterUserDialog ref="register" @generate="reloadData"></RegisterUserDialog>
 
-        <v-dialog v-model="dialogEdit" max-width="500px">
+        <v-dialog v-model="dialogEdit" max-width="800px">
           <v-card>
             <v-card-title>
               <span class="headline">編集</span>
@@ -102,7 +102,9 @@ export default {
       { text: 'uuid', value: 'uuid' },
       { text: 'メールアドレス', value: 'email' },
       { text: '実験ID', value: 't_experiment_id' },
-      { text: '操作', value: 'actions', sortable: false },
+      { text: '更新日時', value: 'updated_at'},
+      { text: '作成日時', value: 'created_at'},
+      { text: '操作', value: 'actions', sortable: false }
     ],
     users: [],
     editedIndex: -1,

@@ -1,14 +1,16 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
+  <v-row justify="center" align="center" class="my-5">
+    <v-col cols="12" sm="6" md="8">
       <iframe 
         :src="`${form_url}`"
-        width="700" height="800" frameborder="0" marginheight="0" marginwidth="0"
+        width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0"
       >
         読み込んでいます…
       </iframe>
 
-      <v-btn color="primary" @click="next">次へ進む</v-btn>
+      <div align="center">
+        <v-btn color="primary" @click="next">次へ進む</v-btn>
+      </div>
     </v-col>
   </v-row>
 </template>

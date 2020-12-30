@@ -1,8 +1,8 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="8" md="6">
       
-      <h1 align="center">協力同意書</h1>
+      <h1 align="center" class="mb-16">協力同意書</h1>
 
       <h2>評価実験の説明</h2>
 

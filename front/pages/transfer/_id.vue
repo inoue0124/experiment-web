@@ -1,9 +1,11 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="8" md="6">
-      振り込み情報
+      <h1 align="center" class="mb-16">振り込み情報</h1>
 
-      <v-btn color="primary" @click="next">次へ進む</v-btn>
+      <div align="center">
+        <v-btn color="primary" @click="next">次へ進む</v-btn>
+      </div>
     </v-col>
   </v-row>
 </template>

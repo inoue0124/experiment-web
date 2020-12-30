@@ -2,10 +2,19 @@
   <v-app dark>
     <v-navigation-drawer
       :mini-variant="miniVariant"
-      :clipped="true"
+      :clipped="false"
       fixed
       app
+      dark
     >
+      <v-list-item>
+        <v-list-item-title class="title">
+          {{title}}
+        </v-list-item-title>
+      </v-list-item>
+
+      <v-divider />
+
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -17,6 +26,7 @@
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
+          
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
@@ -24,16 +34,26 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar :clipped-left="true" fixed flat app>
+    <v-app-bar :clipped-left="false" fixed dense app color="#ffffff">
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-btn icon @click="openLogoutDialog">
+        <v-icon>mdi-logout</v-icon>
+      </v-btn>
+      <ConfirmDialog
+        ref="logout"
+        title="ログアウト確認"
+        message="ログアウトします。よろしいですか？"
+        buttonMessage="ログアウト"
+        @confirm="confirmLogout"
+      >
+      </ConfirmDialog>
     </v-app-bar>
 
     <v-main>
-      <v-container>
+      <v-container id="fontSetting">
         <nuxt />
       </v-container>
     </v-main>
@@ -41,7 +61,13 @@
 </template>
 
 <script>
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+
 export default {
+  components: {
+    ConfirmDialog
+  },
+
   data() {
     return {
       items: [
@@ -54,22 +80,28 @@ export default {
           icon: 'mdi-flask-empty',
           title: '実験管理',
           to: '/admin/experiments',
-        },
-        {
-          icon: 'mdi-logout',
-          title: 'ログアウト',
-          to: '/admin/logout',
         }
       ],
       miniVariant: false,
       title: '実験作成・管理システム',
     }
   },
+
+  methods: {
+    openLogoutDialog () {
+      this.$refs.logout.open()
+    },
+    confirmLogout() {
+      this.$router.push('/admin/logout')
+    }
+  }
 }
 </script>
 
 <style>
-.v-list {
-  padding: 0px;
+#fontSetting {
+  font-family: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro",
+    "Hiragino Maru Gothic Pro", "ヒラギノ角ゴ Pro W3",
+    "Hiragino Kaku Gothic Pro", "HG丸ｺﾞｼｯｸM-PRO", "HGMaruGothicMPRO";
 }
 </style>
