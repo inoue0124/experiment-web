@@ -31,7 +31,13 @@ module SessionsHelper
   def getCurrentWorkflow
     @user = current_user
 
-    @done_wf = TWorkflow.find(@user.done_workflow_id)
-    @workflow = TWorkflow.find(@done_wf.next_workflow_id)
+    if @user.done_workflow_id.nil?
+      @workflow = TWorkflow.find_by(t_experiment_id: @user[:t_experiment_id])
+    else
+      @done_wf = TWorkflow.find(@user.done_workflow_id)
+      @workflow = TWorkflow.find(@done_wf.next_workflow_id)
+    end
+
+    return @workflow
   end
 end
