@@ -6,8 +6,17 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = TUser.all
+    @users_h = @users.map{ |user| user.attributes }
 
-    render json: @users
+    @work = MWork.all
+
+    for i in 0..@users_h.length-1 do
+      @done_wf = TWorkflow.find(@users_h[i]["done_workflow_id"])
+      @work_name = @work.find(@done_wf[:m_work_id])[:name]
+      @users_h[i]["done_workflow_name"] = @work_name
+    end
+
+    render json: @users_h
   end
 
   # GET /users/1
