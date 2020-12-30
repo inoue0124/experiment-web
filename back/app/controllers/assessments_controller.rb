@@ -3,12 +3,12 @@ class AssessmentsController < ApplicationController
   def getAssessmentWork
     @user = current_user
     @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
-    @d_assessments = DAssessment.where(t_assessment_id: @t_assessment.id)
+    @d_assessments = DAssessment.where(t_assessment_id: @t_assessment.id).where(t_user_id: @user.id)
 
     @res = []
     for file_num in 1..@t_assessment.num_files do
       
-      if @d_assessments.exists?(file_number: file_num)
+      if @d_assessments.where(file_number: file_num).exists?
 
         @data = @d_assessments.find_by(file_number: file_num).attributes
         @data[:url] = "https://example.com/"+file_num.to_s
@@ -24,8 +24,9 @@ class AssessmentsController < ApplicationController
 
 
   def update
+    @user = current_user
     @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
-    @d_assessments = DAssessment.where(t_assessment_id: @t_assessment.id)
+    @d_assessments = DAssessment.where(t_assessment_id: @t_assessment.id).where(t_user_id: @user.id)
 
     # バルクインサート用配列
     @new_d_assess = []
