@@ -8,9 +8,6 @@
 MWork.create!(
   [
     {
-      name: 'login'
-    },
-    {
       name: 'agreement'
     },
     {
@@ -54,12 +51,12 @@ TWorkflow.create!(
     },
     {
       t_experiment_id: 1,
-      m_work_id: 4,
+      m_work_id: 3,
       next_workflow_id: 5
     },
     {
       t_experiment_id: 1,
-      m_work_id: 4,
+      m_work_id: 3,
       next_workflow_id: 6
     },
     {
@@ -76,11 +73,6 @@ TWorkflow.create!(
       t_experiment_id: 1,
       m_work_id: 6,
       next_workflow_id: 9
-    },
-    {
-      t_experiment_id: 1,
-      m_work_id: 7,
-      next_workflow_id: 10
     }
   ]
 )
@@ -94,7 +86,7 @@ TUser.create!(
 )
 
 TAgreement.create!(
-  t_workflow_id: 2,
+  t_workflow_id: 1,
   text: '<h1 align="center">協力同意書</h1>
 
       <h2>評価実験の説明</h2>
@@ -129,21 +121,21 @@ TAgreement.create!(
 TAssessment.create!(
   [
     {
-      t_workflow_id: 4,
+      t_workflow_id: 3,
       is_practice: true,
       point: 6,
       num_files: 10,
       pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
     },
     {
-      t_workflow_id: 5,
+      t_workflow_id: 4,
       is_practice: false,
       point: 6,
       num_files: 30,
       pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
     },
     {
-      t_workflow_id: 6,
+      t_workflow_id: 5,
       is_practice: false,
       point: 6,
       num_files: 30,
@@ -186,6 +178,6 @@ DAssessment.create!(
 )
 
 TQuestionnaire.create!(
-  t_workflow_id: 7,
+  t_workflow_id: 6,
   url: 'https://docs.google.com/forms/d/e/1FAIpQLSfcbMBs6cSXpzfqvtLo0kCSlxotB_5SYZnRtjz49GziPOus5w/viewform?embedded=true'
 )
