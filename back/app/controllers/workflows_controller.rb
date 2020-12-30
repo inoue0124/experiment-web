@@ -34,6 +34,11 @@ class WorkflowsController < ApplicationController
     end
   end
 
+  def getWorkMaster
+    @work = MWork.all
+    render json: @work, status: :ok
+  end
+
 
   def create
   end

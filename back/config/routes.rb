@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get    '/workflow',          to: 'workflows#getWork'
   put    '/workflow/:workflow_id/complete', to: 'workflows#complete'
   put    '/workflow/undo',     to: 'workflows#undo'
+  get    '/works',             to: 'workflows#getWorkMaster'
   
   # user
   resources :users

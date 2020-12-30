@@ -12,5 +12,9 @@ export default {
 
   undo() {
     return axios.$put(`workflow/undo`)
+  },
+
+  getWorkMaster() {
+    return axios.$get(`works`)
   }
 }
