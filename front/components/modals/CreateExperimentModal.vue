@@ -17,6 +17,17 @@
             </v-toolbar>
 
             <v-card-text class="pa-10">
+              <p class="mb-3 mx-10 card-title">実験名設定</p>
+              <v-card class="mx-10 pa-5 mb-16">
+                <v-card-text>
+                  <v-text-field
+                    label="実験名"
+                    v-model="name"
+                    required
+                  ></v-text-field>
+                </v-card-text>
+              </v-card>
+
               <div v-for="(work, key) in workflow" :key="key">
                 <div v-if="work=='agreement'">
                   <p class="mb-3 mx-10 card-title">同意書設定</p>
@@ -94,7 +105,8 @@ export default {
         "facesheet",
         "assessment",
         "questionnaire"
-      ]
+      ],
+      name: ""
     }
   },
   methods: {
@@ -157,7 +169,7 @@ export default {
             break;
           }
         })
-        return data
+        return {"name": this.name, "data": data}
     }
   }
 }
