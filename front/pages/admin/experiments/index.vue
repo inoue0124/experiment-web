@@ -18,7 +18,7 @@
           新規登録
         </v-btn>
 
-        <RegisterUserDialog ref="register" @generate="reloadData"></RegisterUserDialog>
+        <CreateExperimentModal ref="register" @generate="reloadData"></CreateExperimentModal>
 
         <v-dialog v-model="dialogEdit" max-width="500px">
           <v-card>
@@ -67,8 +67,8 @@
 
 <script>
 import ExperimentApi from '@/plugins/axios/modules/experiment'
-import RegisterUserDialog from '@/components/dialogs/RegisterUserDialog'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import CreateExperimentModal from '@/components/modals/CreateExperimentModal'
 
 export default {
   layout: 'admin',
@@ -76,7 +76,7 @@ export default {
 
   components: {
     ConfirmDialog,
-    RegisterUserDialog
+    CreateExperimentModal
   },
   
   data: () => ({

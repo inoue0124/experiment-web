@@ -39,7 +39,7 @@
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
       <v-spacer />
-      <v-btn icon @click="openLogoutDialog">
+      <v-btn icon @click="openConfirmDialog">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
       <ConfirmDialog
@@ -88,7 +88,7 @@ export default {
   },
 
   methods: {
-    openLogoutDialog () {
+    openConfirmDialog () {
       this.$refs.logout.open()
     },
     confirmLogout() {
