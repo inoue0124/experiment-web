@@ -10,9 +10,40 @@
         <v-row class="pa-0">
           <v-col class="pa-10 ma-0" cols="12" sm="9" md="9">
             <v-toolbar flat>
-              <v-btn icon @click="openConfirmDialog">
+              <v-btn icon @click="openConfirmDiscardDialog">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
+              <span class="headline">新規実験作成</span>
+            </v-toolbar>
+
+            <v-card-text class="pa-10">
+              <div v-for="(work, key) in workflow" :key="key">
+                <div v-if="work=='agreement'">
+                  <p class="mb-3 mx-10 card-title">同意書設定</p>
+                  <RegisterAgreementCard class="mx-10 pa-5 mb-16" ref="agreement"></RegisterAgreementCard>
+                </div>
+                
+                <div v-if="work=='facesheet'">
+                  <p class="mb-3 mx-10 card-title">フェイスシート設定</p>
+                  <RegisterFacesheetCard class="mx-10 pa-5 mb-16" ref="facesheet"></RegisterFacesheetCard>
+                </div>
+
+                <div v-if="work=='assessment'">
+                  <p class="mb-3 mx-10 card-title">評価実験設定</p>
+                  <RegisterAssessmentCard class="mx-10 pa-5 mb-16" ref="assessment"></RegisterAssessmentCard>
+                </div>
+                
+                <div v-if="work=='questionnaire'">
+                  <p class="mb-3 mx-10 card-title">アンケート設定</p>
+                  <RegisterQuestionnaireCard class="mx-10 pa-5 mb-16" ref="questionnaire"></RegisterQuestionnaireCard>
+                </div>
+              </div>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="openConfirmDiscardDialog">キャンセル</v-btn>
+              <v-btn color="primary" dark @click="openConfirmRegisterDialog">登録</v-btn>
               <ConfirmDialog
                 ref="discard"
                 title="編集破棄確認"
@@ -21,28 +52,14 @@
                 @confirm="confirmDiscard"
               >
               </ConfirmDialog>
-              <span class="headline">新規実験作成</span>
-            </v-toolbar>
-
-            <v-card-text class="pa-10">
-              <p class="mb-3 mx-10 card-title">同意書設定</p>
-              <RegisterAgreementCard class="mx-10 pa-5 mb-16"></RegisterAgreementCard>
-
-              <p class="mb-3 mx-10 card-title">フェイスシート設定</p>
-              <RegisterFacesheetCard class="mx-10 pa-5 mb-16"></RegisterFacesheetCard>
-
-              <p class="mb-3 mx-10 card-title">評価実験設定</p>
-              <RegisterAssessmentCard class="mx-10 pa-5 mb-16"></RegisterAssessmentCard>
-
-              <p class="mb-3 mx-10 card-title">アンケート設定</p>
-              <RegisterQuestionnaireCard class="mx-10 pa-5 mb-16"></RegisterQuestionnaireCard>
-              
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="cancel">キャンセル</v-btn>
-              <v-btn color="primary" dark @click="register">登録</v-btn>
+              <ConfirmDialog
+                ref="register"
+                title="実験登録確認"
+                message="作成した実験を登録します。よろしいですか？"
+                buttonMessage="登録"
+                @confirm="confirmRegister"
+              >
+              </ConfirmDialog>
             </v-card-actions>
           </v-col>
 
@@ -71,7 +88,13 @@ import RegisterQuestionnaireCard from '@/components/RegisterQuestionnaireCard'
 export default {
   data() {
     return {
-      dialog: false
+      dialog: false,
+      workflow: [
+        "agreement",
+        "facesheet",
+        "assessment",
+        "questionnaire"
+      ]
     }
   },
   methods: {
@@ -81,11 +104,60 @@ export default {
     cancel() {
       this.dialog = false
     },
-    openConfirmDialog () {
+    openConfirmDiscardDialog () {
       this.$refs.discard.open()
     },
     confirmDiscard() {
       this.dialog = false
+    },
+    openConfirmRegisterDialog () {
+      this.$refs.register.open()
+    },
+    confirmRegister() {
+      console.log(this.createPostData())
+    },
+    createPostData() {
+      let data = []
+      let index = 0
+      this.workflow.forEach((work) => {
+        switch (work) {
+          case "agreement":
+            data.push({
+              "index": index,
+              "work": "agreement",
+              "text": this.$refs.agreement[0].claim_text
+            })
+            index++
+            break;
+          case "facesheet":
+            data.push({
+              "index": index,
+              "work": "facesheet",
+              "facesheet": this.$refs.facesheet[0].facesheet
+            })
+            index++
+            break;
+          case "assessment":
+            for (var step of [...Array(this.$refs.assessment[0].num_steps).keys()]) {
+              data.push({
+                "index": index,
+                "work": "assessment",
+                "num_samples": this.$refs.assessment[0].num_samples[step]
+              })
+              index++
+            }
+            break;
+          case "questionnaire":
+            data.push({
+              "index": index,
+              "work": "questionnaire",
+              "form_url": this.$refs.questionnaire[0].form_url
+            })
+            index++
+            break;
+          }
+        })
+        return data
     }
   }
 }
