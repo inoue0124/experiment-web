@@ -1,25 +1,24 @@
 <template>
   <v-card>
-    <v-card-title>評価実験設定</v-card-title>
-      <v-card-text>
-        <v-select
-          v-model="num_steps"
-          :items="steps"
-          label="ステップ数"
-          class="ma-2"
-        ></v-select>
+    <v-card-text>
+      <v-select
+        v-model="num_steps"
+        :items="steps"
+        label="ステップ数"
+        class="ma-2"
+      ></v-select>
 
-        <div style="text-align:center;"><v-icon>mdi-chevron-triple-down</v-icon></div>
-        
-        <v-select
-          v-for="n in num_steps"
-          :key="n"
-          v-model="num_samples[n-1]"
-          :items="samples"
-          :label="`ステップ${n}のサンプル数`"
-          class="ma-2"
-        ></v-select>
-      </v-card-text>
+      <div style="text-align:center;"><v-icon>mdi-chevron-triple-down</v-icon></div>
+      
+      <v-select
+        v-for="n in num_steps"
+        :key="n"
+        v-model="num_samples[n-1]"
+        :items="samples"
+        :label="`ステップ${n}のサンプル数`"
+        class="ma-2"
+      ></v-select>
+    </v-card-text>
   </v-card>
 </template>
 

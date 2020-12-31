@@ -1,14 +1,13 @@
 <template>
   <v-card>
-    <v-card-title>フェイスシート設定</v-card-title>
-      <v-card-text>
-        <v-checkbox
-          v-for="(item, key) in facesheet"
-          :key="key"
-          v-model="facesheet[key]"
-          :label="facesheet_ja[key]"
-        ></v-checkbox>
-      </v-card-text>
+    <v-card-text>
+      <v-checkbox
+        v-for="(item, key) in facesheet"
+        :key="key"
+        v-model="facesheet[key]"
+        :label="facesheet_ja[key]"
+      ></v-checkbox>
+    </v-card-text>
   </v-card>
 </template>
 
