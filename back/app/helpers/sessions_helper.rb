@@ -31,6 +31,7 @@ module SessionsHelper
   def getCurrentWorkflow
     @user = current_user
 
+    # 初ログイン時
     if @user.done_workflow_id.nil?
       @workflow = TWorkflow.find_by(t_experiment_id: @user[:t_experiment_id])
     else

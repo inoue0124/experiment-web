@@ -91,6 +91,7 @@
 
 <script>
 import UserApi from '@/plugins/axios/modules/user'
+import ExperimentApi from '@/plugins/axios/modules/experiment'
 import RegisterAgreementCard from '@/components/RegisterAgreementCard'
 import RegisterFacesheetCard from '@/components/RegisterFacesheetCard'
 import RegisterAssessmentCard from '@/components/RegisterAssessmentCard'
@@ -104,7 +105,9 @@ export default {
         "agreement",
         "facesheet",
         "assessment",
-        "questionnaire"
+        "questionnaire",
+        "transfer",
+        "thanks"
       ],
       name: ""
     }
@@ -127,46 +130,47 @@ export default {
     },
     confirmRegister() {
       console.log(this.createPostData())
+      ExperimentApi.createExperiment(this.createPostData())
     },
     createPostData() {
       let data = []
-      let index = 0
       this.workflow.forEach((work) => {
         switch (work) {
           case "agreement":
             data.push({
-              "index": index,
               "work": "agreement",
               "text": this.$refs.agreement[0].claim_text
             })
-            index++
             break;
           case "facesheet":
             data.push({
-              "index": index,
               "work": "facesheet",
               "facesheet": this.$refs.facesheet[0].facesheet
             })
-            index++
             break;
           case "assessment":
             for (var step of [...Array(this.$refs.assessment[0].num_steps).keys()]) {
               data.push({
-                "index": index,
                 "work": "assessment",
-                "num_samples": this.$refs.assessment[0].num_samples[step]
+                "num_files": this.$refs.assessment[0].num_samples[step]
               })
-              index++
             }
             break;
           case "questionnaire":
             data.push({
-              "index": index,
               "work": "questionnaire",
-              "form_url": this.$refs.questionnaire[0].form_url
+              "url": this.$refs.questionnaire[0].form_url
             })
-            index++
             break;
+          case "transfer":
+            data.push({
+              "work": "transfer"
+            })
+            break;
+          case "thanks":
+            data.push({
+              "work": "thanks"
+            })
           }
         })
         return {"name": this.name, "data": data}

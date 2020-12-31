@@ -1,15 +1,8 @@
 import { axios } from '../index.js';
 
 export default {
-  createExperiment(email:string, password:string, password_confirmation:string) {
-    return axios.$post(
-      `experiments`,
-      {
-        email: email,
-        password: password,
-        password_confirmation: password_confirmation
-      }
-    )
+  createExperiment(body: Object) {
+    return axios.$post(`experiments`,body)
   },
 
   getExperiment(id:number) {

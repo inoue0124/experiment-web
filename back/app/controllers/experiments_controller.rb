@@ -1,6 +1,6 @@
 class ExperimentsController < ApplicationController
   before_action :set_experiment, only: [:show, :update, :destroy]
-  wrap_parameters :t_experiment, include: [:name]
+  wrap_parameters :t_experiment, include: [:name, :data]
 
   # GET /experiments
   def index
@@ -16,12 +16,53 @@ class ExperimentsController < ApplicationController
 
   # POST /experiments
   def create
-    @t_experiment = TExperiment.new(t_experiment_params)
+    begin
+      ActiveRecord::Base.transaction {
+        @t_experiment = TExperiment.new(
+          name: params[:name]
+        )
+        @t_experiment.save!
 
-    if @t_experiment.save
-      render json: @t_experiment, status: :created, location: @t_experiment
-    else
-      render json: @t_experiment.errors, status: :unprocessable_entity
+        for data in params[:data] do
+          @m_work = MWork.find_by(name: data[:work])
+          @prev_wf = TWorkflow.where(t_experiment_id: @t_experiment.id).order(created_at: :desc).limit(1)[0]
+          p @prev_wf
+
+          @t_workflow = TWorkflow.new(
+            t_experiment_id: @t_experiment.id,
+            m_work_id: @m_work.id,
+            next_workflow_id: 0
+          )
+          @t_workflow.save!
+
+          # １つ前のworkflowに作成したworkflowのidを入れる
+          if !@prev_wf.nil?
+            @prev_wf.update(next_workflow_id: @t_workflow.id)
+          end
+
+          case data[:work]
+          when "agreement"
+            @t_agreement = TAgreement.new(
+              t_workflow_id: @t_workflow.id,
+              text: data[:text]
+            )
+            @t_agreement.save!
+          # when "facesheet" #　後で実装
+          when "assessment"
+            @t_assessment = TAssessment.new(
+              t_workflow_id: @t_workflow.id,
+              num_files: data[:num_files]
+            )
+            @t_assessment.save!
+          when "questionnaire"
+            @t_questionnaire = TQuestionnaire.new(
+              t_workflow_id: @t_workflow.id,
+              url: data[:url]
+            )
+            @t_questionnaire.save!
+          end
+        end
+      }
     end
   end
 
@@ -47,6 +88,6 @@ class ExperimentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def t_experiment_params
-      params.require(:t_experiment).permit(:name)
+      params.require(:t_experiment).permit(:name, :data)
     end
 end
