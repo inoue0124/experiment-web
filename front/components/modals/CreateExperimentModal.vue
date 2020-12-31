@@ -55,7 +55,7 @@
               <ConfirmDialog
                 ref="register"
                 title="実験登録確認"
-                message="作成した実験を登録します。よろしいですか？"
+                message="入力した内容で実験を登録します。よろしいですか？"
                 buttonMessage="登録"
                 @confirm="confirmRegister"
               >
