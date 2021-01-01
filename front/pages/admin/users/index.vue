@@ -2,7 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="users"
-    sort-by="id"
     class="elevation-1 my-16"
   >
     <template v-slot:top>
@@ -110,7 +109,7 @@ export default {
   data: () => ({
     dialogEdit: false,
     headers: [
-      { text: 'id', value: 'id'},
+      { text: 'ユーザID', value: 'id'},
       { text: 'ログインID', value: 'uuid' },
       { text: 'メールアドレス', value: 'email' },
       { text: '実験ID', value: 't_experiment_id' },
