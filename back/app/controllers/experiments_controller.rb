@@ -26,7 +26,6 @@ class ExperimentsController < ApplicationController
         for data in params[:data] do
           @m_work = MWork.find_by(name: data[:work])
           @prev_wf = TWorkflow.where(t_experiment_id: @t_experiment.id).order(created_at: :desc).limit(1)[0]
-          p @prev_wf
 
           @t_workflow = TWorkflow.new(
             t_experiment_id: @t_experiment.id,
