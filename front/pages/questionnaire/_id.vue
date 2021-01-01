@@ -1,6 +1,9 @@
 <template>
   <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="6" md="8">
+
+      <h1 align="center" class="mb-16">アンケート</h1>
+
       <iframe 
         :src="`${form_url}`"
         width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0"
@@ -17,14 +20,21 @@
 
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
+import QuestionnaireApi from '@/plugins/axios/modules/questionnaire'
 
 export default {
   middleware: 'redirector',
 
   data() {
     return {
-      form_url: "https://docs.google.com/forms/d/e/1FAIpQLSfcbMBs6cSXpzfqvtLo0kCSlxotB_5SYZnRtjz49GziPOus5w/viewform?embedded=true"
+      form_url: ""
     }
+  },
+
+  mounted() {
+    QuestionnaireApi.getQuestionnaire(this.$route.params.id).then((res) => {
+      this.form_url = res.url
+    })
   },
 
   methods: {

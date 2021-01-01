@@ -18,8 +18,14 @@ Rails.application.routes.draw do
   # experiment
   resources :experiments
 
+  # agreement
+  get    '/agreements/:workflow_id',  to: 'agreements#show'
+
   # assessment
   get    '/assessments/:workflow_id', to: 'assessments#getAssessmentWork'
   post   '/assessments/:workflow_id', to: 'assessments#update'
+
+  # questionnaire
+  get    '/questionnaires/:workflow_id', to: 'questionnaires#show'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -4,34 +4,8 @@
       
       <h1 align="center" class="mb-16">協力同意書</h1>
 
-      <h2>評価実験の説明</h2>
-
-      <p class="text-justify">
-        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
-        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
-        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
-      </p>
-
-      <p class="text-justify">
-        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
-        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
-        ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。ここに評価実験の説明が入ります。
-      </p>
-
-      <h2>協力同意書</h2>
-
-      <p class="text-justify">
-        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
-        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
-        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
-      </p>
-
-      <p class="text-justify">
-        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
-        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
-        ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。ここに協力同意書の内容が入ります。
-      </p>
-
+      <p v-html="claim_text"></p>
+      
       <div align="center">
         <v-checkbox 
         v-model="isAgree" 
@@ -53,6 +27,7 @@
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import WorkflowApi from '@/plugins/axios/modules/workflow'
+import AgreementApi from '@/plugins/axios/modules/agreement'
 
 export default {
   middleware: 'redirector',
@@ -67,8 +42,15 @@ export default {
   },
 
   data: () => ({
-    isAgree: false
+    isAgree: false,
+    claim_text: ''
   }),
+
+  mounted() {
+    AgreementApi.getAgreement(this.$route.params.id).then((res) => {
+      this.claim_text = res.text
+    })
+  },
 
   computed: {
     checkboxErrors () {
