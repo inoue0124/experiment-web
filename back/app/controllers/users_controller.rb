@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = TUser.all
+    @users = TUser.order(id: :asc).all
     @users_h = @users.map{ |user| user.attributes }
 
     @work = MWork.all

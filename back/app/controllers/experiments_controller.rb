@@ -4,7 +4,7 @@ class ExperimentsController < ApplicationController
 
   # GET /experiments
   def index
-    @t_experiments = TExperiment.all
+    @t_experiments = TExperiment.order(id: :asc).all
 
     render json: @t_experiments
   end
