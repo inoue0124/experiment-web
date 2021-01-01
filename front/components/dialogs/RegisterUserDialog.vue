@@ -139,7 +139,7 @@ export default {
       let blob = new Blob([csv], { type: 'text/csv' })
       let link = document.createElement('a')
       link.href = window.URL.createObjectURL(blob)
-      link.download = 'user_list.csv'
+      link.download = 'password_list.csv'
       link.click()
     }
   }
