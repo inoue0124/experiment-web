@@ -1,7 +1,9 @@
 <template>
   <v-row justify="center" align="center" class="my-5">
-    <v-col cols="12" sm="10" md="10">
+    <v-col cols="12" lg="10" sm="10" md="10">
       <h1 align="center" class="mb-16">評価実験</h1>
+
+      <PdfViewer class="mb-16"></PdfViewer>
 
       <v-simple-table>
         <template v-slot:default>
@@ -47,9 +49,14 @@
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import AssessmentApi from '@/plugins/axios/modules/assessment'
+import PdfViewer from "@/components/PdfViewer"
 
 export default {
   middleware: 'redirector',
+
+  components: {
+    PdfViewer
+  },
   
   data() {
     return {
