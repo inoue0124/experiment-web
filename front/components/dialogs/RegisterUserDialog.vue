@@ -16,7 +16,9 @@
               <v-select
                 v-model="experiment_id"
                 :items="experiments"
-                label="割り当てる実験"
+                item-text="name"
+                item-value="id"
+                label="対象の実験"
                 class="ma-2"
               ></v-select>
               <v-select
@@ -63,6 +65,7 @@
 
 <script>
 import UserApi from '@/plugins/axios/modules/user'
+import ExperimentApi from '@/plugins/axios/modules/experiment'
 
 export default {
   data() {
@@ -72,14 +75,19 @@ export default {
         { text: 'ID', value: 'uuid' },
         { text: 'メールアドレス', value: 'email' },
         { text: 'パスワード', value: 'password' },
-        { text: '実験ID', value: 't_experiment_id' }
+        { text: '対象の実験', value: 'experiment_name' }
       ],
       users: [],
       num_generate: 1,
       nums: [...Array(31).keys()],
-      experiment_id: 1,
-      experiments: [...Array(31).keys()],
+      experiment_id: 0,
+      experiments: [],
     }
+  },
+  mounted() {
+    ExperimentApi.listExperiments().then((res)=>{
+      this.experiments = res
+    })
   },
   methods: {
     open() {
@@ -96,6 +104,7 @@ export default {
           email: '',
           password: password,
           password_confirmation: password,
+          experiment_name: this.experiments.find((elm) => elm.id === this.experiment_id).name,
           t_experiment_id: this.experiment_id
         }
         this.users.push(user)

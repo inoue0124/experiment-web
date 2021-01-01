@@ -10,7 +10,16 @@ class UsersController < ApplicationController
 
     @work = MWork.all
 
+    # 実験名とワーク名を付加する
     for i in 0..@users_h.length-1 do
+      p @users_h[i]["t_experiment_id"]
+      @experiment = TExperiment.find_by_id(@users_h[i]["t_experiment_id"])
+      if @experiment.nil?
+        @users_h[i]["experiment_name"] =  nil
+      else
+        @users_h[i]["experiment_name"] = @experiment[:name]
+      end
+
       @done_wf = TWorkflow.find_by_id(@users_h[i]["done_workflow_id"])
       if @done_wf.nil?
         @users_h[i]["done_workflow_name"] = nil

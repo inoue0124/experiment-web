@@ -42,10 +42,14 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
+                    <v-select
                       v-model="editedItem.t_experiment_id"
-                      label="実験ID"
-                    ></v-text-field>
+                      :items="experiments"
+                      item-text="name"
+                      item-value="id"
+                      label="対象の実験"
+                      class="ma-2"
+                    ></v-select>
                   </v-col>
                 </v-row>
               </v-container>
@@ -83,6 +87,7 @@
 
 <script>
 import UserApi from '@/plugins/axios/modules/user'
+import ExperimentApi from '@/plugins/axios/modules/experiment'
 import RegisterUserDialog from '@/components/dialogs/RegisterUserDialog'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 
@@ -99,9 +104,10 @@ export default {
     dialogEdit: false,
     headers: [
       { text: 'id', value: 'id'},
-      { text: 'uuid', value: 'uuid' },
+      { text: 'ログインID', value: 'uuid' },
       { text: 'メールアドレス', value: 'email' },
       { text: '実験ID', value: 't_experiment_id' },
+      { text: '実験名', value: 'experiment_name' },
       { text: '更新日時', value: 'updated_at'},
       { text: '作成日時', value: 'created_at'},
       { text: '操作', value: 'actions', sortable: false }
@@ -112,7 +118,8 @@ export default {
       uuid: '',
       email: '',
       t_experiment_id: 0
-    }
+    },
+    experiments: []
   }),
 
   computed: {
@@ -123,6 +130,9 @@ export default {
 
   mounted () {
     this.reloadData()
+    ExperimentApi.listExperiments().then((res)=>{
+      this.experiments = res
+    })
   },
 
   methods: {
@@ -144,20 +154,19 @@ export default {
 
     openDeleteDialog (item) {
       this.editedIndex = this.users.indexOf(item)
-      this.editedItem = Object.assign({}, item)
       this.$refs.confirm.open()
     },
 
     confirmEdit () {
       UserApi.updateUser(this.users[this.editedIndex].id, this.editedItem).then(()=>{
-        Object.assign(this.users[this.editedIndex], this.editedItem)
+        this.reloadData()
       })
       this.closeEdit()
     },
 
     confirmDelete () {
       UserApi.deleteUser(this.users[this.editedIndex].id).then(()=>{
-         this.users.splice(this.editedIndex, 1)
+         this.reloadData()
       })
     },
 
