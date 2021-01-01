@@ -8,7 +8,7 @@ class WorkflowsController < ApplicationController
   end
 
 
-  # PUT /workflow/complete
+  # PUT /workflow/:workflow_id/complete
   def complete
     # t_userのdone workflowを次のworkflowに更新する
     @user = current_user

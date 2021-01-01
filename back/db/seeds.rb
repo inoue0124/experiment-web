@@ -82,7 +82,7 @@ TUser.create!(
   email: 'test@mail.com',
   password: 'test@123',
   t_experiment_id: 1,
-  done_workflow_id: 1
+  done_workflow_id: nil
 )
 
 TAgreement.create!(

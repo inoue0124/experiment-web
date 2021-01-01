@@ -18,8 +18,6 @@ export default {
   data() {
     return {
       claim_text: `
-      <h1 align="center" class="mb-16">協力同意書</h1>
-
       <h2>評価実験の説明</h2>
 
       <p class="text-justify">
