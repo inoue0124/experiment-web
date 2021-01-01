@@ -62,6 +62,7 @@
 
 <script>
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import SessionApi from '@/plugins/axios/modules/session'
 
 export default {
   components: {
@@ -92,7 +93,9 @@ export default {
       this.$refs.logout.open()
     },
     confirmLogout() {
-      this.$router.push('/admin/logout')
+      SessionApi.logout().then(()=>{
+        this.$router.push('/')
+      })
     }
   }
 }

@@ -111,8 +111,6 @@ ActiveRecord::Schema.define(version: 2020_12_27_131523) do
   add_foreign_key "t_agreements", "t_workflows"
   add_foreign_key "t_assessments", "t_workflows"
   add_foreign_key "t_questionnaires", "t_workflows"
-  add_foreign_key "t_users", "t_experiments"
-  add_foreign_key "t_users", "t_workflows", column: "done_workflow_id"
   add_foreign_key "t_workflows", "m_works"
   add_foreign_key "t_workflows", "t_experiments"
 end

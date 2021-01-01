@@ -129,8 +129,10 @@ export default {
       this.$refs.register.open()
     },
     confirmRegister() {
-      console.log(this.createPostData())
-      ExperimentApi.createExperiment(this.createPostData())
+      ExperimentApi.createExperiment(this.createPostData()).then(()=>{
+        this.dialog = false
+        this.$emit('register')
+      })
     },
     createPostData() {
       let data = []

@@ -156,7 +156,9 @@ export default {
     },
 
     confirmDelete () {
-      this.users.splice(this.editedIndex, 1)
+      UserApi.deleteUser(this.users[this.editedIndex].id).then(()=>{
+         this.users.splice(this.editedIndex, 1)
+      })
     },
 
     closeEdit () {
