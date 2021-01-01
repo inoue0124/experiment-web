@@ -18,7 +18,11 @@
           新規登録
         </v-btn>
 
-        <CreateExperimentModal ref="register" @generate="reloadData"></CreateExperimentModal>
+        <CreateExperimentModal 
+          ref="register" 
+          @register="reloadData"
+        >
+        </CreateExperimentModal>
 
         <v-dialog v-model="dialogEdit" max-width="500px">
           <v-card>
@@ -136,7 +140,9 @@ export default {
     },
 
     confirmDelete () {
-      this.experiments.splice(this.editedIndex, 1)
+      ExperimentApi.deleteExperiment(this.experiments[this.editedIndex].id).then(()=>{
+         this.experiments.splice(this.editedIndex, 1)
+      })
     },
 
     closeEdit () {
