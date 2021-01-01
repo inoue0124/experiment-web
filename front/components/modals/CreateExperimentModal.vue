@@ -61,6 +61,7 @@
                 message="実験の作成を中止して、編集内容を破棄します。よろしいですか？"
                 buttonMessage="破棄"
                 @confirm="confirmDiscard"
+                color="error"
               >
               </ConfirmDialog>
               <ConfirmDialog
@@ -69,6 +70,7 @@
                 message="入力した内容で実験を登録します。よろしいですか？"
                 buttonMessage="登録"
                 @confirm="confirmRegister"
+                color="primary"
               >
               </ConfirmDialog>
             </v-card-actions>

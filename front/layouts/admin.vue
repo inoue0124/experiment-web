@@ -48,6 +48,7 @@
         message="ログアウトします。よろしいですか？"
         buttonMessage="ログアウト"
         @confirm="confirmLogout"
+        color="primary"
       >
       </ConfirmDialog>
     </v-app-bar>

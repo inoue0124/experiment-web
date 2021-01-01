@@ -6,7 +6,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>ユーザ管理</v-toolbar-title>
+        <v-toolbar-title>ユーザ一覧</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
           color="primary"
@@ -75,6 +75,7 @@
           :message="deleteMessage"
           buttonMessage="削除"
           @confirm="confirmDelete"
+          color="error"
         >
         </ConfirmDialog>
       </v-toolbar>

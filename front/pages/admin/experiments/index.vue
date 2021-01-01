@@ -6,7 +6,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>実験管理</v-toolbar-title>
+        <v-toolbar-title>実験一覧</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
           color="primary"
@@ -28,44 +28,11 @@
           @register="reloadData"
         >
         </CreateExperimentModal>
-
-        <v-dialog v-model="dialogEdit" max-width="500px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">編集</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-text-field
-                  v-model="editedItem.name"
-                  label="実験名"
-                ></v-text-field>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeEdit">キャンセル</v-btn>
-              <v-btn color="primary" dark @click="confirmEdit">保存</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-
-        <ConfirmDialog
-          ref="confirm"
-          title="削除確認"
-          :message="deleteMessage"
-          buttonMessage="削除"
-          @confirm="confirmDelete"
-        >
-        </ConfirmDialog>
       </v-toolbar>
     </template>
 
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="openEditDialog(item)">mdi-pencil</v-icon>
-      <v-icon small @click="openDeleteDialog(item)">mdi-delete</v-icon>
+      <v-icon small class="mr-2" @click="toEdit(item)">mdi-pencil</v-icon>
     </template>
 
     <template v-slot:no-data>
@@ -104,12 +71,6 @@ export default {
     }
   }),
 
-  computed: {
-    deleteMessage() {
-      return `${this.editedItem.name} を削除します。よろしいですか。`
-    }
-  },
-
   mounted () {
     this.reloadData()
   },
@@ -125,37 +86,9 @@ export default {
       this.$refs.register.open()
     },
 
-    openEditDialog (item) {
+    toEdit (item) {
       this.editedIndex = this.experiments.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogEdit = true
-    },
-
-    openDeleteDialog (item) {
-      this.editedIndex = this.experiments.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.$refs.confirm.open()
-    },
-
-    confirmEdit () {
-      ExperimentApi.updateExperiment(this.experiments[this.editedIndex].id, this.editedItem).then(()=>{
-        this.reloadData()
-      })
-      this.closeEdit()
-    },
-
-    confirmDelete () {
-      ExperimentApi.deleteExperiment(this.experiments[this.editedIndex].id).then(()=>{
-         this.reloadData()
-      })
-    },
-
-    closeEdit () {
-      this.dialogEdit = false
-    },
-
-    closeDelete () {
-      this.dialogDelete = false
+      this.$router.push(`experiments/${this.experiments[this.editedIndex].id}`)
     },
 
     downloadCSV () {
