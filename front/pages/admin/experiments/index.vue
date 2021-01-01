@@ -2,7 +2,6 @@
   <v-data-table
     :headers="headers"
     :items="experiments"
-    sort-by="id"
     class="elevation-1 my-16"
   >
     <template v-slot:top>
@@ -11,7 +10,13 @@
         <v-spacer></v-spacer>
         <v-btn
           color="primary"
-          dark
+          class="mb-2 mr-2"
+          @click="downloadCSV()"
+        >
+          CSVダウンロード
+        </v-btn>
+        <v-btn
+          color="primary"
           class="mb-2"
           @click="openRegisterDialog()"
         >
@@ -86,7 +91,7 @@ export default {
   data: () => ({
     dialogEdit: false,
     headers: [
-      { text: 'id', value: 'id'},
+      { text: '実験ID', value: 'id'},
       { text: '実験名', value: 'name' },
       { text: '更新日時', value: 'updated_at'},
       { text: '作成日時', value: 'created_at'},
@@ -151,6 +156,19 @@ export default {
 
     closeDelete () {
       this.dialogDelete = false
+    },
+
+    downloadCSV () {
+      var csv = '\ufeff' + '実験ID,実験名,更新日時,作成日時\n'
+      this.experiments.forEach(el => {
+        var line = el['id'] + ',' + el['name'] + ',' + el['updated_at'] + ',' + el['created_at'] + '\n'
+        csv += line
+      })
+      let blob = new Blob([csv], { type: 'text/csv' })
+      let link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'experiment_list.csv'
+      link.click()
     }
   },
 }
