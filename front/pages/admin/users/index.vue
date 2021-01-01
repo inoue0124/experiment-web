@@ -11,6 +11,13 @@
         <v-spacer></v-spacer>
         <v-btn
           color="primary"
+          class="mb-2 mr-2"
+          @click="downloadCSV()"
+        >
+          CSVダウンロード
+        </v-btn>
+        <v-btn
+          color="primary"
           dark
           class="mb-2"
           @click="openRegisterDialog()"
@@ -176,6 +183,20 @@ export default {
 
     closeDelete () {
       this.dialogDelete = false
+    },
+
+    downloadCSV () {
+      var csv = '\ufeff' + 'ID,ログインID,メールアドレス,実験ID,実験名,更新日時,作成日時\n'
+      this.users.forEach(el => {
+        var line = el['id'] + ',' + el['uuid'] + ',' + el['email'] + ',' + el['t_experiment_id'] + ',' 
+        + el['experiment_name'] + ',' + el['updated_at'] + ',' + el['created_at'] + '\n'
+        csv += line
+      })
+      let blob = new Blob([csv], { type: 'text/csv' })
+      let link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'user_list.csv'
+      link.click()
     }
   },
 }
