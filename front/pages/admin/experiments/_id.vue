@@ -1,7 +1,7 @@
 <template>
-    <v-row class="pa-0">
-      <v-col class="pa-10" cols="12" sm="12" md="12">
-        <v-toolbar flat　class="mb-3 mx-10">
+    <v-row>
+      <v-col cols="12" sm="12" md="12">
+        <v-toolbar flat class="mb-3">
           <a link @click="goBack">実験一覧</a>/編集
           <v-spacer></v-spacer>
           <v-btn color="error" @click="openDeleteDialog" class="mr-5">この実験を削除</v-btn>
@@ -18,8 +18,8 @@
         </v-toolbar>
 
         <v-card-text>
-          <p class="mb-3 mx-10 card-title">実験名設定</p>
-          <v-card class="mx-10 pa-5 mb-16">
+          <p class="mb-3 card-title">実験名設定</p>
+          <v-card class=" pa-5 mb-16">
             <v-card-text>
               <v-text-field
                 label="実験名"
@@ -31,23 +31,23 @@
 
           <div v-for="(work, key) in workflow" :key="key">
             <div v-if="work=='agreement'">
-              <p class="mb-3 mx-10 card-title">同意書設定</p>
-              <RegisterAgreementCard class="mx-10 pa-5 mb-16" ref="agreement"></RegisterAgreementCard>
+              <p class="mb-3 card-title">同意書設定</p>
+              <RegisterAgreementCard class=" pa-5 mb-16" ref="agreement"></RegisterAgreementCard>
             </div>
             
             <div v-if="work=='facesheet'">
-              <p class="mb-3 mx-10 card-title">フェイスシート設定</p>
-              <RegisterFacesheetCard class="mx-10 pa-5 mb-16" ref="facesheet"></RegisterFacesheetCard>
+              <p class="mb-3 card-title">フェイスシート設定</p>
+              <RegisterFacesheetCard class=" pa-5 mb-16" ref="facesheet"></RegisterFacesheetCard>
             </div>
 
             <div v-if="work=='assessment'">
-              <p class="mb-3 mx-10 card-title">評価実験設定</p>
-              <RegisterAssessmentCard class="mx-10 pa-5 mb-16" ref="assessment"></RegisterAssessmentCard>
+              <p class="mb-3 card-title">評価実験設定</p>
+              <RegisterAssessmentCard class=" pa-5 mb-16" ref="assessment"></RegisterAssessmentCard>
             </div>
             
             <div v-if="work=='questionnaire'">
-              <p class="mb-3 mx-10 card-title">アンケート設定</p>
-              <RegisterQuestionnaireCard class="mx-10 pa-5 mb-16" ref="questionnaire"></RegisterQuestionnaireCard>
+              <p class="mb-3 card-title">アンケート設定</p>
+              <RegisterQuestionnaireCard class=" pa-5 mb-16" ref="questionnaire"></RegisterQuestionnaireCard>
             </div>
           </div>
         </v-card-text>
