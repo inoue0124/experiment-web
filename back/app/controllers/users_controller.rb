@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = TUser.order(id: :desc).all
+    @users = TUser.where(user_type: 1).order(id: :desc).all
     @users_h = @users.map{ |user| user.attributes }
 
     @work = MWork.all
@@ -58,7 +58,8 @@ class UsersController < ApplicationController
   def bulkCreate
     @users = []
     for user in params[:_json] do
-      @users << TUser.new(user.permit(:uuid, :email, :password, :password_confirmation, :t_experiment_id).to_h)
+      user[:user_type] = 1
+      @users << TUser.new(user.permit(:uuid, :email, :password, :password_confirmation, :t_experiment_id, :user_type).to_h)
     end
     TUser.import @users
   end

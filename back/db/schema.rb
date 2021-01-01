@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_131523) do
     t.string "uuid"
     t.string "email"
     t.string "password_digest"
+    t.integer "user_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "t_experiment_id"

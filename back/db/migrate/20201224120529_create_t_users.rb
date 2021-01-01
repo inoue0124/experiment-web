@@ -4,6 +4,7 @@ class CreateTUsers < ActiveRecord::Migration[5.2]
       t.string :uuid
       t.string :email
       t.string :password_digest
+      t.integer :user_type
 
       t.timestamps
     end

@@ -2,6 +2,7 @@ class SessionsController < ApplicationController
   skip_before_action :isAuthenticated, only: [:create]
 
   def new
+    render json: current_user, status: :ok
   end
 
   def create

@@ -72,23 +72,35 @@ TWorkflow.create!(
     {
       t_experiment_id: 1,
       m_work_id: 6,
-      next_workflow_id: 9
+      next_workflow_id: nil
     }
   ]
 )
 
 TUser.create!(
-  uuid: 'testtesttest',
-  email: 'test@mail.com',
-  password: 'test@123',
-  t_experiment_id: 1,
-  done_workflow_id: nil
+  [
+    {
+      uuid: 'test',
+      email: 'test@mail.com',
+      password: 'test@123',
+      t_experiment_id: 1,
+      done_workflow_id: nil,
+      user_type: 1
+    },
+    {
+      uuid: 'admin',
+      email: 'admin@mail.com',
+      password: 'admin@123',
+      t_experiment_id: nil,
+      done_workflow_id: nil,
+      user_type: 0
+    }
+  ]
 )
 
 TAgreement.create!(
   t_workflow_id: 1,
-  text: '<h1 align="center">協力同意書</h1>
-
+  text: '
       <h2>評価実験の説明</h2>
 
       <p class="text-justify">
@@ -140,39 +152,6 @@ TAssessment.create!(
       point: 6,
       num_files: 30,
       pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
-    }
-  ]
-)
-
-DAssessment.create!(
-  [
-    {
-      t_assessment_id: 1,
-      t_user_id: 1,
-      file_number: 1,
-      score: 4,
-      comment: 'test comment'
-    },
-    {
-      t_assessment_id: 1,
-      t_user_id: 1,
-      file_number: 2,
-      score: 1,
-      comment: 'test comment'
-    },
-    {
-      t_assessment_id: 1,
-      t_user_id: 1,
-      file_number: 4,
-      score: 5,
-      comment: 'test comment'
-    },
-    {
-      t_assessment_id: 1,
-      t_user_id: 1,
-      file_number: 7,
-      score: 3,
-      comment: 'test comment'
     }
   ]
 )
