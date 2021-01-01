@@ -5,7 +5,7 @@
           <a link @click="goBack">実験一覧</a>/編集
           <v-spacer></v-spacer>
           <v-btn color="error" @click="openDeleteDialog" class="mr-5">この実験を削除</v-btn>
-          <v-btn color="primary" @click="confirmRegister">保存</v-btn>
+          <v-btn color="primary" @click="confirmRegister">編集内容を保存</v-btn>
           <ConfirmDialog
             ref="confirm"
             title="削除確認"

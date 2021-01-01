@@ -63,8 +63,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeEdit">キャンセル</v-btn>
-              <v-btn color="primary" dark @click="confirmEdit">保存</v-btn>
+              <v-btn @click="closeEdit">キャンセル</v-btn>
+              <v-btn color="primary" @click="confirmEdit">保存</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

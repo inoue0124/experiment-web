@@ -53,8 +53,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="openConfirmDiscardDialog">キャンセル</v-btn>
-              <v-btn color="primary" dark @click="openConfirmRegisterDialog">登録</v-btn>
+              <v-btn color="error" @click="openConfirmDiscardDialog">破棄</v-btn>
+              <v-btn color="primary" @click="openConfirmRegisterDialog">登録</v-btn>
               <ConfirmDialog
                 ref="discard"
                 title="編集破棄確認"

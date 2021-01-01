@@ -9,7 +9,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue" text @click="cancel">キャンセル</v-btn>
+        <v-btn @click="cancel">キャンセル</v-btn>
         <v-btn :color="color" dark @click="confirm">{{buttonMessage}}</v-btn>
       </v-card-actions>
     </v-card>
