@@ -29,15 +29,14 @@
               ></v-select>
               <v-btn
                 color="secondary"
-                dark
                 class="mb-3 mr-2"
                 @click="generate()"
+                :disabled="experiment_id===null || num_generate===0"
               >
                 ランダム生成
               </v-btn>
               <v-btn
                 color="secondary"
-                dark
                 class="mb-3 mr-2"
                 @click="generate()"
               >
@@ -56,7 +55,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="cancel">キャンセル</v-btn>
-        <v-btn color="primary" dark @click="register">登録</v-btn>
+        <v-btn color="primary" @click="register" :disabled="users.length===0">登録</v-btn>
       </v-card-actions>
 
     </v-card>
@@ -80,7 +79,7 @@ export default {
       users: [],
       num_generate: 1,
       nums: [...Array(31).keys()],
-      experiment_id: 0,
+      experiment_id: null,
       experiments: [],
     }
   },
@@ -94,6 +93,7 @@ export default {
       this.dialog = true
     },
     cancel() {
+      this.users = []
       this.dialog = false
     },
     generate() {
@@ -130,9 +130,10 @@ export default {
     },
 
     downloadCSV () {
-      var csv = '\ufeff' + 'ID,メールアドレス,パスワード,実験ID\n'
+      var csv = '\ufeff' + 'ID,メールアドレス,パスワード,実験ID,実験名\n'
       this.users.forEach(el => {
-        var line = el['uuid'] + ',' + el['email'] + ',' + el['password'] + ',' + el['t_experiment_id'] + '\n'
+        var line = el['uuid'] + ',' + el['email'] + ',' + el['password'] + ',' 
+        + el['t_experiment_id'] + ',' + this.experiments.find((elm) => elm.id === this.experiment_id).name +'\n'
         csv += line
       })
       let blob = new Blob([csv], { type: 'text/csv' })

@@ -101,7 +101,7 @@ export default {
 
   computed: {
     deleteMessage() {
-      return `${this.editedItem.uuid} のユーザ情報を削除します。よろしいですか。`
+      return `${this.editedItem.name} を削除します。よろしいですか。`
     }
   },
 
@@ -134,14 +134,14 @@ export default {
 
     confirmEdit () {
       ExperimentApi.updateExperiment(this.experiments[this.editedIndex].id, this.editedItem).then(()=>{
-        Object.assign(this.experiments[this.editedIndex], this.editedItem)
+        this.reloadData()
       })
       this.closeEdit()
     },
 
     confirmDelete () {
       ExperimentApi.deleteExperiment(this.experiments[this.editedIndex].id).then(()=>{
-         this.experiments.splice(this.editedIndex, 1)
+         this.reloadData()
       })
     },
 
