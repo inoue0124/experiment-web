@@ -28,6 +28,8 @@
         </v-col>
       </v-row>
 
+      <FileUpload></FileUpload>
+
       <v-text-field
         label="PDFのURL"
         v-model="assessment.pdf_url"
@@ -37,7 +39,12 @@
 </template>
 
 <script>
+import FileUpload from '@/components/FileUpload'
+
 export default {
+  components: {
+    FileUpload
+  },
   props: {
     assessment_prop: Object
   },
