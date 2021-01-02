@@ -27,5 +27,8 @@ Rails.application.routes.draw do
 
   # questionnaire
   get    '/questionnaires/:workflow_id', to: 'questionnaires#show'
+
+  # aws
+  post 'presigned', to: 's3#getPresignedUrl'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
