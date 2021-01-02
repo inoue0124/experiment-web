@@ -17,7 +17,6 @@
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
     "vue-pdf": "^4.2.0",
-    "vue-upload-component": "^3.0.46",
     "vuelidate": "^0.7.6"
   },
   "devDependencies": {
