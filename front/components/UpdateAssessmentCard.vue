@@ -29,7 +29,10 @@
       </v-row>
 
       <p>音声ファイルアップロード</p>
-      <FileUploader></FileUploader>
+      <FileUploader :workflow_id="assessment.t_workflow_id" file_type="audio/*"></FileUploader>
+
+      <p>PDFファイルアップロード</p>
+      <FileUploader :workflow_id="assessment.t_workflow_id" file_type="application/pdf"></FileUploader>
 
     </v-card-text>
   </v-card>
@@ -37,6 +40,7 @@
 
 <script>
 import FileUploader from '@/components/FileUploader'
+import PdfViewer from '@/components/PdfViewer'
 
 export default {
   components: {

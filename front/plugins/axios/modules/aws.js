@@ -12,7 +12,6 @@ export default {
   },
 
   async upload(workflow_id, file, onUploadProgress) {
-    
     const presignedObject = await axios.$post(
       `presigned`,
       {
@@ -20,21 +19,21 @@ export default {
         filename: file.name
       }
     )
-    .then(response => {return response})
-    .catch(e => console.log(e.message))
+    .then((response) => {return response})
+    .catch((e) => console.log(e.message))
 
-    let formData = new FormData();
+    let formData = new FormData()
     
     for (const key in presignedObject.fields) {
       formData.append(key, presignedObject.fields[key])
     }
-    formData.append("file", file);
+    formData.append("file", file)
 
-    return axios.$post(presignedObject.url, formData, {
+    axios.$post(presignedObject.url, formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
-      onUploadProgress
+      onUploadProgress: onUploadProgress
     })
   },
 

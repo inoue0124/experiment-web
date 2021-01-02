@@ -1,49 +1,42 @@
 <template>
-  <div>
-    <div v-if="currentFile">
-      <div>
-        <v-progress-linear
-          v-model="progress"
-          color="light-blue"
-          height="25"
-          reactive
-        >
-          <strong>{{ progress }} %</strong>
-        </v-progress-linear>
-      </div>
-    </div>
-
-    <v-row no-gutters justify="center" align="center">
-      <v-col cols="8">
-        <v-file-input
-          show-size
-          label="File input"
-          @change="selectFile"
-        ></v-file-input>
-      </v-col>
-
-      <v-col cols="4" class="pl-2">
-        <v-btn color="success" dark small @click="upload">
-          Upload
-          <v-icon right dark>mdi-cloud-upload</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-
-    <v-alert v-if="message" border="left" color="blue-grey" dark>
+  <div v-cloak @drop.prevent="addDropFile" @dragover.prevent>
+    <v-alert v-if="message" border="left" color="error" dark dense>
       {{ message }}
     </v-alert>
 
-    <v-card v-if="fileInfos.length > 0" class="mx-auto">
-      <v-list>
-        <v-subheader>List of Files</v-subheader>
-        <v-list-item-group color="primary">
-          <v-list-item v-for="(file, index) in fileInfos" :key="index">
-            <a :href="file.url">{{ file.name }}</a>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-card>
+    <v-file-input
+      multiple
+      show-size
+      @change="selectFile"
+      prepend-icon=""
+      filled
+      v-model="currentFiles"
+      label="ファイルを選択する"
+      :accept="file_type"
+    >
+      <template v-slot:prepend-inner>
+      </template>
+      <template v-slot:selection="{ index, text }">
+        <v-chip dark>
+          {{text}}
+          <v-progress-circular
+            :rotate="-90"
+            :size="20"
+            :width="10"
+            :value="progresses[index]"
+            color="teal"
+            :indeterminate="progresses[index]===0"
+            class="ml-2"
+          >
+          </v-progress-circular>
+        </v-chip>
+      </template>
+      <template v-slot:append>
+        <v-btn color="success" dark small @click="upload">
+          アップロード<v-icon right dark>mdi-cloud-upload</v-icon>
+        </v-btn>
+      </template>
+    </v-file-input>
   </div>
 </template>
 
@@ -51,44 +44,47 @@
 import AwsApi from '@/plugins/axios/modules/aws'
 
 export default {
-  name: "upload-files",
+  props: {
+    workflow_id: Number,
+    file_type: String
+  },
   data() {
     return {
-      currentFile: undefined,
-      progress: 0,
+      currentFiles: undefined,
+      progresses: [],
       message: "",
-      fileInfos: [],
     };
   },
   methods: {
-    selectFile(file) {
-      this.progress = 0;
-      this.currentFile = file;
+    selectFile(files) {
+      this.currentFiles = files
+      this.progresses = new Array(files.length)
+      this.message = ""
+    },
+    addDropFile(e) {
+      this.selectFile(Array.from(e.dataTransfer.files))
     },
     upload() {
-      if (!this.currentFile) {
-        this.message = "Please select a file!";
-        return;
+      if (!this.currentFiles) {
+        this.message = "ファイルを選択してください！"
+        return
       }
-      this.message = "";
-      AwsApi.upload(1, this.currentFile, (event) => {
-        this.progress = Math.round((100 * event.loaded) / event.total);
+      this.message = ""
+      
+      this.currentFiles.forEach((file, index)=>{
+        AwsApi.upload(this.workflow_id, file, (event) => {
+          this.progresses.splice(index, 1, Math.round((100 * event.loaded) / event.total))
+        })
+        .catch((e) => {
+          console.log(e)
+          this.progresses.splice(index, 1, 0)
+          this.message = `${file.name}のアップロードに失敗しました。`
+        })
       })
-      .then((response) => {
-        this.message = response.data.message;
-        // return AwsApi.getFiles();
-      })
-      .then((files) => {
-        this.fileInfos = files.data;
-      })
-      .catch((e) => {
-        console.log(e)
-        this.progress = 0;
-        this.message = "Could not upload the file!";
-      })
-    },
-  },
-  mounted() {
-  },
+    }
+  }
 };
 </script>
+
+<style scoped>
+</style>
