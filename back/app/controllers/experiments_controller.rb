@@ -11,7 +11,30 @@ class ExperimentsController < ApplicationController
 
   # GET /experiments/1
   def show
-    render json: @t_experiment
+    @workflows = TWorkflow.where(t_experiment_id: @t_experiment.id).all
+
+    @works = [] # 各work名の配列
+    @work_data = [] # 各workのtデータ配列
+    for wf in @workflows do
+      @work = MWork.find(wf.m_work_id)
+      @works.push @work.name
+      
+      case @work.name
+      when "agreement"
+        @t_agreement = TAgreement.find_by(t_workflow_id: wf.id)
+        @work_data.push @t_agreement
+      when "facesheet"
+        @work_data.push @work #　後で実装
+      when "assessment"
+        @t_assessment = TAssessment.find_by(t_workflow_id: wf.id)
+        @work_data.push @t_assessment
+      when "questionnaire"
+        @t_questionnaire = TQuestionnaire.find_by(t_workflow_id: wf.id)
+        @work_data.push @t_questionnaire
+      end
+    end
+
+    render json: {experiment: @t_experiment, works: @works, work_data: @work_data}
   end
 
   # POST /experiments
@@ -50,7 +73,9 @@ class ExperimentsController < ApplicationController
           when "assessment"
             @t_assessment = TAssessment.new(
               t_workflow_id: @t_workflow.id,
-              num_files: data[:num_files]
+              num_files: data[:num_files],
+              point: data[:point],
+              is_practice: data[:is_practice]
             )
             @t_assessment.save!
           when "questionnaire"
@@ -67,10 +92,31 @@ class ExperimentsController < ApplicationController
 
   # PATCH/PUT /experiments/1
   def update
-    if @t_experiment.update(t_experiment_params)
-      render json: @t_experiment
-    else
-      render json: @t_experiment.errors, status: :unprocessable_entity
+    begin
+      ActiveRecord::Base.transaction {
+        @t_experiment = TExperiment.find(params[:id])
+        @t_experiment.update(name: params[:name])
+
+        for data in params[:data] do
+
+          case data[:work]
+          when "agreement"
+            @t_agreement = TAgreement.find(data[:id])
+            @t_agreement.update(text: data[:text])
+          # when "facesheet" #　後で実装
+          when "assessment"
+            @t_assessment = TAssessment.find(data[:id])
+            @t_assessment.update(
+              num_files: data[:num_files],
+              point: data[:point],
+              is_practice: data[:is_practice]
+            )
+          when "questionnaire"
+            @t_questionnaire = TQuestionnaire.find(data[:id])
+            @t_questionnaire.update(url: data[:url])
+          end
+        end
+      }
     end
   end
 

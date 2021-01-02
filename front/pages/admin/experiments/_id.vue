@@ -32,7 +32,7 @@
           <div v-for="(work, key) in workflow" :key="key">
             <div v-if="work=='agreement'">
               <p class="mb-3 card-title">同意書設定</p>
-              <RegisterAgreementCard class=" pa-5 mb-16" ref="agreement"></RegisterAgreementCard>
+              <RegisterAgreementCard class=" pa-5 mb-16" ref="agreement" :claim_text_prop="work_data[key].text"></RegisterAgreementCard>
             </div>
             
             <div v-if="work=='facesheet'">
@@ -42,12 +42,12 @@
 
             <div v-if="work=='assessment'">
               <p class="mb-3 card-title">評価実験設定</p>
-              <RegisterAssessmentCard class=" pa-5 mb-16" ref="assessment"></RegisterAssessmentCard>
+              <UpdateAssessmentCard class=" pa-5 mb-16" ref="assessment" :assessment_prop="work_data[key]"></UpdateAssessmentCard>
             </div>
             
             <div v-if="work=='questionnaire'">
               <p class="mb-3 card-title">アンケート設定</p>
-              <RegisterQuestionnaireCard class=" pa-5 mb-16" ref="questionnaire"></RegisterQuestionnaireCard>
+              <RegisterQuestionnaireCard class=" pa-5 mb-16" ref="questionnaire" :form_url_prop="work_data[key].url"></RegisterQuestionnaireCard>
             </div>
           </div>
         </v-card-text>
@@ -60,7 +60,7 @@ import UserApi from '@/plugins/axios/modules/user'
 import ExperimentApi from '@/plugins/axios/modules/experiment'
 import RegisterAgreementCard from '@/components/RegisterAgreementCard'
 import RegisterFacesheetCard from '@/components/RegisterFacesheetCard'
-import RegisterAssessmentCard from '@/components/RegisterAssessmentCard'
+import UpdateAssessmentCard from '@/components/UpdateAssessmentCard'
 import RegisterQuestionnaireCard from '@/components/RegisterQuestionnaireCard'
 
 export default {
@@ -69,16 +69,18 @@ export default {
   data() {
     return {
       dialog: false,
-      workflow: [
-        "agreement",
-        "facesheet",
-        "assessment",
-        "questionnaire",
-        "transfer",
-        "thanks"
-      ],
-      name: ""
+      workflow: [],
+      name: "",
+      work_data: []
     }
+  },
+
+  mounted() {
+    ExperimentApi.getExperiment(this.$route.params.id).then((res)=>{
+      this.workflow = res.works
+      this.name = res.experiment.name
+      this.work_data = res.work_data
+    })
   },
 
   computed: {
@@ -95,6 +97,7 @@ export default {
     confirmDelete () {
       ExperimentApi.deleteExperiment(this.$route.params.id).then(()=>{
          this.goBack()
+         this.$toast.success('削除しました！')
       })
     },
 
@@ -107,53 +110,61 @@ export default {
     },
     
     confirmRegister() {
-      ExperimentApi.createExperiment(this.createPostData()).then(()=>{
+      ExperimentApi.updateExperiment(this.$route.params.id, this.createPostData()).then(()=>{
         this.dialog = false
-        this.$emit('register')
+        this.$toast.success('保存しました！')
       })
     },
     createPostData() {
       let data = []
-      this.workflow.forEach((work) => {
-        switch (work) {
+      let assess_index = 0
+      this.work_data.forEach((work, index) => {
+        switch (this.workflow[index]) {
           case "agreement":
             data.push({
               "work": "agreement",
+              "id": work.id,
               "text": this.$refs.agreement[0].claim_text
             })
             break;
           case "facesheet":
             data.push({
               "work": "facesheet",
+              "id": work.id,
               "facesheet": this.$refs.facesheet[0].facesheet
             })
             break;
           case "assessment":
-            for (var step of [...Array(this.$refs.assessment[0].num_steps).keys()]) {
-              data.push({
-                "work": "assessment",
-                "num_files": this.$refs.assessment[0].num_samples[step]
-              })
-            }
+            data.push({
+              "work": "assessment",
+              "id": work.id,
+              "num_files": this.$refs.assessment[assess_index].assessment.num_files,
+              "point": this.$refs.assessment[assess_index].assessment.point,
+              "is_practice": this.$refs.assessment[assess_index].assessment.is_practice
+            })
+            assess_index+=1
             break;
           case "questionnaire":
             data.push({
               "work": "questionnaire",
+              "id": work.id,
               "url": this.$refs.questionnaire[0].form_url
             })
             break;
           case "transfer":
             data.push({
-              "work": "transfer"
+              "work": "transfer",
+              "id": work.id
             })
             break;
           case "thanks":
             data.push({
-              "work": "thanks"
+              "work": "thanks",
+              "id": work.id
             })
           }
         })
-        return {"name": this.name, "data": data}
+        return {"id": this.$route.params.id, "name": this.name, "data": data}
     }
   }
 }

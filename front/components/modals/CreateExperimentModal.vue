@@ -156,7 +156,9 @@ export default {
             for (var step of [...Array(this.$refs.assessment[0].num_steps).keys()]) {
               data.push({
                 "work": "assessment",
-                "num_files": this.$refs.assessment[0].num_samples[step]
+                "num_files": this.$refs.assessment[0].sample_list[step],
+                "point": this.$refs.assessment[0].point_list[step],
+                "is_practice": this.$refs.assessment[0].is_practice_list[step]
               })
             }
             break;
