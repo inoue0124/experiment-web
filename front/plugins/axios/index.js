@@ -2,6 +2,7 @@ export let axios;
 export default ({ store, $axios, $toast }) => {
 
   $axios.defaults.baseURL = 'http://localhost:3000/'
+  $axios.defaults.headers.post['Access-Control-Allow-Origin'] = 'http://localhost:8080';
 
   $axios.onRequest(config => {
     // config.headers.common['Authorization'] = `Bearer token`;

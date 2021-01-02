@@ -28,22 +28,19 @@
         </v-col>
       </v-row>
 
-      <FileUpload></FileUpload>
+      <p>音声ファイルアップロード</p>
+      <FileUploader></FileUploader>
 
-      <v-text-field
-        label="PDFのURL"
-        v-model="assessment.pdf_url"
-      ></v-text-field>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import FileUpload from '@/components/FileUpload'
+import FileUploader from '@/components/FileUploader'
 
 export default {
   components: {
-    FileUpload
+    FileUploader,
   },
   props: {
     assessment_prop: Object
