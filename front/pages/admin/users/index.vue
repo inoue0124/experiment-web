@@ -166,6 +166,7 @@ export default {
 
     confirmEdit () {
       UserApi.updateUser(this.users[this.editedIndex].id, this.editedItem).then(()=>{
+        this.$toast.success('保存しました！')
         this.reloadData()
       })
       this.closeEdit()
@@ -173,7 +174,8 @@ export default {
 
     confirmDelete () {
       UserApi.deleteUser(this.users[this.editedIndex].id).then(()=>{
-         this.reloadData()
+        this.$toast.success('削除しました！')
+        this.reloadData()
       })
     },
 

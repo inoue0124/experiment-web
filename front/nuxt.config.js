@@ -43,7 +43,7 @@ export default {
   ],
   
   toast: {
-    position: 'bottom-right',  //トーストの表示位置
+    position: 'top-center',  //トーストの表示位置
     duration: 2000           //トーストの表示されている時間（今回は2秒に設定）
   },
 

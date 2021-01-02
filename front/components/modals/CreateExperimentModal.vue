@@ -133,6 +133,7 @@ export default {
     confirmRegister() {
       ExperimentApi.createExperiment(this.createPostData()).then(()=>{
         this.dialog = false
+        this.$toast.success('実験を作成しました！')
         this.$emit('register')
       })
     },

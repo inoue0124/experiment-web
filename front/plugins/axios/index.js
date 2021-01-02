@@ -14,7 +14,7 @@ export default ({ store, $axios, $toast }) => {
   })
 
   $axios.onError(error => {
-    $toast.error(error)
+    $toast.error(`エラーが発生しました！エラー内容：${error}`)
     return Promise.reject(error.response);
   });
 
