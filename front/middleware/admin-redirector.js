@@ -2,7 +2,7 @@ import SessionApi from '@/plugins/axios/modules/session'
 
 export default function ({ redirect }) {
   return new Promise((resolve) => {
-    SessionApi.isAuthenticated()
+    SessionApi.getCurrentUser()
     .then((session)=> {
       if (session.data.user_type===1) {
         return redirect('/')

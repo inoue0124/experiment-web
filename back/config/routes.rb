@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
 
   # session
-  get    '/login',                 to: 'sessions#new'
-  post   '/login',                 to: 'sessions#create'
-  delete '/logout',                to: 'sessions#destroy'
+  get    '/session',                 to: 'sessions#show'
+  post   '/session',                 to: 'sessions#create'
+  delete '/session',                to: 'sessions#destroy'
 
   # workflow
   get    '/workflow',          to: 'workflows#getWork'

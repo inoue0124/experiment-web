@@ -2,13 +2,13 @@ import { axios } from '../index.js';
 
 export default {
 
-  isAuthenticated() {
-    return axios.get('http://localhost:3000/login')
+  getCurrentUser() {
+    return axios.get('http://localhost:3000/session')
   },
 
   login(email: string, password: string) {
     return axios.post(
-      'http://localhost:3000/login',
+      'http://localhost:3000/session',
       {
         email: email,
         password: password
@@ -17,6 +17,6 @@ export default {
   },
 
   logout() {
-    return axios.delete('http://localhost:3000/logout')
+    return axios.delete('http://localhost:3000/session')
   }
 }
