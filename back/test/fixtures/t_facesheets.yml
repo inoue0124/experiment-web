@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  t_workflow: one
+  name: false
+  phone: false
+
+two:
+  t_workflow: two
+  name: false
+  phone: false

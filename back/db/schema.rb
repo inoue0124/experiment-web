@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_131523) do
+ActiveRecord::Schema.define(version: 2021_01_03_061237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_131523) do
   create_table "d_facesheets", force: :cascade do |t|
     t.bigint "t_user_id"
     t.string "name"
+    t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["t_user_id"], name: "index_d_facesheets_on_t_user_id"
@@ -74,6 +75,15 @@ ActiveRecord::Schema.define(version: 2020_12_27_131523) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "t_facesheets", force: :cascade do |t|
+    t.bigint "t_workflow_id"
+    t.boolean "name"
+    t.boolean "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["t_workflow_id"], name: "index_t_facesheets_on_t_workflow_id"
+  end
+
   create_table "t_questionnaires", force: :cascade do |t|
     t.bigint "t_workflow_id"
     t.string "url"
@@ -111,6 +121,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_131523) do
   add_foreign_key "d_transfers", "t_users"
   add_foreign_key "t_agreements", "t_workflows"
   add_foreign_key "t_assessments", "t_workflows"
+  add_foreign_key "t_facesheets", "t_workflows"
   add_foreign_key "t_questionnaires", "t_workflows"
   add_foreign_key "t_workflows", "m_works"
   add_foreign_key "t_workflows", "t_experiments"
