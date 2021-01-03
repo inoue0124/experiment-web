@@ -24,7 +24,8 @@ class ExperimentsController < ApplicationController
         @t_agreement = TAgreement.find_by(t_workflow_id: wf.id)
         @work_data.push @t_agreement
       when "facesheet"
-        @work_data.push @work #　後で実装
+        @t_facesheet = TFacesheet.find_by(t_workflow_id: wf.id)
+        @work_data.push @t_facesheet
       when "assessment"
         @t_assessment = TAssessment.find_by(t_workflow_id: wf.id)
         @work_data.push @t_assessment
@@ -69,7 +70,13 @@ class ExperimentsController < ApplicationController
               text: data[:text]
             )
             @t_agreement.save!
-          # when "facesheet" #　後で実装
+          when "facesheet"
+            @t_facesheet = TFacesheet.new(
+              data[:facesheet].permit!.to_h.merge(
+                t_workflow_id: @t_workflow.id
+              )
+            )
+            @t_facesheet.save!
           when "assessment"
             @t_assessment = TAssessment.new(
               t_workflow_id: @t_workflow.id,
@@ -103,7 +110,11 @@ class ExperimentsController < ApplicationController
           when "agreement"
             @t_agreement = TAgreement.find(data[:id])
             @t_agreement.update(text: data[:text])
-          # when "facesheet" #　後で実装
+          when "facesheet"
+            @t_facesheet = TFacesheet.find(data[:id])
+            @t_facesheet = TFacesheet.update(
+              data[:facesheet].permit!.to_h
+            )
           when "assessment"
             @t_assessment = TAssessment.find(data[:id])
             @t_assessment.update(

@@ -37,7 +37,7 @@
           
           <div v-if="work=='facesheet'">
             <p class="mb-3 card-title">フェイスシート設定</p>
-            <RegisterFacesheetCard class=" pa-5 mb-16" ref="facesheet"></RegisterFacesheetCard>
+            <RegisterFacesheetCard class=" pa-5 mb-16" ref="facesheet" :facesheet_prop="work_data[key]"></RegisterFacesheetCard>
           </div>
 
           <div v-if="work=='assessment'">
