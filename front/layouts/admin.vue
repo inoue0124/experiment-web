@@ -85,7 +85,7 @@ export default {
         },
         {
           icon: 'mdi-chart-bar',
-          title: '実験結果',
+          title: '評価結果',
           to: '/admin/experiment-results',
         },
         {

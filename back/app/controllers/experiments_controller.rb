@@ -9,6 +9,15 @@ class ExperimentsController < ApplicationController
     render json: @t_experiments
   end
 
+  # GET /experiments/search
+  def search
+
+    @experiment_result = TExperiment.joins(t_workflows: { t_assessments: :d_assessments } )
+      .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*").order(id: :desc).all
+
+    render json: @experiment_result
+  end
+
   # GET /experiments/1
   def show
     @workflows = TWorkflow.where(t_experiment_id: @t_experiment.id).all
