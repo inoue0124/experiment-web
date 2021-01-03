@@ -21,6 +21,10 @@ Rails.application.routes.draw do
   # agreement
   get    '/agreements/:workflow_id',  to: 'agreements#show'
 
+  # facesheet
+  get    '/facesheets/:workflow_id',  to: 'facesheets#show'
+  post   '/facesheets',               to: 'facesheets#create'
+
   # assessment
   get    '/assessments/:workflow_id', to: 'assessments#getAssessmentWork'
   post   '/assessments/:workflow_id', to: 'assessments#update'

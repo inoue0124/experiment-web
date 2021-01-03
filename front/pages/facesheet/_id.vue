@@ -6,13 +6,15 @@
         <v-form @submit.prevent="submit">
 
           <v-text-field
-            v-model="name"
+            v-if="t_facesheet.name"
+            v-model="d_facesheet.name"
             label="氏名"
             required
           ></v-text-field>
 
           <v-text-field
-            v-model="phone_number"
+            v-if="t_facesheet.phone"
+            v-model="d_facesheet.phone"
             label="電話番号"
             required
           ></v-text-field>
@@ -29,21 +31,30 @@
 
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
+import FacesheetApi from '@/plugins/axios/modules/facesheet'
 
 export default {
   middleware: 'redirector',
 
   data() {
     return {
-      name: '',
-      phone_number: ''
+      t_facesheet: {},
+      d_facesheet: {}
     }
+  },
+
+  mounted() {
+    FacesheetApi.getTFacesheet(this.$route.params.id).then((res) => {
+      this.t_facesheet = res
+    })
   },
 
   methods: {
     next() {
-      WorkflowApi.complete(this.$route.params.id).then((res) => {
-        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      FacesheetApi.createDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
+        WorkflowApi.complete(this.$route.params.id).then((res) => {
+          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+        })
       })
     }
   }

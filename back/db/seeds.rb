@@ -132,7 +132,7 @@ TAgreement.create!(
 TFacesheet.create!(
   t_workflow_id: 2,
   name: true,
-  phone: true
+  phone: false
 )
 
 TAssessment.create!(
