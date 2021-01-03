@@ -4,7 +4,7 @@ class FacesheetsController < ApplicationController
 
   # GET /questionnaires
   def index
-    @d_facesheet = DFacesheet.all
+    @d_facesheet = TUser.joins(:d_facesheets).select("t_users.*, d_facesheets.*").order(id: :desc).all
     render json: @d_facesheet, status: :ok
   end
 

@@ -38,9 +38,9 @@ export default {
   
   data: () => ({
     headers: [
+      { text: 'ユーザID', value: 't_user_id' },
       { text: '名前', value: 'name' },
       { text: '電話番号', value: 'phone' },
-      { text: '更新日時', value: 'updated_at'},
       { text: '作成日時', value: 'created_at'}
     ],
     facesheets: []
@@ -58,9 +58,9 @@ export default {
     },
 
     downloadCSV () {
-      var csv = '\ufeff' + '名前,電話番号,更新日時,作成日時\n'
+      var csv = '\ufeff' + 'ユーザID,名前,電話番号,更新日時,作成日時\n'
       this.facesheets.forEach(el => {
-        var line = el['name'] + ',' + el['phone'] + ',' + el['updated_at'] + ',' + el['created_at'] + '\n'
+        var line = el['t_user_id'] + ',' +el['name'] + ',' + el['phone'] + ',' + el['updated_at'] + ',' + el['created_at'] + '\n'
         csv += line
       })
       let blob = new Blob([csv], { type: 'text/csv' })
