@@ -29,10 +29,10 @@
       </v-row>
 
       <p>音声ファイルアップロード</p>
-      <FileUploader :workflow_id="assessment.t_workflow_id" file_type="audio/*"></FileUploader>
+      <FileUploader :directory="'assessment/' + assessment.t_workflow_id + '/'" file_type="audio/*"></FileUploader>
 
       <p>PDFファイルアップロード</p>
-      <FileUploader :workflow_id="assessment.t_workflow_id" file_type="application/pdf"></FileUploader>
+      <FileUploader :directory="'assessment/' + assessment.t_workflow_id + '/'" file_type="application/pdf"></FileUploader>
 
     </v-card-text>
   </v-card>

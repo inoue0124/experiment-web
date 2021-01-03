@@ -1,22 +1,12 @@
 import { axios } from '../index.js';
 
 export default {
-  getPresignedUrl(workflow_id, filename) {
-    return axios.$post(
-      `presigned`,
-      {
-        workflow_id: workflow_id,
-        filename: filename
-      }
-    )
-  },
 
-  async upload(workflow_id, file, onUploadProgress) {
+  async uploadByPresigned(key, file, onUploadProgress) {
     const presignedObject = await axios.$post(
       `presigned`,
       {
-        workflow_id: workflow_id,
-        filename: file.name
+        key: key
       }
     )
     .then((response) => {return response})
@@ -29,12 +19,39 @@ export default {
     }
     formData.append("file", file)
 
-    axios.$post(presignedObject.url, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
+    axios.$post(presignedObject.url, formData, 
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: onUploadProgress
+      }
+    )
+  },
+
+  downloadFile(key, filename, type) {
+    return axios.$post(
+      `download`,
+      {
+        key: key,
+        filename: filename,
+        type: type
       },
-      onUploadProgress: onUploadProgress
-    })
+      { 
+        responseType : 'blob' 
+      }
+    )
+  },
+
+  upload(key, file, onUploadProgress) {
+    let formData = new FormData()
+    formData.append("file", file)
+    formData.append("key", key)
+
+    return axios.$post(`/upload`, formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: onUploadProgress
+      }
+    )
   },
 
   getFiles() {

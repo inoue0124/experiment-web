@@ -45,7 +45,7 @@ import AwsApi from '@/plugins/axios/modules/aws'
 
 export default {
   props: {
-    workflow_id: Number,
+    directory: String,
     file_type: String
   },
   data() {
@@ -72,7 +72,7 @@ export default {
       this.message = ""
       
       this.currentFiles.forEach((file, index)=>{
-        AwsApi.upload(this.workflow_id, file, (event) => {
+        AwsApi.uploadByPresigned(this.directory+file.name, file, (event) => {
           this.progresses.splice(index, 1, Math.round((100 * event.loaded) / event.total))
         })
         .catch((e) => {
