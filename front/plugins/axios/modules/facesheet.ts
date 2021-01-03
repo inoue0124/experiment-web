@@ -6,6 +6,10 @@ export default {
     return axios.$get(`facesheets/${id}`)
   },
 
+  listDFacesheets() {
+    return axios.$get(`facesheets`)
+  },
+
   createDFacesheet(id:number, body:Object) {
     return axios.$post(`facesheets`, body)
   }

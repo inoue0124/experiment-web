@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
   # facesheet
   get    '/facesheets/:workflow_id',  to: 'facesheets#show'
+  get    '/facesheets',               to: 'facesheets#index'
   post   '/facesheets',               to: 'facesheets#create'
 
   # assessment

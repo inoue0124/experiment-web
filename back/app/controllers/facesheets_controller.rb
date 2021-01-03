@@ -1,6 +1,14 @@
 class FacesheetsController < ApplicationController
   wrap_parameters :d_facesheet, include: [:name, :phone]
 
+
+  # GET /questionnaires
+  def index
+    @d_facesheet = DFacesheet.all
+    render json: @d_facesheet, status: :ok
+  end
+
+
   # GET /questionnaires/:workflow_id
   def show
     @t_facesheet = TFacesheet.find_by(t_workflow_id: params[:workflow_id])

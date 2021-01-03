@@ -82,6 +82,21 @@ export default {
           icon: 'mdi-flask-empty',
           title: '実験管理',
           to: '/admin/experiments',
+        },
+        {
+          icon: 'mdi-chart-bar',
+          title: '実験結果',
+          to: '/admin/experiment-results',
+        },
+        {
+          icon: 'mdi-account-search',
+          title: 'フェイスシート情報',
+          to: '/admin/facesheets',
+        },
+        {
+          icon: 'mdi-bank',
+          title: '振込先情報',
+          to: '/admin/transfer-infos',
         }
       ],
       miniVariant: false,
