@@ -9,7 +9,7 @@
       <p class="mt-16" align="left">支払い調書アップロード</p>
       
       <ClientFileUploader 
-        :file_key="'transer/' + $route.params.id + '/transfer-information/' + user_id + '.xlsx'"
+        :file_key="'transfer/' + $route.params.id + '/transfer-information/' + user_id + '.xlsx'"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ></ClientFileUploader>
 
@@ -17,7 +17,7 @@
       <p class="mt-16" align="left">銀行振込情報アップロード</p>
       
       <ClientFileUploader 
-        :file_key="'transer/' + $route.params.id + '/transfer-signature/' + user_id + '.xlsx'"
+        :file_key="'transfer/' + $route.params.id + '/transfer-signature/' + user_id + '.xlsx'"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ></ClientFileUploader>
 

@@ -1180,6 +1180,10 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    zip_tricks (5.5.0)
+    zipline (1.2.1)
+      rails (>= 3.2.1, < 6.1)
+      zip_tricks (>= 4.2.1, < 6.0)
 
 PLATFORMS
   ruby
@@ -1199,6 +1203,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+  zipline
 
 RUBY VERSION
    ruby 2.6.3p62

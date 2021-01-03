@@ -41,6 +41,18 @@ export default {
     )
   },
 
+  downloadZipFile(prefix) {
+    return axios.$post(
+      `download/zip`,
+      {
+        prefix: prefix
+      },
+      { 
+        responseType : 'blob' 
+      }
+    )
+  },
+
   upload(key, file, onUploadProgress) {
     let formData = new FormData()
     formData.append("file", file)
@@ -54,7 +66,7 @@ export default {
     )
   },
 
-  getFiles() {
-    return axios.$get("/files");
+  listFiles(prefix) {
+    return axios.$post("/files", {prefix: prefix});
   }
 }
