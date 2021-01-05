@@ -16,8 +16,7 @@ Rails.application.routes.draw do
   post    '/users/bulk',       to: 'users#bulkCreate'
 
   # experiment
-  get    '/experiments/search',  to: 'experiments#search'
-  resources :experiments, except: [:search]
+  resources :experiments
 
   # agreement
   get    '/agreements/:workflow_id',  to: 'agreements#show'
@@ -28,6 +27,7 @@ Rails.application.routes.draw do
   post   '/facesheets/:workflow_id',  to: 'facesheets#create'
 
   # assessment
+  get    '/assessments/search',  to: 'assessments#search'
   get    '/assessments/:workflow_id', to: 'assessments#getAssessment'
   get    '/assessments/data/:workflow_id', to: 'assessments#getAssessmentData'
   post   '/assessments/data/:workflow_id', to: 'assessments#updateAssessmentData'

@@ -12,5 +12,9 @@ export default {
 
   updateAssessmentData(id:number, body:Object) {
     return axios.$post(`assessments/data/${id}`, body)
-  }
+  },
+
+  searchAssessments() {
+    return axios.$get(`assessments/search`)
+  },
 }

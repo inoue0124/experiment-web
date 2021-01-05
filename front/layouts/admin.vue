@@ -86,7 +86,7 @@ export default {
         {
           icon: 'mdi-chart-bar',
           title: '評価結果',
-          to: '/admin/experiment-results',
+          to: '/admin/assessments',
         },
         {
           icon: 'mdi-account-search',

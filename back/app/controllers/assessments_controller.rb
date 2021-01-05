@@ -55,4 +55,13 @@ class AssessmentsController < ApplicationController
     # バルクインサート実行
     DAssessment.import @new_d_assess
   end
+
+  # GET /assessments/search
+  def search
+
+    @assessment_result = TExperiment.joins(t_workflows: { t_assessments: :d_assessments } )
+      .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*").order(id: :desc).all
+
+    render json: @assessment_result
+  end
 end

@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="experiments"
+    :items="assessments"
     class="elevation-1 my-16"
   >
     <template v-slot:top>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ExperimentApi from '@/plugins/axios/modules/experiment'
+import AssessmentApi from '@/plugins/axios/modules/assessment'
 
 export default {
   layout: 'admin',
@@ -46,7 +46,7 @@ export default {
       { text: 'コメント', value: 'comment' },
       { text: '作成日時', value: 'updated_at'},
     ],
-    experiments: []
+    assessments: []
   }),
 
   mounted () {
@@ -55,14 +55,14 @@ export default {
 
   methods: {
     reloadData() {
-      ExperimentApi.searchExperiments().then((res) => {
-        this.experiments = res
+      AssessmentApi.searchAssessments().then((res) => {
+        this.assessments = res
       })
     },
 
     downloadCSV () {
       var csv = '\ufeff' + '実験ID,実験名,評価ID,ユーザID,サンプルID,評価値,コメント,更新日時\n'
-      this.experiments.forEach(el => {
+      this.assessments.forEach(el => {
         var line = el['id'] + ',' + el['name'] + ',' + el['t_assessment_id'] + ',' +
         el['t_user_id'] + ',' + el['file_number'] + ',' + el['score'] + ',' + el['comment']
          + ',' +el['updated_at'] + ',' + el['created_at'] + '\n'
@@ -71,7 +71,7 @@ export default {
       let blob = new Blob([csv], { type: 'text/csv' })
       let link = document.createElement('a')
       link.href = window.URL.createObjectURL(blob)
-      link.download = 'experiment_list.csv'
+      link.download = 'assessment_list.csv'
       link.click()
     }
   },

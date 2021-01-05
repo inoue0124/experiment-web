@@ -13,10 +13,6 @@ export default {
     return axios.$get(`experiments`)
   },
 
-  searchExperiments() {
-    return axios.$get(`experiments/search`)
-  },
-
   updateExperiment(id:number, body:Object) {
     return axios.$put(`experiments/${id}`, body)
   },
