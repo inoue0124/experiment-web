@@ -38,6 +38,9 @@ export default {
   
   data: () => ({
     headers: [
+      { text: '実験ID', value: 'id'},
+      { text: '実験名', value: 'name' },
+      { text: 'フェイスシートID', value: 't_facesheet_id' },
       { text: 'ユーザID', value: 't_user_id' },
       { text: '名前', value: 'name' },
       { text: '電話番号', value: 'phone' },
@@ -54,6 +57,7 @@ export default {
     reloadData() {
       FacesheetApi.listDFacesheets().then((res) => {
         this.facesheets = res
+        console.log(res)
       })
     },
 

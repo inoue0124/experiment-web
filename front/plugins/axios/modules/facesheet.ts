@@ -11,6 +11,6 @@ export default {
   },
 
   createDFacesheet(id:number, body:Object) {
-    return axios.$post(`facesheets`, body)
+    return axios.$post(`facesheets/${id}`, body)
   }
 }

@@ -4,8 +4,9 @@ class FacesheetsController < ApplicationController
 
   # GET /questionnaires
   def index
-    @d_facesheet = TUser.joins(:d_facesheets).select("t_users.*, d_facesheets.*").order(id: :desc).all
-    render json: @d_facesheet, status: :ok
+    @facesheet_result = TExperiment.joins(t_workflows: { t_facesheets: :d_facesheets } )
+      .select("t_experiments.*, t_workflows.*, t_facesheets.*, d_facesheets.*").order(id: :desc).all
+    render json: @facesheet_result, status: :ok
   end
 
 
@@ -18,8 +19,11 @@ class FacesheetsController < ApplicationController
 
   def create
     @user = current_user
+    @t_facesheet = TFacesheet.find_by(t_workflow_id: params[:workflow_id])
+
     @d_facesheet = DFacesheet.new(d_facesheet_params)
     @d_facesheet[:t_user_id] = @user.id
+    @d_facesheet[:t_facesheet_id] = @t_facesheet.id
 
     if @d_facesheet.save
       render json: @d_facesheet, status: :created

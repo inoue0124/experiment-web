@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_03_061237) do
+ActiveRecord::Schema.define(version: 2020_12_27_044911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,10 +29,12 @@ ActiveRecord::Schema.define(version: 2021_01_03_061237) do
 
   create_table "d_facesheets", force: :cascade do |t|
     t.bigint "t_user_id"
+    t.bigint "t_facesheet_id"
     t.string "name"
     t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["t_facesheet_id"], name: "index_d_facesheets_on_t_facesheet_id"
     t.index ["t_user_id"], name: "index_d_facesheets_on_t_user_id"
   end
 
@@ -97,12 +99,10 @@ ActiveRecord::Schema.define(version: 2021_01_03_061237) do
     t.string "email"
     t.string "password_digest"
     t.integer "user_type"
+    t.integer "t_experiment_id"
+    t.integer "done_workflow_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "t_experiment_id"
-    t.bigint "done_workflow_id"
-    t.index ["done_workflow_id"], name: "index_t_users_on_done_workflow_id"
-    t.index ["t_experiment_id"], name: "index_t_users_on_t_experiment_id"
   end
 
   create_table "t_workflows", force: :cascade do |t|
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 2021_01_03_061237) do
 
   add_foreign_key "d_assessments", "t_assessments"
   add_foreign_key "d_assessments", "t_users"
+  add_foreign_key "d_facesheets", "t_facesheets"
   add_foreign_key "d_facesheets", "t_users"
   add_foreign_key "d_transfers", "t_users"
   add_foreign_key "t_agreements", "t_workflows"

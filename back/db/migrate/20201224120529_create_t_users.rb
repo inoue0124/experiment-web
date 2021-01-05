@@ -5,6 +5,8 @@ class CreateTUsers < ActiveRecord::Migration[5.2]
       t.string :email
       t.string :password_digest
       t.integer :user_type
+      t.integer :t_experiment_id
+      t.integer :done_workflow_id
 
       t.timestamps
     end

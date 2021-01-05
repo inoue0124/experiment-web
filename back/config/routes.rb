@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   # facesheet
   get    '/facesheets/:workflow_id',  to: 'facesheets#show'
   get    '/facesheets',               to: 'facesheets#index'
-  post   '/facesheets',               to: 'facesheets#create'
+  post   '/facesheets/:workflow_id',  to: 'facesheets#create'
 
   # assessment
   get    '/assessments/:workflow_id', to: 'assessments#getAssessment'
