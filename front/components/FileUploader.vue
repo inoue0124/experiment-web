@@ -76,7 +76,6 @@ export default {
           this.progresses.splice(index, 1, Math.round((100 * event.loaded) / event.total))
         })
         .catch((e) => {
-          console.log(e)
           this.progresses.splice(index, 1, 0)
           this.message = `${file.name}のアップロードに失敗しました。`
         })

@@ -57,7 +57,6 @@ export default {
     reloadData() {
       FacesheetApi.listDFacesheets().then((res) => {
         this.facesheets = res
-        console.log(res)
       })
     },
 

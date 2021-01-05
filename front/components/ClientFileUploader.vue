@@ -84,7 +84,6 @@ export default {
         this.progress = Math.round((100 * event.loaded) / event.total)
       })
       .catch((e) => {
-        console.log(e)
         this.progress = 0
         this.message = `${this.currentFile.name}のアップロードに失敗しました。`
       })

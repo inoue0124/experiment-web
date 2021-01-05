@@ -10,7 +10,6 @@ export default {
       }
     )
     .then((response) => {return response})
-    .catch((e) => console.log(e.message))
 
     let formData = new FormData()
     
