@@ -140,7 +140,8 @@ export default {
               "id": work.id,
               "num_files": this.$refs.assessment[assess_index].assessment.num_files,
               "point": this.$refs.assessment[assess_index].assessment.point,
-              "is_practice": this.$refs.assessment[assess_index].assessment.is_practice
+              "is_practice": this.$refs.assessment[assess_index].assessment.is_practice,
+              "criteria": this.$refs.assessment[assess_index].assessment.criteria
             })
             assess_index+=1
             break;

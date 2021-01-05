@@ -91,7 +91,8 @@ class ExperimentsController < ApplicationController
               t_workflow_id: @t_workflow.id,
               num_files: data[:num_files],
               point: data[:point],
-              is_practice: data[:is_practice]
+              is_practice: data[:is_practice],
+              criteria: data[:criteria]
             )
             @t_assessment.save!
           when "questionnaire"
@@ -129,7 +130,8 @@ class ExperimentsController < ApplicationController
             @t_assessment.update(
               num_files: data[:num_files],
               point: data[:point],
-              is_practice: data[:is_practice]
+              is_practice: data[:is_practice],
+              criteria: data[:criteria]
             )
           when "questionnaire"
             @t_questionnaire = TQuestionnaire.find(data[:id])

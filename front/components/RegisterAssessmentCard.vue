@@ -26,6 +26,7 @@
               :items="point_selection"
               label="ポイント数"
               class="ma-2"
+              @change="insertListToCriteria(n-1, point_list[n-1])"
             ></v-select>
           </v-col>
 
@@ -38,6 +39,20 @@
             ></v-select>
           </v-col>
         </v-row>
+
+         <v-row>
+          <v-col
+            v-for="key in point_list[n-1]" 
+            :key="key"
+          >
+            <v-text-field
+              :label="`評価値${key}のラベル`"
+              v-model="criteria_list[n-1][key-1]"
+              outlined
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
       </div>
     </v-card-text>
   </v-card>
@@ -51,10 +66,16 @@ export default {
       sample_list: [30],
       point_list: [6],
       is_practice_list: [false],
+      criteria_list: [["L1","L2","L3","L4","L5","L6"]],
       step_selection: [...Array(6).keys()],
       sample_selection: [...Array(101).keys()],
       point_selection: [...Array(10).keys()],
     }
   },
+  methods : {
+    insertListToCriteria(n, num_criteria) {
+      this.criteria_list[n] = [...Array(num_criteria)]
+    }
+  }
 }
 </script>
