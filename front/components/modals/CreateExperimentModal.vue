@@ -21,7 +21,7 @@
               <v-card class="mx-10 pa-5 mb-16">
                 <v-card-text>
                   <v-text-field
-                    label="実験名"
+                    label="実験名を入力して下さい"
                     v-model="name"
                     required
                   ></v-text-field>
@@ -111,7 +111,7 @@ export default {
         "transfer",
         "thanks"
       ],
-      name: ""
+      name: null
     }
   },
   methods: {
