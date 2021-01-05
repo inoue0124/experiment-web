@@ -5,7 +5,7 @@ class CreateTAssessments < ActiveRecord::Migration[5.2]
       t.boolean :is_practice
       t.integer :point
       t.integer :num_files
-      t.string :pdf_url
+      t.string :criteria
 
       t.timestamps
     end

@@ -142,21 +142,21 @@ TAssessment.create!(
       is_practice: true,
       point: 6,
       num_files: 10,
-      pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
+      criteria: 'L1,L2,L3,L4,L5,L6'
     },
     {
       t_workflow_id: 4,
       is_practice: false,
       point: 6,
       num_files: 30,
-      pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
+      criteria: 'L1,L2,L3,L4,L5,L6'
     },
     {
       t_workflow_id: 5,
       is_practice: false,
       point: 6,
       num_files: 30,
-      pdf_url: 'https://www.gavo.t.u-tokyo.ac.jp/~mine/paper/PDF/2015/SP2015-38_p13-18_t2015-7.pdf'
+      criteria: 'L1,L2,L3,L4,L5,L6'
     }
   ]
 )

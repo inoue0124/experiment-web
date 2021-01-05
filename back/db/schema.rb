@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2021_01_03_061237) do
     t.boolean "is_practice"
     t.integer "point"
     t.integer "num_files"
-    t.string "pdf_url"
+    t.string "criteria"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["t_workflow_id"], name: "index_t_assessments_on_t_workflow_id"
