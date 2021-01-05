@@ -28,8 +28,9 @@ Rails.application.routes.draw do
   post   '/facesheets',               to: 'facesheets#create'
 
   # assessment
-  get    '/assessments/:workflow_id', to: 'assessments#getAssessmentWork'
-  post   '/assessments/:workflow_id', to: 'assessments#update'
+  get    '/assessments/:workflow_id', to: 'assessments#getAssessment'
+  get    '/assessments/data/:workflow_id', to: 'assessments#getAssessmentData'
+  post   '/assessments/data/:workflow_id', to: 'assessments#updateAssessmentData'
 
   # questionnaire
   get    '/questionnaires/:workflow_id', to: 'questionnaires#show'

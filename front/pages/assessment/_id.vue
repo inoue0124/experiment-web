@@ -20,7 +20,8 @@
 
               <td>
                 <v-radio-group v-model="item.score" row>
-                  <div v-for="val in 7" :key="val">
+                  <div v-for="val in t_assessment.point" :key="val">
+                    <div>{{criteria[val-1]}}</div>
                     <v-radio :value=val></v-radio>
                   </div>
                 </v-radio-group>
@@ -60,13 +61,15 @@ export default {
   
   data() {
     return {
+      t_assessment: null,
+      criteria: null,
       samples: null,
       autoSaveTimer: null
     }
   },
 
   mounted() {
-    this.getAssessmentWork()
+    this.getAssessmentData()
     this.autoSaveTimer = setInterval(() => {
       AssessmentApi.update(this.$route.params.id, this.samples)
     }, 10000)
@@ -78,7 +81,7 @@ export default {
 
   methods: {
     next() {
-      AssessmentApi.update(this.$route.params.id, this.samples).then(() => {
+      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then(() => {
         WorkflowApi.complete(this.$route.params.id).then((res) => {
           this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
         })
@@ -89,10 +92,13 @@ export default {
         this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })
     },
-    getAssessmentWork() {
-      AssessmentApi.getAssessmentWork(this.$route.params.id).then((res) => {
+    getAssessmentData() {
+      AssessmentApi.getAssessment(this.$route.params.id).then((res) => {
+        this.t_assessment = res
+        this.criteria = this.t_assessment.criteria.split(',')
+      })
+      AssessmentApi.getAssessmentData(this.$route.params.id).then((res) => {
         this.samples = res
-        console.log(res)
       })
     }
   }

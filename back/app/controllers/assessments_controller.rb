@@ -1,6 +1,12 @@
 class AssessmentsController < ApplicationController
 
-  def getAssessmentWork
+  def getAssessment
+    @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
+    render json: @t_assessment, status: :ok
+  end
+
+
+  def getAssessmentData
     @user = current_user
     @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
     @d_assessments = DAssessment.where(t_assessment_id: @t_assessment.id).where(t_user_id: @user.id)
@@ -23,7 +29,7 @@ class AssessmentsController < ApplicationController
   end
 
 
-  def update
+  def updateAssessmentData
     @user = current_user
     @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
     @d_assessments = DAssessment.where(t_assessment_id: @t_assessment.id).where(t_user_id: @user.id)
@@ -49,5 +55,4 @@ class AssessmentsController < ApplicationController
     # バルクインサート実行
     DAssessment.import @new_d_assess
   end
-
 end
