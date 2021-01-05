@@ -1,14 +1,12 @@
 <template>
   <v-card>
     <v-card-text>
-      <v-textarea
-        v-model="claim_text"
-        rows="20"
-        label="宣言内容"
-        outlined
-      >
-        {{claim_text}}
-      </v-textarea>
+      <no-ssr placeholder="エディターを読み込んでいます。">
+        <vue-editor
+          id="editor"
+          v-model="claim_text"
+        />
+      </no-ssr>
     </v-card-text>
   </v-card>
 </template>

@@ -21,7 +21,8 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     '~/plugins/vue-pdf.js',
-    '~/plugins/axios/index.js'
+    '~/plugins/axios/index.js',
+    '~/plugins/quill.js'
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

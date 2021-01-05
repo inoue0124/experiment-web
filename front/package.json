@@ -17,6 +17,7 @@
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
     "vue-pdf": "^4.2.0",
+    "vue2-editor": "^2.10.2",
     "vuelidate": "^0.7.6"
   },
   "devDependencies": {
