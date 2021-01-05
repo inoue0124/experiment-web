@@ -17,9 +17,9 @@ class AssessmentsController < ApplicationController
       if @d_assessments.where(file_number: file_num).exists?
 
         @data = @d_assessments.find_by(file_number: file_num).attributes
-        @data[:url] = "https://example.com/"+file_num.to_s
+        @data[:url] = "https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/assessment/" + params[:workflow_id] + "/" + file_num.to_s + ".wav"
       else
-        @data = {t_assessment_id: @t_assessment.id, t_user_id: @user.id, file_number: file_num, url: "https://example.com/"+file_num.to_s, score: 0, comment: ''}
+        @data = {t_assessment_id: @t_assessment.id, t_user_id: @user.id, file_number: file_num, url: "https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/assessment/" + params[:workflow_id] + "/" + file_num.to_s + ".wav", score: 0, comment: ''}
       end
 
       @res.push @data

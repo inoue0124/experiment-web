@@ -13,8 +13,8 @@
               :key="item.file_number"
             >
               <td>
-                <audio controls>
-                  <source :src="item.url" type="audio/mpeg">
+                <audio controls　controlslist="nodownload">
+                  <source :src="item.url">
                 </audio>
               </td>
 
@@ -71,7 +71,7 @@ export default {
   mounted() {
     this.getAssessmentData()
     this.autoSaveTimer = setInterval(() => {
-      AssessmentApi.update(this.$route.params.id, this.samples)
+      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples)
     }, 10000)
   },
 
