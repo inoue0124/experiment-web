@@ -2,7 +2,7 @@ class AssessmentsController < ApplicationController
 
   def getAssessment
     @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
-    render json: @t_assessment, status: :ok
+    render json: {t_assessment: @t_assessment, pdf_url: "https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/assessment/" + params[:workflow_id] + "/instruction.pdf"}, status: :ok
   end
 
 

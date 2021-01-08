@@ -1,9 +1,8 @@
 <template>
   <div style="position:relative;">
     <pdf
-      :src="require('@/assets/example.pdf')"
+      :src="pdf_url"
       :page="page"
-      :key="page"
       @num-pages="pageCount = $event"
 			@page-loaded="currentPage = $event"
     >
@@ -37,7 +36,7 @@
 <script>
 export default {
   props: {
-    url: String
+    pdf_url: String
   },
   data() {
     return {

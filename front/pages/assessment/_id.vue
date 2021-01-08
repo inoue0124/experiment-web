@@ -3,7 +3,7 @@
     <v-col cols="12" lg="10" sm="10" md="10">
       <h1 align="center" class="mb-16">評価実験</h1>
 
-      <PdfViewer class="mb-16"></PdfViewer>
+      <PdfViewer class="mb-16" :pdf_url="pdf_url"></PdfViewer>
 
       <v-simple-table>
         <template v-slot:default>
@@ -62,6 +62,7 @@ export default {
   data() {
     return {
       t_assessment: null,
+      pdf_url: null,
       criteria: null,
       samples: null,
       autoSaveTimer: null
@@ -94,7 +95,8 @@ export default {
     },
     getAssessmentData() {
       AssessmentApi.getAssessment(this.$route.params.id).then((res) => {
-        this.t_assessment = res
+        this.t_assessment = res.t_assessment
+        this.pdf_url = res.pdf_url
         this.criteria = this.t_assessment.criteria.split(',')
       })
       AssessmentApi.getAssessmentData(this.$route.params.id).then((res) => {
