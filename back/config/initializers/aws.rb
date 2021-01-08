@@ -5,3 +5,8 @@ Aws.config.update({
     ENV['AWS_SECRET_ACCESS_KEY']
   ),
 })
+
+S3_DISCLOSE_BUCKET = 'disclose.experiment-web'
+S3_UNDISCLOSE_BUCKET = 'undisclose.experiment-web'
+
+S3_DISCLOSE_ASSESSMENT_URL = "https://s3-ap-northeast-1.amazonaws.com/" + S3_DISCLOSE_BUCKET + "/assessment/"

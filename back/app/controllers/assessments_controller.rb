@@ -2,7 +2,7 @@ class AssessmentsController < ApplicationController
 
   def getAssessment
     @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
-    render json: {t_assessment: @t_assessment, pdf_url: "https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/assessment/" + params[:workflow_id] + "/instruction.pdf"}, status: :ok
+    render json: {t_assessment: @t_assessment, pdf_url: S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/instruction.pdf"}, status: :ok
   end
 
 
@@ -17,9 +17,9 @@ class AssessmentsController < ApplicationController
       if @d_assessments.where(file_number: file_num).exists?
 
         @data = @d_assessments.find_by(file_number: file_num).attributes
-        @data[:url] = "https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/assessment/" + params[:workflow_id] + "/" + file_num.to_s + ".wav"
+        @data[:url] = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/" + file_num.to_s + ".wav"
       else
-        @data = {t_assessment_id: @t_assessment.id, t_user_id: @user.id, file_number: file_num, url: "https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/assessment/" + params[:workflow_id] + "/" + file_num.to_s + ".wav", score: 0, comment: ''}
+        @data = {t_assessment_id: @t_assessment.id, t_user_id: @user.id, file_number: file_num, url: S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/" + file_num.to_s + ".wav", score: 0, comment: ''}
       end
 
       @res.push @data
