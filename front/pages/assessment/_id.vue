@@ -21,7 +21,7 @@
               <td>
                 <v-radio-group v-model="item.score" row>
                   <div v-for="val in t_assessment.point" :key="val">
-                    <div>{{criteria[val-1]}}</div>
+                    <div>{{criteria[val-1] ? criteria[val-1] : "・"}}</div>
                     <v-radio :value=val></v-radio>
                   </div>
                 </v-radio-group>
