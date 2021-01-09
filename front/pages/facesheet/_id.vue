@@ -225,16 +225,28 @@ export default {
   mounted() {
     FacesheetApi.getTFacesheet(this.$route.params.id).then((res) => {
       this.t_facesheet = res
+      FacesheetApi.getDFacesheet(this.t_facesheet.id).then((res) => {
+        console.log(res)
+        this.d_facesheet = res
+      })
     })
   },
 
   methods: {
     next() {
-      FacesheetApi.createDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
-        WorkflowApi.complete(this.$route.params.id).then((res) => {
-          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      if (this.d_facesheet.id) {
+        FacesheetApi.updateDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
+          WorkflowApi.complete(this.$route.params.id).then((res) => {
+            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+          })
         })
-      })
+      } else {
+        FacesheetApi.createDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
+          WorkflowApi.complete(this.$route.params.id).then((res) => {
+            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+          })
+        })
+      }
     }
   }
 }

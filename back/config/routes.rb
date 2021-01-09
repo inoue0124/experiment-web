@@ -22,9 +22,11 @@ Rails.application.routes.draw do
   get    '/agreements/:workflow_id',  to: 'agreements#show'
 
   # facesheet
+  get    '/facesheets/data/:t_facesheet_id',  to: 'facesheets#showDFacesheet'
   get    '/facesheets/:workflow_id',  to: 'facesheets#show'
   get    '/facesheets',               to: 'facesheets#index'
   post   '/facesheets/:workflow_id',  to: 'facesheets#create'
+  put    '/facesheets/:workflow_id',  to: 'facesheets#update'
 
   # assessment
   get    '/assessments/search',  to: 'assessments#search'

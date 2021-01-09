@@ -17,6 +17,13 @@ class FacesheetsController < ApplicationController
     render json: @t_facesheet, status: :ok
   end
 
+  def showDFacesheet
+    @user = current_user
+    @d_facesheet = DFacesheet.where(t_facesheet_id: params[:t_facesheet_id]).where(t_user_id: @user.id).order(updated_at: :desc).limit(1)[0]
+    p @d_facesheet
+    render json: @d_facesheet, status: :ok
+  end
+
 
   def create
     @user = current_user
@@ -27,6 +34,18 @@ class FacesheetsController < ApplicationController
     @d_facesheet[:t_facesheet_id] = @t_facesheet.id
 
     if @d_facesheet.save
+      render json: @d_facesheet, status: :created
+    else
+      render json: @d_facesheet.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    @user = current_user
+    @t_facesheet = TFacesheet.find_by(t_workflow_id: params[:workflow_id])
+    @d_facesheet = DFacesheet.find(params[:id])
+
+    if @d_facesheet.update(d_facesheet_params)
       render json: @d_facesheet, status: :created
     else
       render json: @d_facesheet.errors, status: :unprocessable_entity
