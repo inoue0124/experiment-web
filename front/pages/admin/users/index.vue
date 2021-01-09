@@ -4,7 +4,7 @@
     :items="users"
     class="elevation-1 my-16"
     show-expand
-    single-expand="true"
+    single-expand
   >
     <template v-slot:top>
       <v-toolbar flat>

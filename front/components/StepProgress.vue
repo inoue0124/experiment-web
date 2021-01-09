@@ -21,7 +21,7 @@ import ExperimentApi from '@/plugins/axios/modules/experiment'
 
 export default {
   props: {
-    user_id: String
+    user_id: Number
   },
   data() {
     return {
