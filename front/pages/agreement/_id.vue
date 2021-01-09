@@ -2,6 +2,8 @@
   <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="8" md="6">
 
+      <StepProgress class="mb-10"></StepProgress>
+
       <p v-html="claim_text"></p>
       
       <div align="center">
@@ -26,6 +28,7 @@ import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import AgreementApi from '@/plugins/axios/modules/agreement'
+import StepProgress from '@/components/StepProgress'
 
 export default {
   middleware: 'redirector',

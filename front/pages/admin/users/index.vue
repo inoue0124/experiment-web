@@ -3,6 +3,8 @@
     :headers="headers"
     :items="users"
     class="elevation-1 my-16"
+    show-expand
+    single-expand="true"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -103,6 +105,12 @@
       <v-icon small @click="openDeleteDialog(item)">mdi-delete</v-icon>
     </template>
 
+    <template v-slot:expanded-item="{ headers, item }">
+      <td :colspan="headers.length">
+        <StepProgress :user_id="item.id"></StepProgress>
+      </td>
+    </template>
+
     <template v-slot:no-data>
       データがありません
     </template>
@@ -115,6 +123,7 @@ import ExperimentApi from '@/plugins/axios/modules/experiment'
 import RegisterUserDialog from '@/components/dialogs/RegisterUserDialog'
 import EmailRegisterUserDialog from '@/components/dialogs/EmailRegisterUserDialog'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import StepProgress from '@/components/StepProgress'
 
 export default {
   layout: 'admin',
@@ -123,7 +132,8 @@ export default {
   components: {
     ConfirmDialog,
     RegisterUserDialog,
-    EmailRegisterUserDialog
+    EmailRegisterUserDialog,
+    StepProgress
   },
   
   data: () => ({
@@ -134,6 +144,7 @@ export default {
       { text: 'メールアドレス', value: 'email' },
       { text: '実験ID', value: 't_experiment_id' },
       { text: '実験名', value: 'experiment_name' },
+      { text: '完了ステップ', value: 'done_workflow_name' },
       { text: '更新日時', value: 'updated_at'},
       { text: '作成日時', value: 'created_at'},
       { text: '操作', value: 'actions', sortable: false }
@@ -226,4 +237,11 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.v-stepper{
+  box-shadow: none;
+  background: none;
+}
+</style>
 

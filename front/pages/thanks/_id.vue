@@ -1,6 +1,8 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="6" md="6">
+      <StepProgress class="mb-10"></StepProgress>
+
       <v-card class="pa-md-10 mt-16">
         <v-card-title class="headline">
           実験にご参加いただき誠にありがとうございました。
@@ -27,6 +29,7 @@
 
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
+import StepProgress from '@/components/StepProgress'
 
 export default {
   middleware: 'redirector',

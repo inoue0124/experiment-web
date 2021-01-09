@@ -1,6 +1,13 @@
 <template>
   <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" lg="10" sm="10" md="10">
+      
+      <v-row justify="center">
+        <v-col cols="8" align="center">
+          <StepProgress class="mb-10"></StepProgress>
+        </v-col>
+      </v-row>
+
       <h1 align="center" class="mb-16">評価実験</h1>
 
       <PdfViewer class="mb-4" :pdf_url="pdf_url"></PdfViewer>
@@ -67,6 +74,7 @@
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import AssessmentApi from '@/plugins/axios/modules/assessment'
 import PdfViewer from "@/components/PdfViewer"
+import StepProgress from '@/components/StepProgress'
 
 export default {
   middleware: 'redirector',

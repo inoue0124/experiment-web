@@ -32,7 +32,18 @@ class UsersController < ApplicationController
         next
       end
       
-      @users_h[i]["done_workflow_name"] = @work_name
+      case @work_name
+      when "agreement"
+        @users_h[i]["done_workflow_name"] = "同意"
+      when "facesheet"
+        @users_h[i]["done_workflow_name"] = "背景情報"
+      when "assessment"
+        @users_h[i]["done_workflow_name"] = "評価実験"
+      when "questionnaire"
+        @users_h[i]["done_workflow_name"] = "アンケート"
+      when "transfer"
+        @users_h[i]["done_workflow_name"] = "振込情報入力"
+      end
     end
 
     render json: @users_h

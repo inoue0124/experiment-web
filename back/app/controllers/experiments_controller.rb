@@ -139,6 +139,35 @@ class ExperimentsController < ApplicationController
     @t_experiment.destroy
   end
 
+
+  def getProgress
+    if params[:userId].nil?
+      @user = current_user
+    else
+      @user = TUser.find(params[:userId])
+    end
+    @workflows = TWorkflow.where(t_experiment_id: @user.t_experiment_id).all
+
+    @works = [] # 各work名の配列
+    for wf in @workflows do
+      @work = MWork.find(wf.m_work_id)
+      case @work.name
+      when "agreement"
+        @works.push "同意"
+      when "facesheet"
+        @works.push "背景情報"
+      when "assessment"
+        @works.push "評価実験"
+      when "questionnaire"
+        @works.push "アンケート"
+      when "transfer"
+        @works.push "振込情報入力"
+      end
+    end
+
+    render json: { wf_list: @workflows, work_name_list: @works, done_workflow_id: @user.done_workflow_id }
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_experiment

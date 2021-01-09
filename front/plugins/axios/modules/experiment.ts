@@ -19,5 +19,14 @@ export default {
 
   deleteExperiment(id:number) {
     return axios.$delete(`experiments/${id}`)
+  },
+
+  getProgress(userId:number) {
+    return axios.$post(
+      `experiments/progress`,
+      {
+        userId: userId
+      }
+    )
   }
 }

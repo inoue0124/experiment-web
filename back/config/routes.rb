@@ -16,7 +16,8 @@ Rails.application.routes.draw do
   post    '/users/bulk',       to: 'users#bulkCreate'
 
   # experiment
-  resources :experiments
+  resources :experiments, :except => :getProgress
+  post    '/experiments/progress', to: 'experiments#getProgress'
 
   # agreement
   get    '/agreements/:workflow_id',  to: 'agreements#show'

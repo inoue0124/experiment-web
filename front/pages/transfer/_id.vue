@@ -1,6 +1,8 @@
 <template>
   <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="8" md="6" align="center">
+      <StepProgress class="mb-10"></StepProgress>
+
       <h1 class="mb-16">振り込み情報</h1>
 
       <p>以下のファイルをダウンロードし、必要事項を記入の上アップロードしてください。</p>
@@ -42,6 +44,7 @@ import AwsApi from '@/plugins/axios/modules/aws'
 import SessionApi from '@/plugins/axios/modules/session'
 import ClientFileUploader from '@/components/ClientFileUploader'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import StepProgress from '@/components/StepProgress'
 
 export default {
   middleware: 'redirector',

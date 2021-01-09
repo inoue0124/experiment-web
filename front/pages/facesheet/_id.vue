@@ -1,6 +1,8 @@
 <template>
   <v-row justify="center" align="center" class="my-5">
     <v-col cols="12" sm="8" md="6">
+      <StepProgress class="mb-10"></StepProgress>
+
       <h1 align="center" class="mb-16">背景情報</h1>
 
         <p class="mb-10">あなた自身のことについてお尋ねいたします。</p>
@@ -184,6 +186,7 @@
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import FacesheetApi from '@/plugins/axios/modules/facesheet'
+import StepProgress from '@/components/StepProgress'
 
 export default {
   middleware: 'redirector',

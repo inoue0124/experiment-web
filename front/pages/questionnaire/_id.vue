@@ -1,6 +1,7 @@
 <template>
   <v-row justify="center" align="center" class="my-5">
-    <v-col cols="12" sm="6" md="8">
+    <v-col cols="12" sm="8" md="6">
+      <StepProgress class="mb-10"></StepProgress>
 
       <h1 align="center" class="mb-16">アンケート</h1>
 
@@ -32,6 +33,7 @@
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import QuestionnaireApi from '@/plugins/axios/modules/questionnaire'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
+import StepProgress from '@/components/StepProgress'
 
 export default {
   middleware: 'redirector',
