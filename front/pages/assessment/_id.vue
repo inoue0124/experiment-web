@@ -3,7 +3,23 @@
     <v-col cols="12" lg="10" sm="10" md="10">
       <h1 align="center" class="mb-16">評価実験</h1>
 
-      <PdfViewer class="mb-16" :pdf_url="pdf_url"></PdfViewer>
+      <PdfViewer class="mb-4" :pdf_url="pdf_url"></PdfViewer>
+
+      <v-row class="mb-10" justify="center" v-if="t_assessment.is_practice">
+        <v-col cols="5">
+          テスト音声1
+          <audio controls　controlslist="nodownload" class="mr-10">
+            <source :src="test1_url">
+          </audio>
+        </v-col>
+
+        <v-col cols="5">
+          テスト音声2
+          <audio controls　controlslist="nodownload">
+            <source :src="test2_url">
+          </audio>
+        </v-col>
+      </v-row>
 
       <v-simple-table>
         <template v-slot:default>
@@ -61,8 +77,10 @@ export default {
   
   data() {
     return {
-      t_assessment: null,
+      t_assessment: {},
       pdf_url: null,
+      test1_url: null,
+      test2_url: null,
       criteria: null,
       samples: null,
       autoSaveTimer: null
@@ -82,15 +100,25 @@ export default {
 
   methods: {
     next() {
-      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then(() => {
-        WorkflowApi.complete(this.$route.params.id).then((res) => {
-          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
+        let isValid = true
+        this.samples.forEach(item => {
+          if (item.score===0) { isValid = false }
         })
-      })  
+        if (!isValid) {
+          alert('すべての音声に点数をつけて下さい！')
+        } else {
+          WorkflowApi.complete(this.$route.params.id).then((res) => {
+            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+          })
+        }
+      })
     },
     prev() {
-      WorkflowApi.undo().then((res) => {
-        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
+        WorkflowApi.undo().then((res) => {
+          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+        })
       })
     },
     getAssessmentData() {
