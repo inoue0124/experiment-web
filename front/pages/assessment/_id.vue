@@ -133,6 +133,8 @@ export default {
       AssessmentApi.getAssessment(this.$route.params.id).then((res) => {
         this.t_assessment = res.t_assessment
         this.pdf_url = res.pdf_url
+        this.test1_url = res.test1_url
+        this.test2_url = res.test2_url
         this.criteria = this.t_assessment.criteria.split(',')
       })
       AssessmentApi.getAssessmentData(this.$route.params.id).then((res) => {
