@@ -10,7 +10,7 @@
         <v-row class="pa-0">
           <v-col class="pa-10 ma-0" cols="12" sm="9" md="9">
             <v-toolbar flat>
-              <v-btn icon @click="openConfirmDiscardDialog">
+              <v-btn icon @click="cancel">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
               <span class="headline">新規実験作成</span>
@@ -53,17 +53,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="error" @click="openConfirmDiscardDialog">破棄</v-btn>
+              <v-btn @click="cancel">キャンセル</v-btn>
               <v-btn color="primary" @click="openConfirmRegisterDialog">登録</v-btn>
-              <ConfirmDialog
-                ref="discard"
-                title="編集破棄確認"
-                message="実験の作成を中止して、編集内容を破棄します。よろしいですか？"
-                buttonMessage="破棄"
-                @confirm="confirmDiscard"
-                color="error"
-              >
-              </ConfirmDialog>
               <ConfirmDialog
                 ref="register"
                 title="実験登録確認"
@@ -119,12 +110,6 @@ export default {
       this.dialog = true
     },
     cancel() {
-      this.dialog = false
-    },
-    openConfirmDiscardDialog () {
-      this.$refs.discard.open()
-    },
-    confirmDiscard() {
       this.dialog = false
     },
     openConfirmRegisterDialog () {
