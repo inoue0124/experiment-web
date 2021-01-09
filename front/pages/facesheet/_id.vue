@@ -229,8 +229,9 @@ export default {
     FacesheetApi.getTFacesheet(this.$route.params.id).then((res) => {
       this.t_facesheet = res
       FacesheetApi.getDFacesheet(this.t_facesheet.id).then((res) => {
-        console.log(res)
-        this.d_facesheet = res
+        if (res!==null) {
+          this.d_facesheet = res
+        }
       })
     })
   },
