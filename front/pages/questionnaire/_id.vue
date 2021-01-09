@@ -11,6 +11,16 @@
         読み込んでいます…
       </iframe>
 
+      <ConfirmDialog
+        ref="confirm"
+        title="回答済み確認"
+        message="アンケートをすべて記入し、回答を送信しましたか？"
+        buttonMessage="送信した"
+        @confirm="confirmProceed"
+        color="primary"
+      >
+      </ConfirmDialog>
+
       <div align="center">
         <v-btn color="primary" @click="next">次へ進む</v-btn>
       </div>
@@ -21,9 +31,14 @@
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import QuestionnaireApi from '@/plugins/axios/modules/questionnaire'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 
 export default {
   middleware: 'redirector',
+
+  components: {
+    ConfirmDialog
+  },
 
   data() {
     return {
@@ -39,6 +54,9 @@ export default {
 
   methods: {
     next() {
+      this.$refs.confirm.open()
+    },
+    confirmProceed () {
       WorkflowApi.complete(this.$route.params.id).then((res) => {
         this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })

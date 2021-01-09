@@ -21,6 +21,16 @@
         file_name="振込先情報.xlsx"
       ></ClientFileUploader>
 
+      <ConfirmDialog
+        ref="confirm"
+        title="アップロード済み確認"
+        message="ファイルをアップロードしましたか？"
+        buttonMessage="アップロードした"
+        @confirm="confirmProceed"
+        color="primary"
+      >
+      </ConfirmDialog>
+
       <v-btn color="primary" @click="next">次へ進む</v-btn>
     </v-col>
   </v-row>
@@ -31,9 +41,14 @@ import WorkflowApi from '@/plugins/axios/modules/workflow'
 import AwsApi from '@/plugins/axios/modules/aws'
 import SessionApi from '@/plugins/axios/modules/session'
 import ClientFileUploader from '@/components/ClientFileUploader'
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 
 export default {
   middleware: 'redirector',
+
+  components: {
+    ConfirmDialog
+  },
 
   data() {
     return {
@@ -63,6 +78,9 @@ export default {
       })
     },
     next() {
+      this.$refs.confirm.open()
+    },
+    confirmProceed () {
       WorkflowApi.complete(this.$route.params.id).then((res) => {
         this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })
