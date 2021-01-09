@@ -112,7 +112,16 @@ TAgreement.create!(
 TFacesheet.create!(
   t_workflow_id: 2,
   name: true,
-  phone: false
+  email: true,
+  gender: true,
+  age: true,
+  is_student: true,
+  department: true,
+  is_opi: true,
+  is_teacher: true,
+  teach_speaking_experience: true,
+  country: true,
+  institute: true
 )
 
 TAssessment.create!(

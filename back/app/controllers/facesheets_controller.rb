@@ -1,11 +1,12 @@
 class FacesheetsController < ApplicationController
-  wrap_parameters :d_facesheet, include: [:name, :phone]
+  wrap_parameters :d_facesheet, include: [:name, :email, :gender, :age, :is_student, :department_type, :department_name, :is_opi, :is_teacher, 
+  :teaching_years, :teach_speaking_experience, :teach_speaking_years, :is_japan, :country_name, :institute, :other_institute]
 
 
   # GET /questionnaires
   def index
     @facesheet_result = TExperiment.joins(t_workflows: { t_facesheets: :d_facesheets } )
-      .select("t_experiments.*, t_workflows.*, t_facesheets.*, d_facesheets.*").order(id: :desc).all
+      .select("t_experiments.*, t_experiments.name AS t_experiment_name, t_workflows.*, t_facesheets.*, d_facesheets.*").order(id: :desc).all
     render json: @facesheet_result, status: :ok
   end
 
@@ -35,6 +36,7 @@ class FacesheetsController < ApplicationController
   private
     # Only allow a trusted parameter "white list" through.
     def d_facesheet_params
-      params.require(:d_facesheet).permit(:name, :phone)
+      params.require(:d_facesheet).permit(:name, :email, :gender, :age, :is_student, :department_type, :department_name, :is_opi, :is_teacher, 
+      :teaching_years, :teach_speaking_experience, :teach_speaking_years, :is_japan, :country_name, :institute, :other_institute)
     end
 end
