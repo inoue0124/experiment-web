@@ -18,13 +18,22 @@
         <v-btn
           color="primary"
           dark
-          class="mb-2"
+          class="mb-2 mr-2"
           @click="openRegisterDialog()"
         >
           新規登録
         </v-btn>
+        <v-btn
+          color="primary"
+          dark
+          class="mb-2"
+          @click="openEmailRegisterDialog()"
+        >
+          メールアドレスから新規登録
+        </v-btn>
 
         <RegisterUserDialog ref="register" @generate="reloadData"></RegisterUserDialog>
+        <EmailRegisterUserDialog ref="emailRegister" @generate="reloadData"></EmailRegisterUserDialog>
 
         <v-dialog v-model="dialogEdit" max-width="800px">
           <v-card>
@@ -104,6 +113,7 @@
 import UserApi from '@/plugins/axios/modules/user'
 import ExperimentApi from '@/plugins/axios/modules/experiment'
 import RegisterUserDialog from '@/components/dialogs/RegisterUserDialog'
+import EmailRegisterUserDialog from '@/components/dialogs/EmailRegisterUserDialog'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 
 export default {
@@ -112,7 +122,8 @@ export default {
 
   components: {
     ConfirmDialog,
-    RegisterUserDialog
+    RegisterUserDialog,
+    EmailRegisterUserDialog
   },
   
   data: () => ({
@@ -159,6 +170,10 @@ export default {
 
     openRegisterDialog(){
       this.$refs.register.open()
+    },
+
+    openEmailRegisterDialog(){
+      this.$refs.emailRegister.open()
     },
 
     openEditDialog (item) {
