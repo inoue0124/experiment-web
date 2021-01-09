@@ -11,7 +11,7 @@
           sort-by="id"
         >
           <template v-slot:top>
-            <v-toolbar flat>
+            <v-toolbar flat class="my-5">
               <v-spacer></v-spacer>
               <v-select
                 v-model="experiment_id"
@@ -19,21 +19,23 @@
                 item-text="name"
                 item-value="id"
                 label="対象の実験"
-                class="ma-2"
+                class="mr-5"
+                outlined
               ></v-select>
               <v-select
                 v-model="num_generate"
                 :items="nums"
                 label="生成するアカウントの数"
-                class="ma-2"
+                class="mr-5"
+                outlined
               ></v-select>
               <v-btn
                 color="secondary"
-                class="mb-3 mr-2"
+                class="mb-10"
                 @click="generate()"
                 :disabled="experiment_id===null || num_generate===0"
               >
-                ランダム生成
+                生成
               </v-btn>
             </v-toolbar>
           </template>
