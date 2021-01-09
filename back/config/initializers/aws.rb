@@ -6,7 +6,7 @@ Aws.config.update({
   ),
 })
 
-S3_DISCLOSE_BUCKET = 'disclose.experiment-web'
-S3_UNDISCLOSE_BUCKET = 'undisclose.experiment-web'
+S3_DISCLOSED_BUCKET = 'disclose.experiment-web'
+S3_UNDISCLOSED_BUCKET = 'undisclose.experiment-web'
 
-S3_DISCLOSE_ASSESSMENT_URL = "https://s3-ap-northeast-1.amazonaws.com/" + S3_DISCLOSE_BUCKET + "/assessment/"
+S3_DISCLOSE_ASSESSMENT_URL = "https://s3-ap-northeast-1.amazonaws.com/" + S3_DISCLOSED_BUCKET + "/assessment/"

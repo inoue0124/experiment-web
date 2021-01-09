@@ -26,10 +26,11 @@ export default {
     )
   },
 
-  downloadFile(key, filename, type) {
+  downloadFile(isDisclosed, key, filename, type) {
     return axios.$post(
       `file`,
       {
+        isDisclosed: isDisclosed,
         key: key,
         filename: filename,
         type: type

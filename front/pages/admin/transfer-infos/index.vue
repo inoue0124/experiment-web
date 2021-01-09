@@ -19,6 +19,10 @@
       </v-toolbar>
     </template>
 
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-icon small class="mr-2" @click="downloadFile(item)">mdi-download</v-icon>
+    </template>
+
     <template v-slot:no-data>
       データがありません
     </template>
@@ -36,7 +40,8 @@ export default {
   data: () => ({
     headers: [
       { text: 'ファイル名', value: 'key' },
-      { text: '作成日時', value: 'last_modified'}
+      { text: '作成日時', value: 'last_modified'},
+      { text: '操作', value: 'actions', sortable: false }
     ],
     transfer_files: []
   }),
@@ -51,12 +56,19 @@ export default {
         this.transfer_files = res
       })
     },
-
-    downloadZip () {
-      AwsApi.downloadZipFile("transfer/7/transfer-information").then((res) => {
+    downloadFile(item) {
+      AwsApi.downloadFile(false, item.key, item.key.split('/').slice(-1)[0], item.key.split('.').slice(-1)[0]).then((res)=>{
         let link = document.createElement('a')
         link.href = window.URL.createObjectURL(res)
-        link.download = 'transfer_info_list.zip'
+        link.download = item.key.split('/').slice(-1)[0]
+        link.click()
+      })
+    },
+    downloadZip () {
+      AwsApi.downloadZipFile("transfer").then((res) => {
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(res)
+        link.download = 'transfer_info.zip'
         link.click()
       })
     }

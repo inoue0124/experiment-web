@@ -129,7 +129,7 @@ export default {
       })
     },
     downloadFile(item) {
-      AwsApi.downloadFile(item.key, item.key.split('/').slice(-1)[0], item.key.split('.').slice(-1)[0]).then((res)=>{
+      AwsApi.downloadFile(true, item.key, item.key.split('/').slice(-1)[0], item.key.split('.').slice(-1)[0]).then((res)=>{
         let link = document.createElement('a')
         link.href = window.URL.createObjectURL(res)
         link.download = item.key.split('/').slice(-1)[0]

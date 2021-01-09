@@ -7,18 +7,18 @@
       <v-btn color="success" @click="downloadExcel">ファイルダウンロード</v-btn>
 
       <p class="mt-16" align="left">支払い調書アップロード</p>
-      
       <ClientFileUploader 
-        :file_key="'transfer/' + $route.params.id + '/transfer-information/' + user_id + '.xlsx'"
+        :file_key="`transfer/transfer-signature/${$route.params.id}-${user_id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        file_name="支払い調書.xlsx"
       ></ClientFileUploader>
 
 
-      <p class="mt-16" align="left">銀行振込情報アップロード</p>
-      
+      <p class="mt-16" align="left">振込先情報アップロード</p>
       <ClientFileUploader 
-        :file_key="'transfer/' + $route.params.id + '/transfer-signature/' + user_id + '.xlsx'"
+        :file_key="`transfer/transfer-information/${$route.params.id}-${user_id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        file_name="振込先情報.xlsx"
       ></ClientFileUploader>
 
       <v-btn color="primary" @click="next">次へ進む</v-btn>
@@ -49,13 +49,13 @@ export default {
 
   methods: {
     downloadExcel() {
-      AwsApi.downloadFile('transfer/transfer_signature.xlsx', 'transfer_signature.xlsx', 'xlsx').then((res)=>{
+      AwsApi.downloadFile(true, 'transfer/transfer_signature.xlsx', 'transfer_signature.xlsx', 'xlsx').then((res)=>{
         let link = document.createElement('a')
         link.href = window.URL.createObjectURL(res)
         link.download = '支払い調書.xlsx'
         link.click()
       })
-      AwsApi.downloadFile('transfer/transfer_information.xlsx', 'transfer_information.xlsx', 'xlsx').then((res)=>{
+      AwsApi.downloadFile(true, 'transfer/transfer_information.xlsx', 'transfer_information.xlsx', 'xlsx').then((res)=>{
         let link = document.createElement('a')
         link.href = window.URL.createObjectURL(res)
         link.download = '振込先情報.xlsx'

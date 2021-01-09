@@ -4,7 +4,7 @@ class S3Controller < ApplicationController
   before_action :set_s3_client
 
   def getPresignedUrl
-    s3_bucket = Aws::S3::Resource.new.bucket(S3_DISCLOSE_BUCKET)
+    s3_bucket = Aws::S3::Resource.new.bucket(S3_DISCLOSED_BUCKET)
 
     presigned_object = s3_bucket.presigned_post(
       key: params[:key],
@@ -17,7 +17,7 @@ class S3Controller < ApplicationController
 
   def listUndisclosedFiles
     data = @s3_client.list_objects_v2(
-      bucket: S3_UNDISCLOSE_BUCKET, 
+      bucket: S3_UNDISCLOSED_BUCKET, 
       prefix: params[:prefix]
     )
     render json: data[:contents]
@@ -26,7 +26,7 @@ class S3Controller < ApplicationController
 
   def listDisclosedFiles
     data = @s3_client.list_objects_v2(
-      bucket: S3_DISCLOSE_BUCKET, 
+      bucket: S3_DISCLOSED_BUCKET, 
       prefix: params[:prefix]
     )
     render json: data[:contents]
@@ -35,7 +35,7 @@ class S3Controller < ApplicationController
   
   def download
     data = @s3_client.get_object(
-      bucket: S3_DISCLOSE_BUCKET,
+      bucket: params[:isDisclosed] ? S3_DISCLOSED_BUCKET : S3_UNDISCLOSED_BUCKET,
       key: params[:key]
     ).body
 
@@ -45,7 +45,7 @@ class S3Controller < ApplicationController
 
   def delete
     resp = @s3_client.delete_object(
-      bucket: S3_DISCLOSE_BUCKET,
+      bucket: S3_DISCLOSED_BUCKET,
       key: params[:key]
     )
 
@@ -55,13 +55,13 @@ class S3Controller < ApplicationController
 
   def downloadZip
     fileList = @s3_client.list_objects_v2(
-      bucket: S3_UNDISCLOSE_BUCKET,
+      bucket: S3_UNDISCLOSED_BUCKET,
       prefix: params[:prefix]
     )[:contents]
 
     zipline(fileList.lazy.map { |file|
       s3_object = @s3_client.get_object(
-        bucket: S3_UNDISCLOSE_BUCKET,
+        bucket: S3_UNDISCLOSED_BUCKET,
         key: file.key
       )
       [s3_object.body, file.key]
@@ -73,7 +73,7 @@ class S3Controller < ApplicationController
     data = params[:file]
 
     @s3_client.put_object(
-      bucket: S3_UNDISCLOSE_BUCKET,
+      bucket: S3_UNDISCLOSED_BUCKET,
       key: params[:key],
       body: data.read
     ) 

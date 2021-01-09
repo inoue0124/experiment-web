@@ -54,7 +54,8 @@ import AwsApi from '@/plugins/axios/modules/aws'
 export default {
   props: {
     file_key: String,
-    file_type: String
+    file_type: String,
+    file_name: String
   },
   data() {
     return {
@@ -74,8 +75,15 @@ export default {
       this.selectFile(...Array.from(e.dataTransfer.files))
     },
     upload() {
+      console.log(this.currentFile.name)
+      console.log(this.file_name)
       if (!this.currentFile) {
         this.message = "ファイルを選択してください！"
+        return
+      }
+      if (this.currentFile.name !== this.file_name) {
+        this.message = this.file_name + "を選択して下さい！"
+        this.currentFile = null
         return
       }
       this.message = ""
