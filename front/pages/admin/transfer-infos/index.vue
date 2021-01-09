@@ -19,10 +19,6 @@
       </v-toolbar>
     </template>
 
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="toEdit(item)">mdi-pencil</v-icon>
-    </template>
-
     <template v-slot:no-data>
       データがありません
     </template>
@@ -51,7 +47,7 @@ export default {
 
   methods: {
     reloadData() {
-      AwsApi.listFiles("transfer").then((res) => {
+      AwsApi.listUndisclosedFiles("transfer").then((res) => {
         this.transfer_files = res
       })
     },

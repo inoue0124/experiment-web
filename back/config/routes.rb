@@ -37,9 +37,11 @@ Rails.application.routes.draw do
 
   # aws
   post '/presigned', to: 's3#getPresignedUrl'
-  post '/download',  to: 's3#download'
-  post '/download/zip', to: 's3#downloadZip'
-  post '/upload',    to: 's3#upload'
-  post '/files',     to: 's3#listFiles'
+  post '/file',  to: 's3#download'
+  delete '/file',    to: 's3#delete'
+  post '/files/zip', to: 's3#downloadZip'
+  post '/files',    to: 's3#upload'
+  post '/undisclosedFiles', to: 's3#listUndisclosedFiles'
+  post '/disclosedFiles', to: 's3#listDisclosedFiles'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

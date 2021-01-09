@@ -28,7 +28,7 @@ export default {
 
   downloadFile(key, filename, type) {
     return axios.$post(
-      `download`,
+      `file`,
       {
         key: key,
         filename: filename,
@@ -40,9 +40,13 @@ export default {
     )
   },
 
+  deleteFile(key) {
+    return axios.$delete(`file?key=${key}`)
+  },
+
   downloadZipFile(prefix) {
     return axios.$post(
-      `download/zip`,
+      `files/zip`,
       {
         prefix: prefix
       },
@@ -57,7 +61,7 @@ export default {
     formData.append("file", file)
     formData.append("key", key)
 
-    return axios.$post(`/upload`, formData,
+    return axios.$post(`/files`, formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: onUploadProgress
@@ -65,7 +69,11 @@ export default {
     )
   },
 
-  listFiles(prefix) {
-    return axios.$post("/files", {prefix: prefix});
+  listUndisclosedFiles(prefix) {
+    return axios.$post("/undisclosedFiles", {prefix: prefix});
+  },
+
+  listDisclosedFiles(prefix) {
+    return axios.$post("/disclosedFiles", {prefix: prefix});
   }
 }

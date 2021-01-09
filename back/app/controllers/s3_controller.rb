@@ -15,9 +15,18 @@ class S3Controller < ApplicationController
   end
 
 
-  def listFiles
+  def listUndisclosedFiles
     data = @s3_client.list_objects_v2(
       bucket: S3_UNDISCLOSE_BUCKET, 
+      prefix: params[:prefix]
+    )
+    render json: data[:contents]
+  end
+
+
+  def listDisclosedFiles
+    data = @s3_client.list_objects_v2(
+      bucket: S3_DISCLOSE_BUCKET, 
       prefix: params[:prefix]
     )
     render json: data[:contents]
@@ -31,6 +40,16 @@ class S3Controller < ApplicationController
     ).body
 
     send_data data.read, filename: params[:file_name], disposition: 'attachment', type: params[:type]
+  end
+
+
+  def delete
+    resp = @s3_client.delete_object(
+      bucket: S3_DISCLOSE_BUCKET,
+      key: params[:key]
+    )
+
+    render json: resp.to_h
   end
 
 
