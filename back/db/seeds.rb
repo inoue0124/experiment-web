@@ -152,5 +152,5 @@ TAssessment.create!(
 
 TQuestionnaire.create!(
   t_workflow_id: 6,
-  url: 'https://docs.google.com/forms/d/e/1FAIpQLSfcbMBs6cSXpzfqvtLo0kCSlxotB_5SYZnRtjz49GziPOus5w/viewform?embedded=true'
+  url: 'https://docs.google.com/forms/d/e/1FAIpQLSdQgyYxQfNthONRdS81XSUxXD1bjJNSEZcC47QWmQ1adCPxyw/viewform?usp=sf_link'
 )
