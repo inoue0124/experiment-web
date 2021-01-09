@@ -35,13 +35,6 @@
               >
                 ランダム生成
               </v-btn>
-              <v-btn
-                color="secondary"
-                class="mb-3 mr-2"
-                @click="generate()"
-              >
-                csv読み込み
-              </v-btn>
             </v-toolbar>
           </template>
 
@@ -78,7 +71,7 @@ export default {
       ],
       users: [],
       num_generate: 1,
-      nums: [...Array(31).keys()],
+      nums: [...Array(30).keys()].map(i => ++i),
       experiment_id: null,
       experiments: [],
     }
