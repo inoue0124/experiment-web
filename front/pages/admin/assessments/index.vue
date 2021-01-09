@@ -18,6 +18,10 @@
       </v-toolbar>
     </template>
 
+    <template v-slot:[`item.updated_at`]="{ item }">
+      <span>{{ new Date(item.updated_at).toLocaleString() }}</span>
+    </template>
+
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="toEdit(item)">mdi-pencil</v-icon>
     </template>

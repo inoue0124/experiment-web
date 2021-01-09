@@ -62,6 +62,10 @@
                   :items="files"
                 >
 
+                  <template v-slot:[`item.last_modified`]="{ item }">
+                    <span>{{ new Date(item.last_modified).toLocaleString() }}</span>
+                  </template>
+
                   <template v-slot:[`item.actions`]="{ item }">
                     <v-icon small class="mr-2" @click="downloadFile(item)">mdi-download</v-icon>
                     <v-icon small @click="deleteFile(item)">mdi-delete</v-icon>
