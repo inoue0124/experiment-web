@@ -10,7 +10,7 @@
 
       <p class="mt-16" align="left">支払い調書アップロード</p>
       <ClientFileUploader 
-        :file_key="`transfer/transfer-signature/${$route.params.id}-${user_id}.xlsx`"
+        :file_key="`transfer/transfer-signature/exp${user.t_experiment_id}_user${user.id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         file_name="支払い調書.xlsx"
       ></ClientFileUploader>
@@ -18,7 +18,7 @@
 
       <p class="mt-16" align="left">振込先情報アップロード</p>
       <ClientFileUploader 
-        :file_key="`transfer/transfer-information/${$route.params.id}-${user_id}.xlsx`"
+        :file_key="`transfer/transfer-information/exp${user.t_experiment_id}_user${user.id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         file_name="振込先情報.xlsx"
       ></ClientFileUploader>
@@ -55,13 +55,13 @@ export default {
 
   data() {
     return {
-      user_id: null
+      user: {}
     }
   },
 
   mounted() {
     SessionApi.getCurrentUser().then((res) =>{
-      this.user_id = res.data.id
+      this.user = res.data
     })
   },
 
