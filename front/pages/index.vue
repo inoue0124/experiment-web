@@ -9,7 +9,6 @@
           <v-form @submit.prevent="post">
             <v-text-field
               v-model="email"
-              :counter="10"
               label="メールアドレス"
               required
             ></v-text-field>
