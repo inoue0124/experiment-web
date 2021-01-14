@@ -5,7 +5,7 @@
         <v-col cols="12" sm="4" md="4">
           <v-checkbox
             v-model="assessment.is_practice"
-            label="練習モードにする"
+            label="練習モードにする（テストの音声が表示されるようになります。）"
           ></v-checkbox>
         </v-col>
 
@@ -41,7 +41,7 @@
         </v-col>
       </v-row>
 
-      <p>音声ファイルアップロード（ファイル名は「1.mp3」,「2.mp3」・・・のようにして下さい。）</p>
+      <p>音声ファイルアップロード（テストの音声は「test1.mp3, test2.mp3」、本番音声は「1.wav」,「2.wav」・・・のようにして下さい。）</p>
       <FileUploader :directory="'assessment/' + assessment.t_workflow_id + '/'" file_type="audio/*"></FileUploader>
 
       <p>PDFファイルアップロード（ファイル名は「instruction.pdf」にして下さい。）</p>
