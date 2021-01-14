@@ -88,10 +88,15 @@ export default {
           title: '評価結果',
           to: '/admin/assessments',
         },
+        // {
+        //   icon: 'mdi-account-search',
+        //   title: 'フェイスシート情報',
+        //   to: '/admin/facesheets',
+        // },
         {
           icon: 'mdi-account-search',
-          title: 'フェイスシート情報',
-          to: '/admin/facesheets',
+          title: 'アンケート情報',
+          to: '/admin/questionnaires',
         },
         {
           icon: 'mdi-bank',
