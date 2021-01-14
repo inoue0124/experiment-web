@@ -102,7 +102,7 @@ export default {
     downloadCSV () {
       var csv = '\ufeff' + '実験ID,実験名,更新日時,作成日時\n'
       this.experiments.forEach(el => {
-        var line = el['id'] + ',' + el['name'] + ',' + el['updated_at'] + ',' + el['created_at'] + '\n'
+        var line = el['id'] + ',' + el['name'] + ',' + new Date(el['updated_at']).toLocaleString() + ',' + new Date(el['created_at']).toLocaleString() + '\n'
         csv += line
       })
       let blob = new Blob([csv], { type: 'text/csv' })

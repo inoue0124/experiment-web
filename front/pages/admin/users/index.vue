@@ -222,10 +222,10 @@ export default {
     },
 
     downloadCSV () {
-      var csv = '\ufeff' + 'ID,ログインID,メールアドレス,実験ID,実験名,更新日時,作成日時\n'
+      var csv = '\ufeff' + 'ユーザID,ログインID,メールアドレス,実験ID,実験名,完了ステップ,更新日時,作成日時\n'
       this.users.forEach(el => {
         var line = el['id'] + ',' + el['uuid'] + ',' + el['email'] + ',' + el['t_experiment_id'] + ',' 
-        + el['experiment_name'] + ',' + el['updated_at'] + ',' + el['created_at'] + '\n'
+        + el['experiment_name'] + ',' + el['done_workflow_name'] + ',' + new Date(el['updated_at']).toLocaleString() + ',' + new Date(el['created_at']).toLocaleString() + '\n'
         csv += line
       })
       let blob = new Blob([csv], { type: 'text/csv' })
