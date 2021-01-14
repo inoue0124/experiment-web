@@ -96,7 +96,8 @@ export default {
       dialog: false,
       workflow: [
         "agreement",
-        "facesheet",
+        //"facesheet",
+        "questionnaire",
         "assessment",
         "questionnaire",
         "transfer",
