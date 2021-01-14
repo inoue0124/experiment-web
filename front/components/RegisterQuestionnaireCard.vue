@@ -6,9 +6,9 @@
         v-model="form_url"
         required
       ></v-text-field>
-      <v-img
+      <!-- <v-img
       :src="require('@/assets/google_form.png')"
-      ></v-img>
+      ></v-img> -->
     </v-card-text>
   </v-card>
 </template>
