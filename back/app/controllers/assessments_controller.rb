@@ -70,7 +70,7 @@ class AssessmentsController < ApplicationController
   def search
 
     @assessment_result = TExperiment.joins(t_workflows: { t_assessments: :d_assessments } )
-      .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*").where("is_practice != true").order(id: :desc).all
+      .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*").order(id: :desc).all
 
     render json: @assessment_result
   end
