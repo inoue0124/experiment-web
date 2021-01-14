@@ -7,14 +7,14 @@
 
         <p class="mb-10">あなた自身のことについてお尋ねいたします。</p>
 
-        <v-form @submit.prevent="submit">
+        <v-form ref="facesheet_form">
 
           <div fluid v-if="t_facesheet.name" class="mb-10">
             <p>氏名</p>
             <v-text-field
               v-model="d_facesheet.name"
               label="氏名"
-              required
+              :rules="[required]"
               class="mb-10"
             ></v-text-field>
           </div>
@@ -25,7 +25,7 @@
               v-if="t_facesheet.email"
               v-model="d_facesheet.email"
               label="メールアドレス"
-              required
+              :rules="[required]"
               class="mb-10"
             ></v-text-field>
           </div>
@@ -38,6 +38,7 @@
                 :key="n"
                 :label="`${gender_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
           </div>
@@ -50,6 +51,7 @@
                 :key="n"
                 :label="`${age_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
           </div>
@@ -62,6 +64,7 @@
                 :key="n"
                 :label="`${is_student_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
           </div>
@@ -74,12 +77,13 @@
                 :key="n"
                 :label="`${department_type_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
             <v-text-field
               v-model="d_facesheet.department_name"
               label="学部名または研究分野"
-              required
+              :rules="[required]"
               class="mb-10"
             ></v-text-field>
           </div>
@@ -92,18 +96,20 @@
                 :key="n"
                 :label="`${is_opi_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
           </div>
 
           <div fluid v-if="t_facesheet.is_teacher" class="mb-10">
-            <p>あなたは、日本語教師ですか。（この場合の日本語教師は有償で日本語を教えている方とします。よってボランティアは含めません。）</p>
+            <p>あなたは、日本語教師ですか。（この場合の日本語教師は有償で日本語を教えている、または、教えていた方とします。よってボランティアは含めません。）</p>
             <v-radio-group v-model="d_facesheet.is_teacher" row>
               <v-radio
                 v-for="n in 2"
                 :key="n"
                 :label="`${is_teacher_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
             <v-select
@@ -112,6 +118,7 @@
               :items="teaching_years_selection"
               label="経験年数"
               class="ma-2"
+              :rules="[required]"
             ></v-select>
           </div>
 
@@ -123,6 +130,7 @@
                 :key="n"
                 :label="`${teach_speaking_experience_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
             <v-select
@@ -131,6 +139,7 @@
               :items="teaching_years_selection"
               label="経験年数"
               class="ma-2"
+              :rules="[required]"
             ></v-select>
           </div>
 
@@ -142,13 +151,14 @@
                 :key="n"
                 :label="`${is_japan_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
             <v-text-field
               v-if="d_facesheet.is_japan===2"
               v-model="d_facesheet.country_name"
-              label="国・地域名"
-              required
+              label="国・地域名をご記入下さい"
+              :rules="[required]"
               class="mb-10"
             ></v-text-field>
           </div>
@@ -161,13 +171,14 @@
                 :key="n"
                 :label="`${institute_selection[n-1]}`"
                 :value="n"
+                :rules="[required]"
               ></v-radio>
             </v-radio-group>
             <v-text-field
               v-if="d_facesheet.institute===5"
               v-model="d_facesheet.other_institute"
               label="具体的にご記入下さい"
-              required
+              :rules="[required]"
               class="mb-10"
             ></v-text-field>
           </div>
@@ -237,19 +248,22 @@ export default {
   },
 
   methods: {
+    required: value => !!value || "必須項目です。",
     next() {
-      if (this.d_facesheet.id) {
-        FacesheetApi.updateDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
-          WorkflowApi.complete(this.$route.params.id).then((res) => {
-            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      if (this.$refs.facesheet_form.validate()) {
+        if (this.d_facesheet.id) {
+          FacesheetApi.updateDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
+            WorkflowApi.complete(this.$route.params.id).then((res) => {
+              this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+            })
           })
-        })
-      } else {
-        FacesheetApi.createDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
-          WorkflowApi.complete(this.$route.params.id).then((res) => {
-            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+        } else {
+          FacesheetApi.createDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
+            WorkflowApi.complete(this.$route.params.id).then((res) => {
+              this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+            })
           })
-        })
+        }
       }
     }
   }
