@@ -46,8 +46,9 @@ export default {
   
   data: () => ({
     headers: [
-      { text: '実験ID', value: 'id'},
+      { text: '実験ID', value: 't_experiment_id'},
       { text: '実験名', value: 'name' },
+      { text: 'アンケートID', value: 'id' },
       { text: 'アンケートURL', value: 'url' },
       { text: '変更日時', value: 'updated_at'},
       { text: '作成日時', value: 'created_at'}

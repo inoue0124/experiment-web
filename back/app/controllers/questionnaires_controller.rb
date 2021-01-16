@@ -3,7 +3,7 @@ class QuestionnairesController < ApplicationController
   # GET /questionnaires
   def index
     @questionnaire_list = TExperiment.joins(t_workflows: :t_questionnaires)
-      .select("t_experiments.*, t_questionnaires.*").order(id: :desc).all
+      .select("t_experiments.*, t_experiments.id AS t_experiment_id, t_questionnaires.*").order('t_questionnaires.id DESC').all
     render json: @questionnaire_list, status: :ok
   end
 
