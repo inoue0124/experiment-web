@@ -12,7 +12,7 @@
             label="実験ID"
             :items="exp_ids"
             v-model="search_exp_id"
-            class="mx-2"
+            class="mx-2 mt-4"
             @input="searchData()"
           ></v-select>
         </v-col>
@@ -21,7 +21,7 @@
             label="評価ID"
             :items="assess_ids"
             v-model="search_assess_id"
-            class="mx-2"
+            class="mx-2 mt-4"
             @input="searchData()"
           ></v-select>
         </v-col>
@@ -30,12 +30,12 @@
             label="ユーザID"
             :items="user_ids"
             v-model="search_user_id"
-            class="mx-2"
+            class="mx-2 mt-4"
             @input="searchData()"
           ></v-select>
         </v-col>
         <v-btn
-          class="mb-2 mr-2"
+          class="mb-2"
           @click="reset()"
           outlined
         >
