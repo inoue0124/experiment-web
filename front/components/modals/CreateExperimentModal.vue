@@ -125,6 +125,7 @@ export default {
     },
     createPostData() {
       let data = []
+      let question_index = 0
       this.workflow.forEach((work) => {
         switch (work) {
           case "agreement":
@@ -153,8 +154,9 @@ export default {
           case "questionnaire":
             data.push({
               "work": "questionnaire",
-              "url": this.$refs.questionnaire[0].form_url
+              "url": this.$refs.questionnaire[question_index].form_url
             })
+            question_index+=1
             break;
           case "transfer":
             data.push({
