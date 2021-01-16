@@ -108,8 +108,8 @@ export default {
         num_files: 0,
         criteria: ""
       },
-      point_selection: [...Array(10).keys()],
-      sample_selection: [...Array(101).keys()],
+      point_selection: [...Array(10).keys()].map(i => ++i),
+      sample_selection: [...Array(101).keys()].map(i => ++i),
       criteria: null,
       files: null
     }
