@@ -63,10 +63,10 @@ export default {
   data() {
     return {
       num_steps: 1,
-      sample_list: [30],
-      point_list: [6],
-      is_practice_list: [false],
-      criteria_list: [["L1","L2","L3","L4","L5","L6"]],
+      sample_list: [30,30,30,30,30],
+      point_list: [6,6,6,6,6],
+      is_practice_list: [false,false,false,false,false],
+      criteria_list: [["L1","L2","L3","L4","L5","L6"],["L1","L2","L3","L4","L5","L6"],["L1","L2","L3","L4","L5","L6"],["L1","L2","L3","L4","L5","L6"],["L1","L2","L3","L4","L5","L6"],],
       step_selection: [...Array(5).keys()].map(i => ++i),
       sample_selection: [...Array(100).keys()].map(i => ++i),
       point_selection: [...Array(9).keys()].map(i => ++i),
