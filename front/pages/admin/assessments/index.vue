@@ -7,6 +7,40 @@
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>評価結果一覧</v-toolbar-title>
+        <v-col cols="9" sm="2" md="2">
+          <v-select
+            label="実験ID"
+            :items="exp_ids"
+            v-model="search_exp_id"
+            class="mx-2"
+            @input="searchData()"
+          ></v-select>
+        </v-col>
+        <v-col cols="9" sm="2" md="2">
+          <v-select
+            label="評価ID"
+            :items="assess_ids"
+            v-model="search_assess_id"
+            class="mx-2"
+            @input="searchData()"
+          ></v-select>
+        </v-col>
+        <v-col cols="9" sm="2" md="2">
+          <v-select
+            label="ユーザID"
+            :items="user_ids"
+            v-model="search_user_id"
+            class="mx-2"
+            @input="searchData()"
+          ></v-select>
+        </v-col>
+        <v-btn
+          class="mb-2 mr-2"
+          @click="reset()"
+          outlined
+        >
+          リセット
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn
           color="primary"
@@ -51,7 +85,13 @@ export default {
       { text: 'コメント', value: 'comment' },
       { text: '作成日時', value: 'updated_at'},
     ],
-    assessments: []
+    assessments: [],
+    exp_ids: [],
+    assess_ids: [],
+    user_ids: [],
+    search_exp_id: null,
+    search_assess_id: null,
+    search_user_id: null
   }),
 
   mounted () {
@@ -62,7 +102,29 @@ export default {
     reloadData() {
       AssessmentApi.searchAssessments().then((res) => {
         this.assessments = res
+        this.exp_ids = res.filter(this.distinct(['t_experiment_id'])).map(elm => elm.t_experiment_id)
+        this.assess_ids = res.filter(this.distinct(['t_assessment_id'])).map(elm => elm.t_assessment_id)
+        this.user_ids = res.filter(this.distinct(['t_user_id'])).map(elm => elm.t_user_id)
       })
+    },
+
+    searchData() {
+      AssessmentApi.searchAssessments(
+        {
+          t_experiment_id: this.search_exp_id,
+          t_assessment_id: this.search_assess_id,
+          t_user_id: this.search_user_id
+        })
+      .then((res) => {
+        this.assessments = res
+      })
+    },
+
+    reset() {
+      this.search_exp_id = null
+      this.search_assess_id = null
+      this.search_user_id = null
+      this.reloadData()
     },
 
     downloadCSV () {
@@ -78,6 +140,31 @@ export default {
       link.href = window.URL.createObjectURL(blob)
       link.download = 'assessment_list.csv'
       link.click()
+    },
+
+    distinct(fieldNames) {
+      var self = this;
+      return function(item, i, arr) {
+        return i == indexOf(arr, item, equalsAllFields)
+      }
+
+      // arrのなかにobjが含まれていればそのインデックス番号を返す
+      // 探し方はcomparatorを使って探す
+      function indexOf(arr, obj, comparator) {
+        for(var index in arr) {
+          if(comparator(obj, arr[index]) == true) return index;
+        }
+        return -1;
+      }
+
+      // オブジェクトaとbが fieldNamesに当てられたプロパティーを比較して同じであればtrueを返す
+      function equalsAllFields(a, b) {
+        for(var i in fieldNames) {
+          var f = fieldNames[i];
+          if(a[f] !== b[f]) return false;
+        }
+        return true;
+      }
     }
   },
 }

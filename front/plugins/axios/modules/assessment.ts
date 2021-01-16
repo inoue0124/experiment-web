@@ -14,7 +14,7 @@ export default {
     return axios.$post(`assessments/data/${id}`, body)
   },
 
-  searchAssessments() {
-    return axios.$get(`assessments/search`)
+  searchAssessments(params:Object) {
+    return axios.$get(`assessments/search`, { params: params })
   },
 }
