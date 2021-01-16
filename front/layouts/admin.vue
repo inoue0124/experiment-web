@@ -74,14 +74,14 @@ export default {
     return {
       items: [
         {
-          icon: 'mdi-account-supervisor',
-          title: 'ユーザ管理',
-          to: '/admin/users',
-        },
-        {
           icon: 'mdi-flask-empty',
           title: '実験管理',
           to: '/admin/experiments',
+        },
+        {
+          icon: 'mdi-account-supervisor',
+          title: 'ユーザ管理',
+          to: '/admin/users',
         },
         {
           icon: 'mdi-chart-bar',
@@ -94,7 +94,7 @@ export default {
         //   to: '/admin/facesheets',
         // },
         {
-          icon: 'mdi-account-search',
+          icon: 'mdi-form-select',
           title: 'アンケート情報',
           to: '/admin/questionnaires',
         },

@@ -45,7 +45,7 @@ export default {
       SessionApi.login(this.email, this.password).then((session) => {
         // admin(user_type:1)だったら管理画面へリダイレクト
         if (session.data.user_type===0) {
-          this.$router.push(`/admin/users`)
+          this.$router.push(`/admin/experiments`)
         } else {
           WorkflowApi.getWork().then((res) => {
             this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
