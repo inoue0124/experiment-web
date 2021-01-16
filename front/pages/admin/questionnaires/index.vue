@@ -67,9 +67,9 @@ export default {
       })
     },
     downloadCSV () {
-      var csv = '\ufeff' + '実験ID,実験名,アンケートURL,変更日時,作成日時\n'
+      var csv = '\ufeff' + '実験ID,実験名,アンケートID,アンケートURL,変更日時,作成日時\n'
       this.questionnaires.forEach(el => {
-        var line = el['id'] + ',' + el['name'] + ',' + el['url'] + ',' + new Date(el['updated_at']).toLocaleString() + ',' + new Date(el['created_at']).toLocaleString() + '\n'
+        var line = el['t_experiment_id'] + ',' + el['name'] + ',' + el['id'] + ',' + el['url'] + ',' + new Date(el['updated_at']).toLocaleString() + ',' + new Date(el['created_at']).toLocaleString() + '\n'
         csv += line
       })
       let blob = new Blob([csv], { type: 'text/csv' })
