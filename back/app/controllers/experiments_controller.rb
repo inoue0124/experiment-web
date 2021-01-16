@@ -146,7 +146,7 @@ class ExperimentsController < ApplicationController
     else
       @user = TUser.find(params[:userId])
     end
-    @workflows = TWorkflow.where(t_experiment_id: @user.t_experiment_id).all
+    @workflows = TWorkflow.where(t_experiment_id: @user.t_experiment_id).order(id: :asc).all
 
     @works = [] # 各work名の配列
     for wf in @workflows do
@@ -164,6 +164,8 @@ class ExperimentsController < ApplicationController
         @works.push "振込情報入力"
       end
     end
+
+    p @workflows
 
     render json: { wf_list: @workflows, work_name_list: @works, done_workflow_id: @user.done_workflow_id }
   end
