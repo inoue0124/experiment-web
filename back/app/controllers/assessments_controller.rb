@@ -84,7 +84,7 @@ class AssessmentsController < ApplicationController
       @assessment_result =@assessment_result.where("t_user_id=#{params[:t_user_id]}")
     end
 
-    @assessment_result = @assessment_result.order(id: :desc).all
+    @assessment_result = @assessment_result.order('t_experiment_id DESC').order('t_assessment_id DESC').order('t_user_id DESC').order('file_number ASC').all
 
     render json: @assessment_result
   end
