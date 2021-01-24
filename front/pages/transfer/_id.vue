@@ -9,7 +9,8 @@
 
       <h3 class="mt-16" align="left">支払い調書</h3>
       <v-btn class="my-4" color="success" @click="downloadTransferSig">支払い調書ファイルダウンロード</v-btn>
-      <ClientFileUploader 
+      <ClientFileUploader
+        ref="transferSig"
         :file_key="`transfer/transfer-signature/exp${user.t_experiment_id}_user${user.id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         file_name="支払い調書.xlsx"
@@ -18,21 +19,12 @@
 
       <h3 class="mt-16" align="left">振込先情報</h3>
       <v-btn class="my-4" color="success" @click="downloadTransferInf">振込先情報ファイルダウンロード</v-btn>
-      <ClientFileUploader 
+      <ClientFileUploader
+        ref="transferInf"
         :file_key="`transfer/transfer-information/exp${user.t_experiment_id}_user${user.id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         file_name="振込先情報.xlsx"
       ></ClientFileUploader>
-
-      <ConfirmDialog
-        ref="confirm"
-        title="アップロード済み確認"
-        message="ファイルをアップロードしましたか？"
-        buttonMessage="アップロードした"
-        @confirm="confirmProceed"
-        color="primary"
-      >
-      </ConfirmDialog>
 
       <v-btn color="primary" @click="next">次へ進む</v-btn>
     </v-col>
@@ -84,9 +76,14 @@ export default {
       })
     },
     next() {
-      this.$refs.confirm.open()
-    },
-    confirmProceed () {
+      if (!this.$refs.transferSig.currentFile) {
+        alert("支払調書ファイルをアップロードして下さい！")
+        return
+      }
+      if (!this.$refs.transferInf.currentFile) {
+        alert("振込先情報ファイルをアップロードして下さい！")
+        return
+      }
       WorkflowApi.complete(this.$route.params.id).then((res) => {
         this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })

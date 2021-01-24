@@ -67,6 +67,9 @@ export default {
   methods: {
     selectFile(files) {
       this.currentFile = files
+      if (this.currentFile===null) {
+        return
+      }
       this.progress = 0
       this.message = ""
       this.upload()
@@ -75,8 +78,6 @@ export default {
       this.selectFile(...Array.from(e.dataTransfer.files))
     },
     upload() {
-      console.log(this.currentFile.name)
-      console.log(this.file_name)
       if (!this.currentFile) {
         this.message = "ファイルを選択してください！"
         return
