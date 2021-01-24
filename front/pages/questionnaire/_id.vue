@@ -7,7 +7,7 @@
 
       <iframe 
         :src="`${form_url}`"
-        width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0"
+        width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0"
       >
         読み込んでいます…
       </iframe>
@@ -15,8 +15,8 @@
       <ConfirmDialog
         ref="confirm"
         title="回答済み確認"
-        message="アンケートをすべて記入し、回答を送信しましたか？"
-        buttonMessage="送信した"
+        message="アンケートの送信を完了しましたか？"
+        buttonMessage="完了した"
         @confirm="confirmProceed"
         color="primary"
       >
