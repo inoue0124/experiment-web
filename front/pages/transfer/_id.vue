@@ -5,10 +5,10 @@
 
       <h1 class="mb-16">振り込み情報</h1>
 
-      <p>以下のファイルをダウンロードし、必要事項を記入の上アップロードしてください。</p>
-      <v-btn color="success" @click="downloadExcel">ファイルダウンロード</v-btn>
+      <p>振込に必要な以下の２つのファイル（支払い調書、振込先情報）をダウンロードし、必要事項を記入の上アップロードしてください。<br>(ファイル名は変更しないで下さい。)</p>
 
-      <p class="mt-16" align="left">支払い調書アップロード</p>
+      <h3 class="mt-16" align="left">支払い調書</h3>
+      <v-btn class="my-4" color="success" @click="downloadTransferSig">支払い調書ファイルダウンロード</v-btn>
       <ClientFileUploader 
         :file_key="`transfer/transfer-signature/exp${user.t_experiment_id}_user${user.id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -16,7 +16,8 @@
       ></ClientFileUploader>
 
 
-      <p class="mt-16" align="left">振込先情報アップロード</p>
+      <h3 class="mt-16" align="left">振込先情報</h3>
+      <v-btn class="my-4" color="success" @click="downloadTransferInf">振込先情報ファイルダウンロード</v-btn>
       <ClientFileUploader 
         :file_key="`transfer/transfer-information/exp${user.t_experiment_id}_user${user.id}.xlsx`"
         file_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -66,13 +67,15 @@ export default {
   },
 
   methods: {
-    downloadExcel() {
+    downloadTransferSig() {
       AwsApi.downloadFile(true, 'transfer/transfer_signature.xlsx', 'transfer_signature.xlsx', 'xlsx').then((res)=>{
         let link = document.createElement('a')
         link.href = window.URL.createObjectURL(res)
         link.download = '支払い調書.xlsx'
         link.click()
       })
+    },
+    downloadTransferInf() {
       AwsApi.downloadFile(true, 'transfer/transfer_information.xlsx', 'transfer_information.xlsx', 'xlsx').then((res)=>{
         let link = document.createElement('a')
         link.href = window.URL.createObjectURL(res)
