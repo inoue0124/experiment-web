@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center" align="center" class="my-5">
-    <v-col cols="12" lg="10" sm="10" md="10">
+    <v-col cols="10">
       
       <v-row justify="center">
         <v-col cols="8" align="center">
@@ -10,7 +10,11 @@
 
       <h1 align="center" class="mb-16">評価実験</h1>
 
-      <PdfViewer class="mb-4" :pdf_url="pdf_url"></PdfViewer>
+      <v-row justify="center" v-sticky="{ zIndex: 100, stickyTop: 0, disabled: false}">
+        <v-col class="pa-0" cols="9">
+          <PdfViewer class="mb-4 sticky" :pdf_url="pdf_url"></PdfViewer>
+        </v-col>
+      </v-row>
 
       <v-row class="mb-10" justify="center" v-if="t_assessment.is_practice">
         <v-col cols="5">
@@ -36,6 +40,9 @@
               :key="item.file_number"
             >
               <td>
+                {{item.file_number}}
+              </td>
+              <td>
                 <audio controls　controlslist="nodownload">
                   <source :src="item.url">
                 </audio>
@@ -51,10 +58,13 @@
               </td>
 
               <td>
-                <v-text-field
+                <v-textarea
+                  auto-grow
                   v-model="item.comment"
                   label="コメント"
-                ></v-text-field>
+                  outlined
+                  class="vtextarea"
+                ></v-textarea>
               </td>
             </tr>
           </tbody>
@@ -75,12 +85,17 @@ import WorkflowApi from '@/plugins/axios/modules/workflow'
 import AssessmentApi from '@/plugins/axios/modules/assessment'
 import PdfViewer from "@/components/PdfViewer"
 import StepProgress from '@/components/StepProgress'
+import VueSticky from 'vue-sticky'
 
 export default {
   middleware: 'redirector',
 
   components: {
     PdfViewer
+  },
+
+  directives: {
+    'sticky': VueSticky,
   },
   
   data() {
@@ -114,7 +129,7 @@ export default {
           if (item.score===0) { isValid = false }
         })
         if (!isValid) {
-          alert('すべての音声に点数をつけて下さい！')
+          alert('すべての音声のレベルを判定して下さい。')
         } else {
           WorkflowApi.complete(this.$route.params.id).then((res) => {
             this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
@@ -149,8 +164,14 @@ export default {
   td {
     background: #f0f8ff;
     border-bottom: none !important;
+    padding: 0px !important;
   }
   tr:nth-child(odd) td {
       background: #fff;
+      padding: 0px;
+  }
+  .vtextarea {
+    min-width: 300px;
+    padding-top: 30px !important;
   }
 </style>
