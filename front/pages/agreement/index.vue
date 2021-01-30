@@ -58,7 +58,7 @@ export default {
   }),
 
   mounted() {
-    AgreementApi.getAgreement(this.$route.params.id).then((res) => {
+    AgreementApi.getAgreement(this.$route.query.id).then((res) => {
       //this.claim_text = res.text.replace(/<p><br><\/p>/g, '')
       this.claim_text = res.text
     })
@@ -68,8 +68,8 @@ export default {
     required: value => !!value || "必須項目です。",
     next() {
       if (this.$refs.agreement_form.validate()) {
-        WorkflowApi.complete(this.$route.params.id).then((res) => {
-          this.$router.push(res.work.name.toLowerCase())
+        WorkflowApi.complete(this.$route.query.id).then((res) => {
+          this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
         })
       }
     }

@@ -96,7 +96,7 @@ export default {
 
     toEdit (item) {
       this.editedIndex = this.experiments.indexOf(item)
-      this.$router.push(`experiments/${this.experiments[this.editedIndex].id}`)
+      this.$router.push(`experiments/edit?id=${this.experiments[this.editedIndex].id}`)
     },
 
     downloadCSV () {

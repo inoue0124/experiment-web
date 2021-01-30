@@ -49,7 +49,7 @@ export default {
   },
 
   mounted() {
-    QuestionnaireApi.getQuestionnaire(this.$route.params.id).then((res) => {
+    QuestionnaireApi.getQuestionnaire(this.$route.query.id).then((res) => {
       this.form_url = res.url
     })
   },
@@ -59,8 +59,8 @@ export default {
       this.$refs.confirm.open()
     },
     confirmProceed () {
-      WorkflowApi.complete(this.$route.params.id).then((res) => {
-        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      WorkflowApi.complete(this.$route.query.id).then((res) => {
+        this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
       })
     }
   }

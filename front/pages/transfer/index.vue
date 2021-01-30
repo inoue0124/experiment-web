@@ -82,8 +82,8 @@ export default {
         alert("振込先情報ファイルをアップロードして下さい！")
         return
       }
-      WorkflowApi.complete(this.$route.params.id).then((res) => {
-        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      WorkflowApi.complete(this.$route.query.id).then((res) => {
+        this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
       })
     }
   }

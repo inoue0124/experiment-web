@@ -16,11 +16,11 @@
           <v-col cols="12" sm="4" md="4">
             <v-checkbox
               v-model="is_practice_list[n-1]"
-              label="練習モードにする"
+              label="練習モードにする（ラジオボタンとコメント欄が表示されなくなります。）"
             ></v-checkbox>
           </v-col>
 
-          <v-col cols="12" sm="4" md="4">
+          <v-col cols="12" sm="4" md="4" v-if="!is_practice_list[n-1]">
             <v-select
               v-model="point_list[n-1]"
               :items="point_selection"
@@ -40,7 +40,7 @@
           </v-col>
         </v-row>
 
-         <v-row>
+         <v-row v-if="!is_practice_list[n-1]">
           <v-col
             v-for="key in point_list[n-1]" 
             :key="key"

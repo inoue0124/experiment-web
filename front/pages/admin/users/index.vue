@@ -4,7 +4,6 @@
     :items="users"
     class="elevation-1 my-16"
     show-expand
-    single-expand
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -23,7 +22,7 @@
           class="mb-2 mr-2"
           @click="openRegisterDialog()"
         >
-          新規登録
+          IDから新規登録
         </v-btn>
         <v-btn
           color="primary"
@@ -195,6 +194,7 @@ export default {
 
     openDeleteDialog (item) {
       this.editedIndex = this.users.indexOf(item)
+      this.editedItem = Object.assign({}, item)
       this.$refs.confirm.open()
     },
 

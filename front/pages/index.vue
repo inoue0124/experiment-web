@@ -48,7 +48,7 @@ export default {
           this.$router.push(`/admin/experiments`)
         } else {
           WorkflowApi.getWork().then((res) => {
-            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+            this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
           })
         }
       })

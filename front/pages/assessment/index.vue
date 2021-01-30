@@ -1,4 +1,4 @@
-<template>
+<template key="{{wf_id}}">
   <v-row justify="center" align="center" class="my-5">
     <v-col cols="10">
       
@@ -110,19 +110,25 @@ export default {
     }
   },
 
-  mounted() {
-    this.getAssessmentData()
+  watch: {
+    $route (to, from) {
+      this.getAssessmentData()
+      window.scrollTo({
+        top: 0,
+        behavior: "instant"
+      })
+    }
   },
 
-  destroyed() {
-    clearInterval(this.autoSaveTimer)
+  mounted() {
+    this.getAssessmentData()
   },
 
   methods: {
     next() {
       // 本番の時はデータを保存
       if (this.t_assessment.is_practice === false) {
-        AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
+        AssessmentApi.updateAssessmentData(this.$route.query.id, this.samples).then((res) => {
           // スコアが0のときバリデーションエラーにする
           let isValid = true
           this.samples.forEach(item => {
@@ -132,46 +138,48 @@ export default {
             alert('すべての音声のレベルを判定して下さい。')
             return
           }
-          WorkflowApi.complete(this.$route.params.id).then((res) => {
-            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+          WorkflowApi.complete(this.$route.query.id).then((res) => {
+            clearInterval(this.autoSaveTimer)
+            this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
           })
         })
       } else {
-        WorkflowApi.complete(this.$route.params.id).then((res) => {
-          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+        WorkflowApi.complete(this.$route.query.id).then((res) => {
+          this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
         })
       }
     },
     prev() {
       // 本番の時はデータを更新
       if (this.t_assessment.is_practice === false) {
-        AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
+        AssessmentApi.updateAssessmentData(this.$route.query.id, this.samples).then((res) => {
           WorkflowApi.undo().then((res) => {
-            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+            clearInterval(this.autoSaveTimer)
+            this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
           })
         })
       } else {
         WorkflowApi.undo().then((res) => {
-          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+          this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
         })
       }
     },
     getAssessmentData() {
-      AssessmentApi.getAssessment(this.$route.params.id).then((res) => {
+      AssessmentApi.getAssessment(this.$route.query.id).then((res) => {
         this.t_assessment = res.t_assessment
         this.instruction_pdf_url = res.instruction_pdf_url
         this.rubric_pdf_url = res.rubric_pdf_url
         this.test_url = res.test_url
         this.criteria = this.t_assessment.criteria.split(',')
 
-        AssessmentApi.getAssessmentData(this.$route.params.id).then((res) => {
+        AssessmentApi.getAssessmentData(this.$route.query.id).then((res) => {
           this.samples = res
         })
 
         // 本番の時はデータを取得
         if (this.t_assessment.is_practice === false) {
           this.autoSaveTimer = setInterval(() => {
-            AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples)
+            AssessmentApi.updateAssessmentData(this.$route.query.id, this.samples)
           }, 10000)
         }
       })

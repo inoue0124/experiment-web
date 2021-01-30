@@ -72,7 +72,7 @@ class UsersController < ApplicationController
       user[:user_type] = 1
       @users << TUser.new(user.permit(:uuid, :email, :password, :password_confirmation, :t_experiment_id, :user_type).to_h)
     end
-    TUser.import @users
+    TUser.import(@users, on_duplicate_key_update: false)
   end
 
   # PATCH/PUT /users/1

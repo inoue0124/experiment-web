@@ -51,12 +51,12 @@ export default {
 
   methods: {
     next() {
-      WorkflowApi.complete(this.$route.params.id).then((res) => {
-        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      WorkflowApi.complete(this.$route.query.id).then((res) => {
+        this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
       })
     },
     getInstructionData() {
-      InstructionApi.getInstruction(this.$route.params.id).then((res) => {
+      InstructionApi.getInstruction(this.$route.query.id).then((res) => {
         this.pdf_url = res.pdf_url
       })
     }
