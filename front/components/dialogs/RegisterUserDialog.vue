@@ -33,7 +33,7 @@
                 color="secondary"
                 class="mb-10"
                 @click="generate()"
-                :disabled="experiment_id===null || num_generate===0"
+                :disabled="experiment_id===null || num_generate===0 || reloading"
               >
                 生成
               </v-btn>
@@ -49,8 +49,16 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="cancel">キャンセル</v-btn>
-        <v-btn color="primary" @click="register" :disabled="users.length===0">登録</v-btn>
+        <v-progress-circular
+          :size="20"
+          color="teal"
+          :indeterminate="true"
+          v-if="reloading"
+          class="ml-2"
+        >
+        </v-progress-circular>
+        <v-btn color="blue darken-1" text @click="cancel" :disabled="reloading">キャンセル</v-btn>
+        <v-btn color="primary" @click="register" :disabled="users.length===0 || reloading">登録</v-btn>
       </v-card-actions>
 
     </v-card>
@@ -76,6 +84,7 @@ export default {
       nums: [...Array(30).keys()].map(i => ++i),
       experiment_id: null,
       experiments: [],
+      reloading: false
     }
   },
   mounted() {
@@ -106,11 +115,13 @@ export default {
       }
     },
     register() {
+      this.reloading = true
       UserApi.bulkCreateUsers(this.users).then((res)=>{
         this.downloadCSV()
         this.$emit('generate')
         this.users = []
         this.dialog = false
+        this.reloading = false
       })
     },
 

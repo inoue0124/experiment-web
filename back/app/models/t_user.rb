@@ -3,5 +3,4 @@ class TUser < ApplicationRecord
   has_many :d_facesheets, dependent: :destroy
   has_many :d_assessments, dependent: :destroy
   has_many :d_transfers, dependent: :destroy
-  validates :email, uniqueness: true
 end

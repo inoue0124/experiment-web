@@ -126,7 +126,6 @@ ActiveRecord::Schema.define(version: 2020_12_27_044911) do
     t.integer "done_workflow_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_t_users_on_email", unique: true
   end
 
   create_table "t_workflows", force: :cascade do |t|

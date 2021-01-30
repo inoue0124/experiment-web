@@ -10,6 +10,5 @@ class CreateTUsers < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    add_index  :t_users, :email, unique: true
   end
 end
