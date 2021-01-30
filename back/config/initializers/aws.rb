@@ -10,3 +10,4 @@ S3_DISCLOSED_BUCKET = 'disclose.experiment-web'
 S3_UNDISCLOSED_BUCKET = 'undisclose.experiment-web'
 
 S3_DISCLOSE_ASSESSMENT_URL = "https://s3-ap-northeast-1.amazonaws.com/" + S3_DISCLOSED_BUCKET + "/assessment/"
+S3_DISCLOSE_INSTRUCTION_URL = "https://s3-ap-northeast-1.amazonaws.com/" + S3_DISCLOSED_BUCKET + "/instruction/"

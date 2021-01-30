@@ -10,25 +10,24 @@
 
       <h1 align="center" class="mb-16">評価実験</h1>
 
-      <v-row justify="center" v-sticky="{ zIndex: 100, stickyTop: 0, disabled: false}">
+      <v-row justify="center">
         <v-col class="pa-0" cols="9">
-          <PdfViewer class="mb-4 sticky" :pdf_url="pdf_url"></PdfViewer>
+          <PdfViewer class="mb-4 sticky" :pdf_url="instruction_pdf_url"></PdfViewer>
         </v-col>
       </v-row>
 
-      <v-row class="mb-10" justify="center" v-if="t_assessment.is_practice">
-        <v-col cols="5">
-          テスト音声1
-          <audio controls　controlslist="nodownload" class="mr-10">
-            <source :src="test1_url">
+      <v-row class="mb-10" justify="center" v-if="t_assessment.is_practice === false">
+        <v-col cols="12" style="text-align:center;">
+          <div>テストの音声</div>
+          <audio controls　controlslist="nodownload">
+            <source :src="test_url">
           </audio>
         </v-col>
+      </v-row>
 
-        <v-col cols="5">
-          テスト音声2
-          <audio controls　controlslist="nodownload">
-            <source :src="test2_url">
-          </audio>
+      <v-row justify="center" v-sticky="{ zIndex: 100, stickyTop: 0, disabled: false}">
+        <v-col class="pa-0" cols="9">
+          <PdfViewer class="mb-4 sticky" :pdf_url="rubric_pdf_url"></PdfViewer>
         </v-col>
       </v-row>
 
@@ -38,8 +37,10 @@
             <tr
               v-for="item in samples"
               :key="item.file_number"
+              align="center"
             >
               <td>
+                <span v-if="t_assessment.is_practice === true">レベル</span>
                 {{item.file_number}}
               </td>
               <td>
@@ -48,7 +49,7 @@
                 </audio>
               </td>
 
-              <td>
+              <td v-if="t_assessment.is_practice === false">
                 <v-radio-group v-model="item.score" row>
                   <div v-for="val in t_assessment.point" :key="val">
                     <div>{{criteria[val-1] ? criteria[val-1] : "・"}}</div>
@@ -57,7 +58,7 @@
                 </v-radio-group>
               </td>
 
-              <td>
+              <td v-if="t_assessment.is_practice === false">
                 <v-textarea
                   auto-grow
                   v-model="item.comment"
@@ -84,7 +85,6 @@
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import AssessmentApi from '@/plugins/axios/modules/assessment'
 import PdfViewer from "@/components/PdfViewer"
-import StepProgress from '@/components/StepProgress'
 import VueSticky from 'vue-sticky'
 
 export default {
@@ -101,9 +101,9 @@ export default {
   data() {
     return {
       t_assessment: {},
-      pdf_url: null,
-      test1_url: null,
-      test2_url: null,
+      instruction_pdf_url: null,
+      rubric_pdf_url: null,
+      test_url: null,
       criteria: null,
       samples: null,
       autoSaveTimer: null
@@ -112,9 +112,6 @@ export default {
 
   mounted() {
     this.getAssessmentData()
-    this.autoSaveTimer = setInterval(() => {
-      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples)
-    }, 10000)
   },
 
   destroyed() {
@@ -123,37 +120,60 @@ export default {
 
   methods: {
     next() {
-      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
-        let isValid = true
-        this.samples.forEach(item => {
-          if (item.score===0) { isValid = false }
-        })
-        if (!isValid) {
-          alert('すべての音声のレベルを判定して下さい。')
-        } else {
+      // 本番の時はデータを保存
+      if (this.t_assessment.is_practice === false) {
+        AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
+          // スコアが0のときバリデーションエラーにする
+          let isValid = true
+          this.samples.forEach(item => {
+            if (item.score===0) { isValid = false }
+          })
+          if (!isValid) {
+            alert('すべての音声のレベルを判定して下さい。')
+            return
+          }
           WorkflowApi.complete(this.$route.params.id).then((res) => {
             this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
           })
-        }
-      })
+        })
+      } else {
+        WorkflowApi.complete(this.$route.params.id).then((res) => {
+          this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+        })
+      }
     },
     prev() {
-      AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
+      // 本番の時はデータを更新
+      if (this.t_assessment.is_practice === false) {
+        AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples).then((res) => {
+          WorkflowApi.undo().then((res) => {
+            this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+          })
+        })
+      } else {
         WorkflowApi.undo().then((res) => {
           this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
         })
-      })
+      }
     },
     getAssessmentData() {
       AssessmentApi.getAssessment(this.$route.params.id).then((res) => {
         this.t_assessment = res.t_assessment
-        this.pdf_url = res.pdf_url
-        this.test1_url = res.test1_url
-        this.test2_url = res.test2_url
+        this.instruction_pdf_url = res.instruction_pdf_url
+        this.rubric_pdf_url = res.rubric_pdf_url
+        this.test_url = res.test_url
         this.criteria = this.t_assessment.criteria.split(',')
-      })
-      AssessmentApi.getAssessmentData(this.$route.params.id).then((res) => {
-        this.samples = res
+
+        AssessmentApi.getAssessmentData(this.$route.params.id).then((res) => {
+          this.samples = res
+        })
+
+        // 本番の時はデータを取得
+        if (this.t_assessment.is_practice === false) {
+          this.autoSaveTimer = setInterval(() => {
+            AssessmentApi.updateAssessmentData(this.$route.params.id, this.samples)
+          }, 10000)
+        }
       })
     }
   }

@@ -2,15 +2,15 @@ class AssessmentsController < ApplicationController
 
   def getAssessment
     @t_assessment = TAssessment.find_by(t_workflow_id: params[:workflow_id])
-    @pdf_url = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/instruction.pdf"
-    @test1_url = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/test1.mp3"
-    @test2_url = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/test2.mp3"
+    @instruction_pdf_url = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/instruction.pdf"
+    @rubric_pdf_url = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/rubric.pdf"
+    @test_url = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/test.mp3"
 
     render json: {
       t_assessment: @t_assessment,
-      pdf_url: @pdf_url,
-      test1_url: @test1_url,
-      test2_url: @test2_url,
+      instruction_pdf_url: @instruction_pdf_url,
+      rubric_pdf_url: @rubric_pdf_url,
+      test_url: @test_url
     },
     status: :ok
   end

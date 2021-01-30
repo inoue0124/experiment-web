@@ -14,6 +14,9 @@ MWork.create!(
       name: 'facesheet'
     },
     {
+      name: 'instruction'
+    },
+    {
       name: 'assessment'
     },
     {

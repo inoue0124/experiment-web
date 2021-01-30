@@ -10,22 +10,25 @@
 
     <v-btn
       icon
-      tile
+      v-if="pageCount>1"
+      outlined
       @click="prev"
       :disabled="currentPage===1"
+      style="left:-100px;"
       class="py-16 px-10 control-btn"
     >
       <v-icon dark>mdi-less-than</v-icon>
     </v-btn>
 
-    <p style="position:absolute;top:0;right:0;">{{currentPage}} / {{pageCount}}</p>
+    <p style="position:absolute;top:0;right:0;" v-if="pageCount>1">{{currentPage}} / {{pageCount}}</p>
 
     <v-btn
       icon
-      tile
+      v-if="pageCount>1"
+      outlined
       @click="next"
       :disabled="currentPage===pageCount"
-      style="right:0;"
+      style="right:-100px;"
       class="py-16 px-10 control-btn"
     >
       <v-icon dark>mdi-greater-than</v-icon>

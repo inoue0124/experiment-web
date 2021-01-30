@@ -83,12 +83,7 @@
 </template>
 
 <script>
-import UserApi from '@/plugins/axios/modules/user'
 import ExperimentApi from '@/plugins/axios/modules/experiment'
-import RegisterAgreementCard from '@/components/RegisterAgreementCard'
-import RegisterFacesheetCard from '@/components/RegisterFacesheetCard'
-import RegisterAssessmentCard from '@/components/RegisterAssessmentCard'
-import RegisterQuestionnaireCard from '@/components/RegisterQuestionnaireCard'
 
 export default {
   data() {
@@ -98,6 +93,7 @@ export default {
         "agreement",
         //"facesheet",
         "questionnaire",
+        "instruction",
         "assessment",
         "questionnaire",
         "transfer",
@@ -138,6 +134,11 @@ export default {
             data.push({
               "work": "facesheet",
               "facesheet": this.$refs.facesheet[0].facesheet
+            })
+            break;
+          case "instruction":
+            data.push({
+              "work": "instruction"
             })
             break;
           case "assessment":

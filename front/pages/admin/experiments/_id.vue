@@ -31,7 +31,7 @@
 
         <div v-for="(work, key) in workflow" :key="key">
           <div v-if="work=='agreement'">
-            <p class="mb-3 card-title">同意書設定</p>
+            <p class="mb-3 card-title">同意書ページ設定</p>
             <RegisterAgreementCard class=" pa-5 mb-16" ref="agreement" :claim_text_prop="work_data[key].text"></RegisterAgreementCard>
           </div>
           
@@ -40,13 +40,18 @@
             <RegisterFacesheetCard class=" pa-5 mb-16" ref="facesheet" :facesheet_prop="work_data[key]"></RegisterFacesheetCard>
           </div>
 
+          <div v-if="work=='instruction'">
+            <p class="mb-3 card-title">実験概要ページ設定</p>
+            <UpdateInstructionCard class=" pa-5 mb-16" ref="instruction" :instruction_prop="work_data[key]"></UpdateInstructionCard>
+          </div>
+
           <div v-if="work=='assessment'">
-            <p class="mb-3 card-title">評価実験設定</p>
+            <p class="mb-3 card-title">評価実験ページ設定</p>
             <UpdateAssessmentCard class=" pa-5 mb-16" ref="assessment" :assessment_prop="work_data[key]"></UpdateAssessmentCard>
           </div>
           
           <div v-if="work=='questionnaire'">
-            <p class="mb-3 card-title">アンケート設定</p>
+            <p class="mb-3 card-title">アンケートURL設定</p>
             <RegisterQuestionnaireCard class=" pa-5 mb-16" ref="questionnaire" :form_url_prop="work_data[key].url"></RegisterQuestionnaireCard>
           </div>
         </div>
@@ -56,12 +61,7 @@
 </template>
 
 <script>
-import UserApi from '@/plugins/axios/modules/user'
 import ExperimentApi from '@/plugins/axios/modules/experiment'
-import RegisterAgreementCard from '@/components/RegisterAgreementCard'
-import RegisterFacesheetCard from '@/components/RegisterFacesheetCard'
-import UpdateAssessmentCard from '@/components/UpdateAssessmentCard'
-import RegisterQuestionnaireCard from '@/components/RegisterQuestionnaireCard'
 
 export default {
   layout: 'admin',
@@ -77,6 +77,7 @@ export default {
 
   mounted() {
     ExperimentApi.getExperiment(this.$route.params.id).then((res)=>{
+      console.log(res)
       this.workflow = res.works
       this.name = res.experiment.name
       this.work_data = res.work_data
@@ -133,6 +134,12 @@ export default {
               "work": "facesheet",
               "id": work.id,
               "facesheet": this.$refs.facesheet[0].facesheet
+            })
+            break;
+          case "instruction":
+            data.push({
+              "work": "instruction",
+              "id": work.id
             })
             break;
           case "assessment":

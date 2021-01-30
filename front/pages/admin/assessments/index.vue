@@ -78,7 +78,6 @@ export default {
       { text: '実験ID', value: 't_experiment_id'},
       { text: '実験名', value: 'name' },
       { text: '評価ID', value: 't_assessment_id' },
-      { text: '練習かどうか', value: 'is_practice' },
       { text: 'ユーザID', value: 't_user_id' },
       { text: 'サンプルID', value: 'file_number' },
       { text: '評価値', value: 'score' },
@@ -128,10 +127,10 @@ export default {
     },
 
     downloadCSV () {
-      var csv = '\ufeff' + '実験ID,実験名,評価ID,練習かどうか,ユーザID,サンプルID,評価値,コメント,作成日時\n'
+      var csv = '\ufeff' + '実験ID,実験名,評価ID,ユーザID,サンプルID,評価値,コメント,作成日時\n'
       this.assessments.forEach(el => {
-        var line = el['t_experiment_id'] + ',' + el['name'] + ',' + el['t_assessment_id'] + ',' + el['is_practice'] + ',' +
-        el['t_user_id'] + ',' + el['file_number'] + ',' + el['score'] + ',' + el['comment']
+        var line = el['t_experiment_id'] + ',' + this.escapeForCSV(el['name']) + ',' + el['t_assessment_id'] + ',' +
+        el['t_user_id'] + ',' + el['file_number'] + ',' + el['score'] + ',' + this.escapeForCSV(el['comment'])
          + ',' + new Date(el['updated_at']).toLocaleString() + '\n'
         csv += line
       })
@@ -140,6 +139,10 @@ export default {
       link.href = window.URL.createObjectURL(blob)
       link.download = 'assessment_list.csv'
       link.click()
+    },
+
+    escapeForCSV (s) {
+      return `"${s.replace(/\"/g, '\"\"')}"`
     },
 
     distinct(fieldNames) {

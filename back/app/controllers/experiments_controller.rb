@@ -27,6 +27,9 @@ class ExperimentsController < ApplicationController
       when "facesheet"
         @t_facesheet = TFacesheet.find_by(t_workflow_id: wf.id)
         @work_data.push @t_facesheet
+      when "instruction"
+        @instruction = {t_workflow_id: wf.id}
+        @work_data.push @instruction
       when "assessment"
         @t_assessment = TAssessment.find_by(t_workflow_id: wf.id)
         @work_data.push @t_assessment
@@ -156,6 +159,8 @@ class ExperimentsController < ApplicationController
         @works.push "同意"
       when "facesheet"
         @works.push "背景情報"
+      when "instruction"
+        @works.push "概要説明"
       when "assessment"
         @works.push "評価実験"
       when "questionnaire"

@@ -1,51 +1,9 @@
 <template>
   <v-card>
     <v-card-text>
-      <v-row>
-        <v-col cols="12" sm="4" md="4">
-          <v-checkbox
-            v-model="assessment.is_practice"
-            label="練習モードにする（ラジオボタンとコメント欄が表示されなくなります。）"
-          ></v-checkbox>
-        </v-col>
 
-        <v-col cols="12" sm="4" md="4" v-if="!assessment.is_practice">
-          <v-select
-            v-model="assessment.point"
-            :items="point_selection"
-            label="評価の段階数"
-            class="ma-2"
-          ></v-select>
-        </v-col>
-
-        <v-col cols="12" sm="4" md="4">
-          <v-select
-            v-model="assessment.num_files"
-            :items="sample_selection"
-            :label="`音声サンプル数`"
-            class="ma-2"
-          ></v-select>
-        </v-col>
-      </v-row>
-
-      <v-row v-if="!assessment.is_practice">
-        <v-col 
-          v-for="key in assessment.point" 
-          :key="key"
-        >
-          <v-text-field
-            :label="`評価値${key}のラベル`"
-            v-model="criteria[key-1]"
-            outlined
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <p>音声ファイルアップロード（テストの音声は「test.mp3」、本番音声は「1.wav, 2.wav・・・」のようにして下さい。）</p>
-      <FileUploader :directory="'assessment/' + assessment.t_workflow_id + '/'" file_type="audio/*"></FileUploader>
-
-      <p>PDFファイルアップロード（インストラクションPDFは「instruction.pdf」、ルーブリックPDFは「rubric.pdf」にして下さい。）</p>
-      <FileUploader :directory="'assessment/' + assessment.t_workflow_id + '/'" file_type="application/pdf"></FileUploader>
+      <p>PDFファイルアップロード（ファイル名は「instruction.pdf」にして下さい。）</p>
+      <FileUploader :directory="'instruction/' + instruction.t_workflow_id + '/'" file_type="application/pdf"></FileUploader>
 
       <v-row>
         <v-col>
@@ -89,7 +47,6 @@
 
 <script>
 import FileUploader from '@/components/FileUploader'
-import PdfViewer from '@/components/PdfViewer'
 import AwsApi from '@/plugins/axios/modules/aws'
 
 export default {
@@ -97,38 +54,23 @@ export default {
     FileUploader,
   },
   props: {
-    assessment_prop: Object
+    instruction_prop: Object
   },
   data() {
     return {
-      assessment: {
-        is_practice: false,
-        point: 0,
-        pdf_url: "",
-        num_files: 0,
-        criteria: ""
-      },
-      point_selection: [...Array(10).keys()].map(i => ++i),
-      sample_selection: [...Array(101).keys()].map(i => ++i),
-      criteria: null,
+      instruction: {},
       files: null
     }
   },
-  watch: {
-    criteria: function(newCriteria) {
-      this.assessment.criteria = newCriteria.join(',')
-    }
-  },
   mounted() {
-    if (this.assessment_prop!==undefined) {
-      this.assessment = this.assessment_prop
-      this.criteria = this.assessment.criteria.split(',')
+    if (this.instruction_prop!==undefined) {
+      this.instruction = this.instruction_prop
       this.refresh()
     }
   },
   methods: {
     refresh() {
-      AwsApi.listDisclosedFiles('assessment/' + this.assessment.t_workflow_id).then((res)=>{
+      AwsApi.listDisclosedFiles('instruction/' + this.instruction.t_workflow_id).then((res)=>{
         this.files = res
       })
     },

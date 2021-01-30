@@ -5,10 +5,10 @@
 
       <h1 class="mb-16">振り込み情報</h1>
 
-      <p>振込に必要な以下の２つのファイル（支払い調書、振込先情報）をダウンロードし、必要事項を記入の上アップロードしてください。<br>(ファイル名は変更しないで下さい。)</p>
+      <p style="text-align:left;">謝金のお振込に必要な以下の支払い調書、振込先情報ファイルをダウンロードし、必要事項を記入の上アップロードしてください。(ファイル名は変更しないで下さい。)</p>
 
       <h3 class="mt-16" align="left">支払い調書</h3>
-      <v-btn class="my-4" color="success" @click="downloadTransferSig">支払い調書ファイルダウンロード</v-btn>
+      <v-btn class="my-4" color="success" @click="downloadTransferSig">支払い調書ファイルダウンロード<v-icon small class="mr-2" @click="downloadFile(item)">mdi-download</v-icon></v-btn>
       <ClientFileUploader
         ref="transferSig"
         :file_key="`transfer/transfer-signature/exp${user.t_experiment_id}_user${user.id}.xlsx`"
@@ -18,7 +18,7 @@
 
 
       <h3 class="mt-16" align="left">振込先情報</h3>
-      <v-btn class="my-4" color="success" @click="downloadTransferInf">振込先情報ファイルダウンロード</v-btn>
+      <v-btn class="my-4" color="success" @click="downloadTransferInf">振込先情報ファイルダウンロード<v-icon small class="mr-2" @click="downloadFile(item)">mdi-download</v-icon></v-btn>
       <ClientFileUploader
         ref="transferInf"
         :file_key="`transfer/transfer-information/exp${user.t_experiment_id}_user${user.id}.xlsx`"
@@ -35,9 +35,7 @@
 import WorkflowApi from '@/plugins/axios/modules/workflow'
 import AwsApi from '@/plugins/axios/modules/aws'
 import SessionApi from '@/plugins/axios/modules/session'
-import ClientFileUploader from '@/components/ClientFileUploader'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import StepProgress from '@/components/StepProgress'
 
 export default {
   middleware: 'redirector',
