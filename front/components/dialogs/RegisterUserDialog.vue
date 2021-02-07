@@ -139,7 +139,7 @@ export default {
       var csv = '\ufeff' + 'ID,メールアドレス,パスワード,実験ID,実験名\n'
       this.users.forEach(el => {
         var line = el['uuid'] + ',' + el['email'] + ',' + el['password'] + ',' 
-        + el['t_experiment_id'] + ',' + this.experiments.find((elm) => elm.id === this.experiment_id).name +'\n'
+        + el['t_experiment_id'] + ',' + el['experiment_name'] +'\n'
         csv += line
       })
       let blob = new Blob([csv], { type: 'text/csv' })
