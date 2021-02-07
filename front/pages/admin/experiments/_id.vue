@@ -76,7 +76,7 @@ export default {
   },
 
   mounted() {
-    ExperimentApi.getExperiment(this.$route.query.id).then((res)=>{
+    ExperimentApi.getExperiment(this.$route.params.id).then((res)=>{
       console.log(res)
       this.workflow = res.works
       this.name = res.experiment.name
@@ -96,7 +96,7 @@ export default {
     },
 
     confirmDelete () {
-      ExperimentApi.deleteExperiment(this.$route.query.id).then(()=>{
+      ExperimentApi.deleteExperiment(this.$route.params.id).then(()=>{
          this.goBack()
          this.$toast.success('削除しました！')
       })
@@ -111,7 +111,7 @@ export default {
     },
     
     confirmRegister() {
-      ExperimentApi.updateExperiment(this.$route.query.id, this.createPostData()).then(()=>{
+      ExperimentApi.updateExperiment(this.$route.params.id, this.createPostData()).then(()=>{
         this.dialog = false
         this.$toast.success('保存しました！')
       })
@@ -174,7 +174,7 @@ export default {
             })
           }
         })
-        return {"id": this.$route.query.id, "name": this.name, "data": data}
+        return {"id": this.$route.params.id, "name": this.name, "data": data}
     }
   }
 }

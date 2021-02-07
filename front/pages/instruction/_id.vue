@@ -8,10 +8,10 @@
         </v-col>
       </v-row>
 
-      <h1 align="center" class="mb-16">評価内容説明</h1>
+      <h1 align="center" class="mb-16">実験概要説明</h1>
 
       <v-row justify="center">
-        <v-col class="pa-0" cols="9">
+        <v-col class="pa-0" cols="12">
           <PdfViewer class="mb-4 sticky" :pdf_url="pdf_url"></PdfViewer>
         </v-col>
       </v-row>
@@ -51,12 +51,12 @@ export default {
 
   methods: {
     next() {
-      WorkflowApi.complete(this.$route.query.id).then((res) => {
-        this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
+      WorkflowApi.complete(this.$route.params.id).then((res) => {
+        this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })
     },
     getInstructionData() {
-      InstructionApi.getInstruction(this.$route.query.id).then((res) => {
+      InstructionApi.getInstruction(this.$route.params.id).then((res) => {
         this.pdf_url = res.pdf_url
       })
     }

@@ -237,7 +237,7 @@ export default {
   },
 
   mounted() {
-    FacesheetApi.getTFacesheet(this.$route.query.id).then((res) => {
+    FacesheetApi.getTFacesheet(this.$route.params.id).then((res) => {
       this.t_facesheet = res
       FacesheetApi.getDFacesheet(this.t_facesheet.id).then((res) => {
         if (res!==null) {
@@ -252,15 +252,15 @@ export default {
     next() {
       if (this.$refs.facesheet_form.validate()) {
         if (this.d_facesheet.id) {
-          FacesheetApi.updateDFacesheet(this.$route.query.id, this.d_facesheet).then((res)=>{
-            WorkflowApi.complete(this.$route.query.id).then((res) => {
-              this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
+          FacesheetApi.updateDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
+            WorkflowApi.complete(this.$route.params.id).then((res) => {
+              this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
             })
           })
         } else {
-          FacesheetApi.createDFacesheet(this.$route.query.id, this.d_facesheet).then((res)=>{
-            WorkflowApi.complete(this.$route.query.id).then((res) => {
-              this.$router.push({ path: res.work.name.toLowerCase()+'?id='+res.workflow.id })
+          FacesheetApi.createDFacesheet(this.$route.params.id, this.d_facesheet).then((res)=>{
+            WorkflowApi.complete(this.$route.params.id).then((res) => {
+              this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
             })
           })
         }

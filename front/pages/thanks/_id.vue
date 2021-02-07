@@ -28,9 +28,6 @@
 </template>
 
 <script>
-import WorkflowApi from '@/plugins/axios/modules/workflow'
-import StepProgress from '@/components/StepProgress'
-
 export default {
   middleware: 'redirector',
 
