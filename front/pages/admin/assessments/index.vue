@@ -81,6 +81,8 @@ export default {
       { text: 'ユーザID', value: 't_user_id' },
       { text: 'サンプルID', value: 'file_number' },
       { text: '評価値', value: 'score' },
+      { text: '理由1位', value: 'reason_first' },
+      { text: '理由2位', value: 'reason_second' },
       { text: 'コメント', value: 'comment' },
       { text: '作成日時', value: 'updated_at'},
     ],
@@ -127,10 +129,11 @@ export default {
     },
 
     downloadCSV () {
-      var csv = '\ufeff' + '実験ID,実験名,評価ID,ユーザID,サンプルID,評価値,コメント,作成日時\n'
+      var csv = '\ufeff' + '実験ID,実験名,評価ID,ユーザID,サンプルID,評価値,理由1位,理由2位,コメント,作成日時\n'
       this.assessments.forEach(el => {
         var line = el['t_experiment_id'] + ',' + this.escapeForCSV(el['name']) + ',' + el['t_assessment_id'] + ',' +
-        el['t_user_id'] + ',' + el['file_number'] + ',' + el['score'] + ',' + this.escapeForCSV(el['comment'])
+        el['t_user_id'] + ',' + el['file_number'] + ',' + el['score'] + ',' + el['reason_first'] + ',' +
+        el['reason_second'] + ',' + this.escapeForCSV(el['comment'])
          + ',' + new Date(el['updated_at']).toLocaleString() + '\n'
         csv += line
       })

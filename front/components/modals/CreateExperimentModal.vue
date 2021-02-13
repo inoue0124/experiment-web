@@ -148,7 +148,8 @@ export default {
                 "num_files": this.$refs.assessment[0].sample_list[step],
                 "point": this.$refs.assessment[0].point_list[step],
                 "is_practice": this.$refs.assessment[0].is_practice_list[step],
-                "criteria": this.$refs.assessment[0].criteria_list[step].join(",")
+                "criteria": this.$refs.assessment[0].criteria_list[step].join(","),
+                "reasons": this.$refs.assessment[0].reason_list[step].join(",")
               })
             }
             break;

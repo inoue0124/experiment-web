@@ -29,7 +29,7 @@ class AssessmentsController < ApplicationController
         @data = @d_assessments.find_by(file_number: file_num).attributes
         @data[:url] = S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/" + file_num.to_s + ".wav"
       else
-        @data = {t_assessment_id: @t_assessment.id, t_user_id: @user.id, file_number: file_num, url: S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/" + file_num.to_s + ".wav", score: 0, comment: ''}
+        @data = {t_assessment_id: @t_assessment.id, t_user_id: @user.id, file_number: file_num, url: S3_DISCLOSE_ASSESSMENT_URL + params[:workflow_id] + "/" + file_num.to_s + ".wav", score: 0, comment: '', reason_first: '', reason_second: ''}
       end
 
       @res.push @data
@@ -54,11 +54,11 @@ class AssessmentsController < ApplicationController
 
         # 変更があるデータのみupdate
         if @d[:score] != @d_assessment[:score] || @d[:comment] != @d_assessment[:comment]
-          @d_assessment.update(@d.permit(:t_assessment_id, :t_user_id, :file_number, :score, :comment).to_h)
+          @d_assessment.update(@d.permit(:t_assessment_id, :t_user_id, :file_number, :score, :comment, :reason_first, :reason_second).to_h)
         end
 
       else
-        @new_d_assess << DAssessment.new(@d.permit(:t_assessment_id, :t_user_id, :file_number, :score, :comment).to_h)
+        @new_d_assess << DAssessment.new(@d.permit(:t_assessment_id, :t_user_id, :file_number, :score, :comment, :reason_first, :reason_second).to_h)
       end
     end
 

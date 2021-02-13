@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_044911) do
+ActiveRecord::Schema.define(version: 2021_02_13_151043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2020_12_27_044911) do
     t.string "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reason_first"
+    t.string "reason_second"
     t.index ["t_assessment_id"], name: "index_d_assessments_on_t_assessment_id"
     t.index ["t_user_id"], name: "index_d_assessments_on_t_user_id"
   end
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_044911) do
     t.string "criteria"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reasons"
     t.index ["t_workflow_id"], name: "index_t_assessments_on_t_workflow_id"
   end
 

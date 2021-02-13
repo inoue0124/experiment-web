@@ -41,6 +41,16 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="!assessment.is_practice" class="mb-10">
+        <v-combobox multiple
+          v-model="reasons"
+          label="判断理由"
+          append-icon
+          chips
+          deletable-chips
+        ></v-combobox>
+      </v-row>
+
       <p>音声ファイルアップロード（テストの音声は「test.mp3」、本番音声は「1.wav, 2.wav・・・」のようにして下さい。）</p>
       <FileUploader :directory="'assessment/' + assessment.t_workflow_id + '/'" file_type="audio/*"></FileUploader>
 
@@ -89,7 +99,6 @@
 
 <script>
 import FileUploader from '@/components/FileUploader'
-import PdfViewer from '@/components/PdfViewer'
 import AwsApi from '@/plugins/axios/modules/aws'
 
 export default {
@@ -111,18 +120,23 @@ export default {
       point_selection: [...Array(10).keys()].map(i => ++i),
       sample_selection: [...Array(101).keys()].map(i => ++i),
       criteria: null,
+      reasons: null,
       files: null
     }
   },
   watch: {
     criteria: function(newCriteria) {
       this.assessment.criteria = newCriteria.join(',')
-    }
+    },
+    reasons: function(newReasons) {
+      this.assessment.reasons = newReasons.join(',')
+    },
   },
   mounted() {
     if (this.assessment_prop!==undefined) {
       this.assessment = this.assessment_prop
       this.criteria = this.assessment.criteria.split(',')
+      this.reasons = this.assessment.reasons.split(',')
       this.refresh()
     }
   },

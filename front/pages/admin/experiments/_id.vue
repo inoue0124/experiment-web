@@ -149,7 +149,8 @@ export default {
               "num_files": this.$refs.assessment[assess_index].assessment.num_files,
               "point": this.$refs.assessment[assess_index].assessment.point,
               "is_practice": this.$refs.assessment[assess_index].assessment.is_practice,
-              "criteria": this.$refs.assessment[assess_index].assessment.criteria
+              "criteria": this.$refs.assessment[assess_index].assessment.criteria,
+              "reasons": this.$refs.assessment[assess_index].assessment.reasons
             })
             assess_index+=1
             break;

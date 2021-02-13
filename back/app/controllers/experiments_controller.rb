@@ -87,7 +87,8 @@ class ExperimentsController < ApplicationController
               num_files: data[:num_files],
               point: data[:point],
               is_practice: data[:is_practice],
-              criteria: data[:criteria]
+              criteria: data[:criteria],
+              reasons: data[:reasons]
             )
             @t_assessment.save!
           when "questionnaire"
@@ -126,7 +127,8 @@ class ExperimentsController < ApplicationController
               num_files: data[:num_files],
               point: data[:point],
               is_practice: data[:is_practice],
-              criteria: data[:criteria]
+              criteria: data[:criteria],
+              reasons: data[:reasons]
             )
           when "questionnaire"
             @t_questionnaire = TQuestionnaire.find(data[:id])
