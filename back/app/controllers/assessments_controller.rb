@@ -53,7 +53,7 @@ class AssessmentsController < ApplicationController
         @d_assessment = @d_assessments.find_by(file_number: file_num)
 
         # 変更があるデータのみupdate
-        if @d[:score] != @d_assessment[:score] || @d[:comment] != @d_assessment[:comment]
+        if @d[:score] != @d_assessment[:score] || @d[:reason_first] != @d_assessment[:reason_first] || @d[:reason_second] != @d_assessment[:reason_second] || @d[:comment] != @d_assessment[:comment]
           @d_assessment.update(@d.permit(:t_assessment_id, :t_user_id, :file_number, :score, :comment, :reason_first, :reason_second).to_h)
         end
 
