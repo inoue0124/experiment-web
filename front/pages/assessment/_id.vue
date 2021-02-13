@@ -228,9 +228,4 @@ export default {
   .v-messages {
     min-height: 0;
   }
-  @media (min-width: 960px) {
-    .container {
-      max-width: 100% !important;
-    }
-  }
 </style>
