@@ -8,25 +8,21 @@
       <v-toolbar flat>
         <v-toolbar-title>実験一覧</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          class="mb-2 mr-2"
-          @click="downloadCSV()"
-        >
+        <v-btn color="primary" class="mb-2 mr-2" @click="downloadCSV()">
           CSVダウンロード
         </v-btn>
         <v-btn
           color="primary"
-          class="mb-2"
-          @click="openRegisterDialog()"
+          class="mb-2 mr-2"
+          @click="openRegisterSecondDialog()"
         >
-          新規登録
+          再実験登録
+        </v-btn>
+        <v-btn color="primary" class="mb-2" @click="openRegisterDialog()">
+          新規実験登録
         </v-btn>
 
-        <CreateExperimentModal 
-          ref="register" 
-          @register="reloadData"
-        >
+        <CreateExperimentModal ref="register" @register="reloadData">
         </CreateExperimentModal>
       </v-toolbar>
     </template>
@@ -43,9 +39,7 @@
       <v-icon small class="mr-2" @click="toEdit(item)">mdi-pencil</v-icon>
     </template>
 
-    <template v-slot:no-data>
-      データがありません
-    </template>
+    <template v-slot:no-data> データがありません </template>
   </v-data-table>
 </template>
 
@@ -60,26 +54,26 @@ export default {
 
   components: {
     ConfirmDialog,
-    CreateExperimentModal
+    CreateExperimentModal,
   },
-  
+
   data: () => ({
     dialogEdit: false,
     headers: [
-      { text: '実験ID', value: 'id'},
+      { text: '実験ID', value: 'id' },
       { text: '実験名', value: 'name' },
-      { text: '更新日時', value: 'updated_at'},
-      { text: '作成日時', value: 'created_at'},
-      { text: '操作', value: 'actions', sortable: false }
+      { text: '更新日時', value: 'updated_at' },
+      { text: '作成日時', value: 'created_at' },
+      { text: '操作', value: 'actions', sortable: false },
     ],
     experiments: [],
     editedIndex: -1,
     editedItem: {
-      name: ''
-    }
+      name: '',
+    },
   }),
 
-  mounted () {
+  mounted() {
     this.reloadData()
   },
 
@@ -90,19 +84,51 @@ export default {
       })
     },
 
-    openRegisterDialog(){
+    openRegisterDialog() {
+      this.$refs.register.title = '新規実験作成'
+      this.$refs.register.is_second_time = false
+      this.$refs.register.workflow = [
+        'agreement',
+        'questionnaire',
+        'instruction',
+        'assessment',
+        'questionnaire',
+        'transfer',
+        'thanks',
+      ]
       this.$refs.register.open()
     },
 
-    toEdit (item) {
+    openRegisterSecondDialog() {
+      this.$refs.register.title = '再実験作成'
+      this.$refs.register.is_second_time = true
+      this.$refs.register.workflow = [
+        'agreement',
+        'instruction',
+        'assessment',
+        'transfer',
+        'thanks',
+      ]
+      this.$refs.register.open()
+    },
+
+    toEdit(item) {
       this.editedIndex = this.experiments.indexOf(item)
       this.$router.push(`experiments/${this.experiments[this.editedIndex].id}`)
     },
 
-    downloadCSV () {
+    downloadCSV() {
       var csv = '\ufeff' + '実験ID,実験名,更新日時,作成日時\n'
-      this.experiments.forEach(el => {
-        var line = el['id'] + ',' + el['name'] + ',' + new Date(el['updated_at']).toLocaleString() + ',' + new Date(el['created_at']).toLocaleString() + '\n'
+      this.experiments.forEach((el) => {
+        var line =
+          el['id'] +
+          ',' +
+          el['name'] +
+          ',' +
+          new Date(el['updated_at']).toLocaleString() +
+          ',' +
+          new Date(el['created_at']).toLocaleString() +
+          '\n'
         csv += line
       })
       let blob = new Blob([csv], { type: 'text/csv' })
@@ -110,7 +136,7 @@ export default {
       link.href = window.URL.createObjectURL(blob)
       link.download = 'experiment_list.csv'
       link.click()
-    }
+    },
   },
 }
 </script>
