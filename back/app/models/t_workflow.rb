@@ -5,4 +5,5 @@ class TWorkflow < ApplicationRecord
   has_many :t_facesheets, dependent: :destroy
   has_many :t_assessments, dependent: :destroy
   has_many :t_questionnaires, dependent: :destroy
+  has_many :t_transfers, dependent: :destroy
 end
