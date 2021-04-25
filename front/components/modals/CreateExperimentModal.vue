@@ -176,6 +176,7 @@ export default {
           case 'transfer':
             data.push({
               work: 'transfer',
+              is_second_time: this.is_second_time,
             })
             break
           case 'thanks':

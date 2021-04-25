@@ -98,6 +98,12 @@ class ExperimentsController < ApplicationController
               url: data[:url]
             )
             @t_questionnaire.save!
+          when "transfer"
+            @t_transfer = TTransfer.new(
+              t_workflow_id: @t_workflow.id,
+              is_second_time: data[:is_second_time]
+            )
+            @t_transfer.save!
           end
         end
       }
