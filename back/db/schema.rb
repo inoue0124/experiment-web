@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_25_170604) do
+ActiveRecord::Schema.define(version: 2021_04_25_173133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2021_04_25_170604) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "reasons"
+    t.boolean "is_second_time"
     t.index ["t_workflow_id"], name: "index_t_assessments_on_t_workflow_id"
   end
 
