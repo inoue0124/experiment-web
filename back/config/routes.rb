@@ -42,6 +42,9 @@ Rails.application.routes.draw do
   get    '/questionnaires/:workflow_id', to: 'questionnaires#show'
   get    '/questionnaires',              to: 'questionnaires#index'
 
+  # transfer
+  get    '/transfers/:workflow_id',  to: 'transfers#show'
+
   # aws
   post '/presigned', to: 's3#getPresignedUrl'
   post '/file',  to: 's3#download'

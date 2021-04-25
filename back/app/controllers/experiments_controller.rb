@@ -88,7 +88,8 @@ class ExperimentsController < ApplicationController
               point: data[:point],
               is_practice: data[:is_practice],
               criteria: data[:criteria],
-              reasons: data[:reasons]
+              reasons: data[:reasons],
+              is_second_time: data[:is_second_time]
             )
             @t_assessment.save!
           when "questionnaire"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_13_151043) do
+ActiveRecord::Schema.define(version: 2021_04_25_173133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2021_02_13_151043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "reasons"
+    t.boolean "is_second_time"
     t.index ["t_workflow_id"], name: "index_t_assessments_on_t_workflow_id"
   end
 
@@ -120,6 +121,14 @@ ActiveRecord::Schema.define(version: 2021_02_13_151043) do
     t.index ["t_workflow_id"], name: "index_t_questionnaires_on_t_workflow_id"
   end
 
+  create_table "t_transfers", force: :cascade do |t|
+    t.bigint "t_workflow_id"
+    t.boolean "is_second_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["t_workflow_id"], name: "index_t_transfers_on_t_workflow_id"
+  end
+
   create_table "t_users", force: :cascade do |t|
     t.string "uuid"
     t.string "email"
@@ -150,6 +159,7 @@ ActiveRecord::Schema.define(version: 2021_02_13_151043) do
   add_foreign_key "t_assessments", "t_workflows"
   add_foreign_key "t_facesheets", "t_workflows"
   add_foreign_key "t_questionnaires", "t_workflows"
+  add_foreign_key "t_transfers", "t_workflows"
   add_foreign_key "t_workflows", "m_works"
   add_foreign_key "t_workflows", "t_experiments"
 end
