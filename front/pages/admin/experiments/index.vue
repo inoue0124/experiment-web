@@ -104,7 +104,6 @@ export default {
       this.$refs.register.is_second_time = true
       this.$refs.register.workflow = [
         'agreement',
-        'instruction',
         'assessment',
         'transfer',
         'thanks',
