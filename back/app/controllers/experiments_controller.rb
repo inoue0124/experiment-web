@@ -12,7 +12,7 @@ class ExperimentsController < ApplicationController
 
   # GET /experiments/1
   def show
-    @workflows = TWorkflow.where(t_experiment_id: @t_experiment.id).all
+    @workflows = TWorkflow.where(t_experiment_id: @t_experiment.id).order(id: :asc).all
 
     @works = [] # 各work名の配列
     @work_data = [] # 各workのtデータ配列
