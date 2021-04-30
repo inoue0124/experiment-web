@@ -82,9 +82,15 @@ export default {
 
   methods: {
     downloadTransferSig() {
+      let file_key
+      if (this.isSecondTime) {
+        file_key = 'transfer/transfer_signature2.xlsx'
+      } else {
+        file_key = 'transfer/transfer_signature.xlsx'
+      }
       AwsApi.downloadFile(
         true,
-        'transfer/transfer_signature.xlsx',
+        file_key,
         'transfer_signature.xlsx',
         'xlsx'
       ).then((res) => {
