@@ -58,7 +58,7 @@
 
       <p>
         音声ファイルアップロード（テストの音声は「test.mp3」、本番音声は「1.wav,
-        2.wav・・・」のようにして下さい。）
+        2.wav・・・」のようにして下さい。テストの音声をアップロードしなかった場合、評価者の画面には表示されません。）
       </p>
       <FileUploader
         :directory="'assessment/' + assessment.t_workflow_id + '/'"
@@ -66,11 +66,11 @@
       ></FileUploader>
 
       <p>
-        PDFファイルアップロード（インストラクションPDFは「instruction.pdf」、ルーブリックPDFは「rubric.pdf」にして下さい。）
+        インストラクション、ルーブリックファイルアップロード（pdfと画像ファイルが使用できます。拡張子の前のファイル名はそれぞれ「instruction」、「rubric」にして下さい。）
       </p>
       <FileUploader
         :directory="'assessment/' + assessment.t_workflow_id + '/'"
-        file_type="application/pdf"
+        file_type="application/pdf,image/*"
       ></FileUploader>
 
       <v-row>

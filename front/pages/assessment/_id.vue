@@ -9,18 +9,21 @@
     <h1 align="center" class="mb-16">評価実験</h1>
 
     <v-row justify="center">
-      <v-col class="pa-0" cols="10">
+      <v-col v-if="instruction_file_url.includes('pdf')" class="pa-0" cols="10">
         <PdfViewer
           class="mb-4 sticky"
-          :pdf_url="instruction_pdf_url"
+          :pdf_url="instruction_file_url"
         ></PdfViewer>
+      </v-col>
+      <v-col v-else class="pa-0 text-center" cols="10">
+        <img class="mb-4 sticky" :src="instruction_file_url" />
       </v-col>
     </v-row>
 
     <v-row
       class="mb-10"
       justify="center"
-      v-if="t_assessment.is_practice === false"
+      v-if="t_assessment.is_practice === false && test_url !== null"
     >
       <v-col cols="12" style="text-align: center">
         <div>テストの音声</div>
@@ -30,12 +33,17 @@
       </v-col>
     </v-row>
 
+    {{ test_url }}
+
     <v-row
       justify="center"
       v-sticky="{ zIndex: 100, stickyTop: 0, disabled: false }"
     >
-      <v-col class="pa-0" cols="8">
-        <PdfViewer class="mb-4 sticky" :pdf_url="rubric_pdf_url"></PdfViewer>
+      <v-col v-if="rubric_file_url.includes('pdf')" class="pa-0" cols="8">
+        <PdfViewer class="mb-4 sticky" :pdf_url="rubric_file_url"></PdfViewer>
+      </v-col>
+      <v-col v-else class="pa-0 text-center" cols="10">
+        <img class="mb-4 sticky" :src="rubric_file_url" />
       </v-col>
     </v-row>
 
@@ -122,6 +130,7 @@
 
 <script>
 import WorkflowApi from '@/plugins/axios/modules/workflow'
+import AwsApi from '@/plugins/axios/modules/aws'
 import AssessmentApi from '@/plugins/axios/modules/assessment'
 import PdfViewer from '@/components/PdfViewer'
 import VueSticky from 'vue-sticky'
@@ -140,8 +149,8 @@ export default {
   data() {
     return {
       t_assessment: {},
-      instruction_pdf_url: null,
-      rubric_pdf_url: null,
+      instruction_file_url: '',
+      rubric_file_url: '',
       test_url: null,
       criteria: null,
       reasons: [
@@ -232,13 +241,32 @@ export default {
       }
     },
     getAssessmentData() {
+      AwsApi.listDisclosedFiles('assessment/' + this.$route.params.id).then(
+        (res) => {
+          console.log(res)
+          let instructionKey = res.find((r) => r.key.includes('instruction'))
+            .key
+          this.instruction_file_url =
+            'https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/' +
+            instructionKey
+          let rubricKey = res.find((r) => r.key.includes('rubric')).key
+          this.rubric_file_url =
+            'https://s3-ap-northeast-1.amazonaws.com/disclose.experiment-web/' +
+            rubricKey
+        }
+      )
       AssessmentApi.getAssessment(this.$route.params.id).then((res) => {
         this.t_assessment = res.t_assessment
-        this.instruction_pdf_url = res.instruction_pdf_url
-        this.rubric_pdf_url = res.rubric_pdf_url
-        this.test_url = res.test_url
         this.criteria = this.t_assessment.criteria.split(',')
         this.reasons = this.t_assessment.reasons.split(',')
+
+        fetch(res.test_url).then((r) => {
+          if (r.status === 200) {
+            this.test_url = res.test_url
+          } else {
+            this.test_url = null
+          }
+        })
 
         AssessmentApi.getAssessmentData(this.$route.params.id).then((res) => {
           this.samples = res

@@ -14,6 +14,13 @@
         <v-btn
           color="primary"
           class="mb-2 mr-2"
+          @click="openRegisterSimpleDialog()"
+        >
+          簡易版実験登録
+        </v-btn>
+        <v-btn
+          color="primary"
+          class="mb-2 mr-2"
           @click="openRegisterSecondDialog()"
         >
           再実験登録
@@ -105,6 +112,21 @@ export default {
       this.$refs.register.workflow = [
         'agreement',
         'assessment',
+        'transfer',
+        'thanks',
+      ]
+      this.$refs.register.open()
+    },
+
+    openRegisterSimpleDialog() {
+      this.$refs.register.title = '簡易版実験作成'
+      this.$refs.register.is_second_time = true
+      this.$refs.register.workflow = [
+        'agreement',
+        'questionnaire',
+        'instruction',
+        'assessment',
+        'questionnaire',
         'transfer',
         'thanks',
       ]
