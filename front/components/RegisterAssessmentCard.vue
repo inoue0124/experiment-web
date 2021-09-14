@@ -97,7 +97,7 @@ export default {
         ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'],
       ],
       step_selection: [...Array(5).keys()].map((i) => ++i),
-      sample_selection: [...Array(100).keys()].map((i) => ++i),
+      sample_selection: [...Array(200).keys()].map((i) => ++i),
       point_selection: [...Array(9).keys()].map((i) => ++i),
       search: '',
     }

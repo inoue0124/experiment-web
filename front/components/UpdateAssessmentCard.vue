@@ -138,7 +138,7 @@ export default {
         is_second_time: false,
       },
       point_selection: [...Array(10).keys()].map((i) => ++i),
-      sample_selection: [...Array(101).keys()].map((i) => ++i),
+      sample_selection: [...Array(200).keys()].map((i) => ++i),
       criteria: null,
       reasons: null,
       files: null,
