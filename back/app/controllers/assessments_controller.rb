@@ -69,23 +69,34 @@ class AssessmentsController < ApplicationController
   # GET /assessments/search
   def search
 
-    @assessment_result = TExperiment.joins(t_workflows: { t_assessments: :d_assessments } )
-      .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*")
+    @assessment_query = TExperiment.joins(t_workflows: { t_assessments: :d_assessments } )
 
     if params[:t_experiment_id]
-      @assessment_result =@assessment_result.where(id: params[:t_experiment_id])
+      @assessment_query = @assessment_query.where(id: params[:t_experiment_id])
     end
 
     if params[:t_assessment_id]
-      @assessment_result =@assessment_result.where("t_assessment_id=#{params[:t_assessment_id]}")
+      @assessment_query = @assessment_query.where("t_assessment_id=#{params[:t_assessment_id]}")
     end
 
     if params[:t_user_id]
-      @assessment_result =@assessment_result.where("t_user_id=#{params[:t_user_id]}")
+      @assessment_query = @assessment_query.where("t_user_id=#{params[:t_user_id]}")
+    end
+    @count = @assessment_query.count
+
+    if params[:limit].to_i != -1 and params[:limit] and params[:page]
+      page = params[:page].to_i
+      limit = params[:limit].to_i
+      offset = (page - 1) * limit
+      @assessment_query = @assessment_query.limit(limit).offset(offset)
     end
 
-    @assessment_result = @assessment_result.order('t_experiment_id ASC').order('t_user_id ASC').order('t_assessment_id ASC').order('file_number ASC').all
+    @data = @assessment_query.order('t_experiment_id ASC').order('t_user_id ASC').order('t_assessment_id ASC').order('file_number ASC')
+            .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*").all
 
-    render json: @assessment_result
+    render json: {
+      data: @data,
+      count: @count
+    }
   end
 end
