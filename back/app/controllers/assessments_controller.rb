@@ -83,9 +83,9 @@ class AssessmentsController < ApplicationController
       @assessment_query = @assessment_query.where("t_user_id=#{params[:t_user_id]}")
     end
     @count = @assessment_query.count
-    @exp_ids = @assessment_query.select("t_experiment_id").distinct.map { |e| e.t_experiment_id }
-    @assess_ids = @assessment_query.select("t_assessment_id").distinct.map { |e| e.t_assessment_id }
-    @user_ids = @assessment_query.select("t_user_id").distinct.map { |e| e.t_user_id }
+    @exp_ids = @assessment_query.select("t_experiment_id").distinct.map { |e| e.t_experiment_id }.sort
+    @assess_ids = @assessment_query.select("t_assessment_id").distinct.map { |e| e.t_assessment_id }.sort
+    @user_ids = @assessment_query.select("t_user_id").distinct.map { |e| e.t_user_id }.sort
 
     if params[:limit].to_i != -1 and params[:limit] and params[:page]
       page = params[:page].to_i
