@@ -111,15 +111,9 @@ export default {
       }).then((res) => {
         this.assessments = res.data
         this.all_data_count = res.count
-        this.exp_ids = res.data
-          .filter(this.distinct(['t_experiment_id']))
-          .map((elm) => elm.t_experiment_id)
-        this.assess_ids = res.data
-          .filter(this.distinct(['t_assessment_id']))
-          .map((elm) => elm.t_assessment_id)
-        this.user_ids = res.data
-          .filter(this.distinct(['t_user_id']))
-          .map((elm) => elm.t_user_id)
+        this.exp_ids = res.exp_ids
+        this.assess_ids = res.assess_ids
+        this.user_ids = res.user_ids
         this.loading = false
       })
     },
@@ -135,6 +129,9 @@ export default {
       }).then((res) => {
         this.assessments = res.data
         this.all_data_count = res.count
+        this.exp_ids = res.exp_ids
+        this.assess_ids = res.assess_ids
+        this.user_ids = res.user_ids
         this.loading = false
       })
     },
