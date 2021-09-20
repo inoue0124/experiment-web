@@ -6,10 +6,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @t_user = TUser.find_by(email: params[:session][:email].downcase)
-    
+    @t_user = TUser.order(updated_at: :desc).find_by(email: params[:session][:email].downcase)
+
     if @t_user.nil?
-      @t_user = TUser.find_by(uuid: params[:session][:email])
+      @t_user = TUser.order(updated_at: :desc).find_by(uuid: params[:session][:email])
     end
 
     if @t_user && @t_user.authenticate(params[:session][:password])
