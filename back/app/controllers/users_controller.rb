@@ -69,8 +69,13 @@ class UsersController < ApplicationController
   def bulkCreate
     @users = []
     for user in params[:_json] do
-      user[:user_type] = 1
-      @users << TUser.new(user.permit(:uuid, :email, :password, :password_confirmation, :t_experiment_id, :user_type).to_h)
+      @t_user = TUser.order(updated_at: :desc).find_by(email: user[:email].downcase)
+      if not @t_user.nil?
+        @t_user.update(uuid: user[:uuid], password: user[:password], password_confirmation: user[:password_confirmation], t_experiment_id: user[:t_experiment_id], done_workflow_id: nil)
+      else
+        user[:user_type] = 1
+        @users << TUser.new(user.permit(:uuid, :email, :password, :password_confirmation, :t_experiment_id, :user_type).to_h)
+      end
     end
     TUser.import @users
   end
