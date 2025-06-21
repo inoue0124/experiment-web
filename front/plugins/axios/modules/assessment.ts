@@ -14,6 +14,10 @@ export default {
     return axios.$post(`assessments/data/${id}`, body)
   },
 
+  getPracticeAssessmentData(id:number) {
+    return axios.$get(`assessments/practice/${id}`)
+  },
+
   searchAssessments(params:Object) {
     return axios.$get(`assessments/search`, { params: params })
   },
