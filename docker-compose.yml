@@ -3,11 +3,12 @@ version: "3"
 services:
   db:
     container_name: exp_db
-    image: postgres:11.4-alpine
+    image: postgres:16-alpine
     environment:
-      - TZ=Asia/Tokyo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     volumes:
-      - ./back/tmp/db:/var/lib/postgresql/data
+      - ./back/tmp/db_pg16:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -32,6 +33,7 @@ services:
     command: npm run dev
     volumes:
       - ./front:/app
+      - /app/node_modules
     ports:
       - 8080:3000
     depends_on:
