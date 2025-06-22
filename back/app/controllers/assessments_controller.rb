@@ -66,6 +66,47 @@ class AssessmentsController < ApplicationController
     DAssessment.import @new_d_assess
   end
 
+  def getPracticeAssessmentData
+    @user = current_user
+    @current_workflow = TWorkflow.find(params[:workflow_id])
+    
+    # 同じ実験内の全ワークフローを取得
+    @experiment_workflows = TWorkflow.where(t_experiment_id: @current_workflow.t_experiment_id)
+                                    .order(id: :asc)
+    
+    # 現在のワークフローより前の練習モードワークフローを検索
+    @practice_workflow = nil
+    @experiment_workflows.each do |wf|
+      # 現在のワークフローより前のもののみを対象
+      if wf.id < @current_workflow.id
+        assessment = TAssessment.find_by(t_workflow_id: wf.id)
+        if assessment&.is_practice == true
+          @practice_workflow = wf
+          break # 最初に見つかった練習モードを使用
+        end
+      end
+    end
+    
+    # 練習ワークフローが見つからない場合は空の配列を返す
+    if @practice_workflow.nil?
+      render json: { practice_data: [] }, status: :ok
+      return
+    end
+    
+    # 練習モードの音声ファイルURLを生成
+    @practice_assessment = TAssessment.find_by(t_workflow_id: @practice_workflow.id)
+    @practice_samples = []
+    
+    for file_num in 1..@practice_assessment.num_files do
+      @practice_samples << {
+        file_number: file_num,
+        url: S3_DISCLOSE_ASSESSMENT_URL + @practice_workflow.id.to_s + "/" + file_num.to_s + ".wav"
+      }
+    end
+    
+    render json: { practice_data: @practice_samples }, status: :ok
+  end
+
   # GET /assessments/search
   def search
 

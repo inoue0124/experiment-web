@@ -1,53 +1,105 @@
 <template>
-  <v-col cols="12">
-    <v-row justify="center">
-      <v-col cols="7" align="center">
-        <StepProgress class="mb-10"></StepProgress>
-      </v-col>
-    </v-row>
+  <div>
+    <!-- ヘッダー部分 -->
+    <v-col cols="12">
+      <v-row justify="center">
+        <v-col cols="7" align="center">
+          <StepProgress class="mb-10"></StepProgress>
+        </v-col>
+      </v-row>
 
-    <h1 align="center" class="mb-16">評価実験</h1>
+      <h1 align="center" class="mb-16">評価実験</h1>
 
-    <v-row justify="center">
-      <v-col v-if="instruction_file_url.includes('pdf')" class="pa-0" cols="10">
-        <PdfViewer
-          class="mb-4 sticky"
-          :pdf_url="instruction_file_url"
-        ></PdfViewer>
-      </v-col>
-      <v-col v-else class="pa-0 text-center" cols="10">
-        <img class="mb-4 sticky" :src="instruction_file_url" />
-      </v-col>
-    </v-row>
+      <v-row justify="center">
+        <v-col v-if="instruction_file_url.includes('pdf')" class="pa-0" cols="10">
+          <PdfViewer
+            class="mb-4 sticky"
+            :pdf_url="instruction_file_url"
+          ></PdfViewer>
+        </v-col>
+        <v-col v-else class="pa-0 text-center" cols="10">
+          <img class="mb-4 sticky" :src="instruction_file_url" />
+        </v-col>
+      </v-row>
 
-    <v-row
-      class="mb-10"
-      justify="center"
-      v-if="t_assessment.is_practice === false && test_url !== null"
-    >
-      <v-col cols="12" style="text-align: center">
-        <div>テストの音声</div>
-        <audio controls　controlslist="nodownload">
-          <source :src="test_url" />
-        </audio>
-      </v-col>
-    </v-row>
+      <v-row
+        class="mb-10"
+        justify="center"
+        v-if="t_assessment.is_practice === false && test_url !== null"
+      >
+        <v-col cols="12" style="text-align: center">
+          <div>テストの音声</div>
+          <audio controls controlslist="nodownload">
+            <source :src="test_url" />
+          </audio>
+        </v-col>
+      </v-row>
 
-    {{ test_url }}
+      <!-- 使用方法の案内 -->
+      <v-alert
+        v-if="t_assessment.is_practice === false"
+        type="info"
+        outlined
+        class="mb-4"
+      >
+        <div class="d-flex align-center">
+          <span>
+            左側にルーブリック、右側に評価フォームが表示されます。右側は下にスクロールして全ての項目を評価してください。
+          </span>
+        </div>
+      </v-alert>
+    </v-col>
 
-    <v-row
-      justify="center"
-      v-sticky="{ zIndex: 100, stickyTop: 0, disabled: false }"
-    >
-      <v-col v-if="rubric_file_url.includes('pdf')" class="pa-0" cols="8">
-        <PdfViewer class="mb-4 sticky" :pdf_url="rubric_file_url"></PdfViewer>
-      </v-col>
-      <v-col v-else class="pa-0 text-center" cols="10">
-        <img class="mb-4 sticky" :src="rubric_file_url" />
-      </v-col>
-    </v-row>
+    <!-- 練習モード：縦並び / 本番モード：左右分割 -->
+    <div v-if="t_assessment.is_practice === true" class="practice-layout">
+      <!-- ルーブリック（上） -->
+      <div class="rubric-section">
+        <div v-if="rubric_file_url.includes('pdf')" class="pa-2">
+          <PdfViewer :pdf_url="rubric_file_url"></PdfViewer>
+        </div>
+        <div v-else class="pa-2 text-center">
+          <img :src="rubric_file_url" style="max-width: 100%; height: auto;" />
+        </div>
+      </div>
 
-    <v-simple-table>
+      <!-- 評価フォーム（下） -->
+      <div class="assessment-section">
+        <div class="practice-audio-list">
+          <div v-for="item in samples" :key="item.file_number" class="practice-item">
+            <span class="practice-label">レベル {{ item.file_number }}</span>
+            <audio controls controlslist="nodownload" class="practice-audio">
+              <source :src="item.url" />
+            </audio>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="full-width-layout">
+      <div class="rubric-panel">
+        <div class="sticky-rubric">
+          <div v-if="rubric_file_url.includes('pdf')" class="pa-1">
+            <PdfViewer :pdf_url="rubric_file_url"></PdfViewer>
+          </div>
+          <div v-else class="pa-1 text-center">
+            <img :src="rubric_file_url" style="max-width: 100%; height: auto;" />
+          </div>
+
+          <!-- 練習音声参考エリア -->
+          <div v-if="practiceData.length > 0" class="practice-reference">
+            <h4 class="practice-title">ベンチマーク音声</h4>
+            <div v-for="item in practiceData" :key="item.file_number" class="practice-item">
+              <span class="practice-label">レベル {{ item.file_number }}</span>
+              <audio controls controlslist="nodownload" class="practice-audio">
+                <source :src="item.url" />
+              </audio>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assessment-panel">
+        <v-simple-table>
       <template v-slot:default>
         <tbody>
           <tr v-for="item in samples" :key="item.file_number" align="center">
@@ -55,77 +107,65 @@
               <span v-if="t_assessment.is_practice === true">レベル</span>
               {{ item.file_number }}
             </td>
-            <td>
-              <audio controls　controlslist="nodownload">
+            <td class="audio-cell">
+              <audio controls controlslist="nodownload">
                 <source :src="item.url" />
               </audio>
             </td>
 
             <!-- 再実験の時はスコアだけ -->
-            <div v-if="t_assessment.is_second_time">
-              <td v-if="t_assessment.is_practice === false">
-                <v-radio-group v-model="item.score" row>
-                  <div v-for="val in t_assessment.point" :key="val">
-                    <div>
-                      {{ criteria[val - 1] ? criteria[val - 1] : '・' }}
-                    </div>
-                    <v-radio class="mr-10" :value="val"></v-radio>
+            <td v-if="t_assessment.is_second_time && t_assessment.is_practice === false">
+              <v-radio-group v-model="item.score" row>
+                <div v-for="val in t_assessment.point" :key="val" class="score-item">
+                  <div class="score-label">
+                    {{ criteria[val - 1] ? criteria[val - 1] : '・' }}
                   </div>
-                </v-radio-group>
-              </td>
-            </div>
+                  <v-radio class="mr-10" :value="val"></v-radio>
+                </div>
+              </v-radio-group>
 
-            <div v-else>
-              <td v-if="t_assessment.is_practice === false">
-                <v-radio-group v-model="item.score" row>
-                  <div v-for="val in t_assessment.point" :key="val">
-                    <v-radio
-                      :value="val"
-                      :label="criteria[val - 1] ? criteria[val - 1] : '・'"
-                    ></v-radio>
+              <!-- コメント欄 -->
+              <v-textarea
+                v-model="item.comment"
+                label="コメント"
+                outlined
+                class="vtextarea"
+                rows="3"
+              ></v-textarea>
+            </td>
+
+            <td v-else-if="!t_assessment.is_second_time && t_assessment.is_practice === false">
+              <v-radio-group v-model="item.score" row>
+                <div v-for="val in t_assessment.point" :key="val" class="score-item">
+                  <div class="score-label">
+                    {{ criteria[val - 1] ? criteria[val - 1] : '・' }}
                   </div>
-                </v-radio-group>
+                  <v-radio :value="val"></v-radio>
+                </div>
+              </v-radio-group>
 
-                <v-radio-group v-model="item.reason_first" row>
-                  <span class="mr-5">1位</span>
-                  <div v-for="val in reasons.length" :key="val">
-                    <v-radio
-                      :value="reasons[val - 1]"
-                      :label="reasons[val - 1]"
-                    ></v-radio>
-                  </div>
-                </v-radio-group>
-
-                <v-radio-group v-model="item.reason_second" row>
-                  <span class="mr-5">2位</span>
-                  <div v-for="val in reasons.length" :key="val">
-                    <v-radio
-                      :value="reasons[val - 1]"
-                      :label="reasons[val - 1]"
-                    ></v-radio>
-                  </div>
-                </v-radio-group>
-
-                <v-textarea
-                  auto-grow
-                  v-model="item.comment"
-                  label="コメント"
-                  outlined
-                  class="vtextarea"
-                  v-if="t_assessment.is_practice === false"
-                ></v-textarea>
-              </td>
-            </div>
+              <!-- コメント欄 -->
+              <v-textarea
+                v-model="item.comment"
+                label="コメント"
+                outlined
+                class="vtextarea"
+                rows="3"
+              ></v-textarea>
+            </td>
           </tr>
         </tbody>
       </template>
     </v-simple-table>
+      </div>
+    </div>
 
+    <!-- ナビゲーションボタン -->
     <div align="center" class="mt-10">
       <v-btn color="primary" @click="prev">前へ戻る</v-btn>
       <v-btn color="primary" @click="next">次へ進む</v-btn>
     </div>
-  </v-col>
+  </div>
 </template>
 
 <script>
@@ -163,6 +203,7 @@ export default {
       ],
       samples: null,
       autoSaveTimer: null,
+      practiceData: [],
     }
   },
 
@@ -185,22 +226,12 @@ export default {
           // スコアが0のときバリデーションエラーにする
           let isValid = true
           this.samples.forEach((item) => {
-            if (this.t_assessment.is_second_time) {
-              if (item.score === 0) {
-                isValid = false
-              }
-            } else {
-              if (
-                item.score === 0 ||
-                item.reason_first === '' ||
-                item.reason_second === ''
-              ) {
-                isValid = false
-              }
+            if (item.score === 0) {
+              isValid = false
             }
           })
           if (!isValid) {
-            alert('すべての音声のレベルを判定して下さい。')
+            alert('すべての音声のレベルを判定して下さい。\n※右側の画面を下にスクロールして、すべての項目を確認してください。')
             return
           }
           WorkflowApi.complete(this.$route.params.id).then((res) => {
@@ -274,6 +305,11 @@ export default {
 
         // 本番の時はデータを取得
         if (this.t_assessment.is_practice === false) {
+          // 練習データを取得
+          AssessmentApi.getPracticeAssessmentData(this.$route.params.id).then((practiceRes) => {
+            this.practiceData = practiceRes.practice_data
+          })
+
           this.autoSaveTimer = setInterval(() => {
             AssessmentApi.updateAssessmentData(
               this.$route.params.id,
@@ -291,17 +327,166 @@ export default {
 td {
   background: #f0f8ff;
   border-bottom: none !important;
-  padding: 0px !important;
+  padding: 1px 4px !important;
+  font-size: 0.9rem;
+  line-height: 1.2;
 }
 tr:nth-child(odd) td {
   background: #fff;
-  padding: 0px;
+  padding: 1px 4px !important;
 }
 .vtextarea {
-  min-width: 300px;
-  padding-top: 30px !important;
+  min-width: 200px;
+  padding-top: 5px !important;
+  margin-bottom: 3px !important;
+  margin-right: 16px !important;
 }
 .v-messages {
   min-height: 0;
 }
+.v-radio-group {
+  margin-bottom: 6px !important;
+  margin-top: 2px !important;
+}
+.v-radio {
+  margin-right: 1px !important;
+  flex: 0 0 auto;
+}
+.v-application .mr-10 {
+  margin-right: 2px !important;
+}
+.mr-5 {
+  margin-right: 2px !important;
+}
+.v-radio-group--row .v-radio {
+  margin-right: 1px !important;
+}
+.v-input {
+  margin-bottom: 2px !important;
+}
+.v-input--radio-group .v-input__slot {
+  margin-bottom: 0 !important;
+}
+.v-radio .v-label {
+  font-size: 0.75rem !important;
+  color: #555;
+}
+.v-radio .v-input--selection-controls__input {
+  margin-right: 2px;
+}
+.score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.score-label {
+  text-align: center;
+  margin-bottom: 2px;
+}
+.audio-cell {
+  padding: 8px !important;
+  width: 300px;
+}
+.practice-layout .v-simple-table {
+  text-align: center;
+}
+.practice-layout td {
+  text-align: center !important;
+}
+.practice-layout .audio-cell {
+  width: auto !important;
+}
+.practice-layout td:first-child {
+  width: 80px !important;
+  padding-right: 4px !important;
+}
+.practice-layout .audio-cell {
+  width: auto !important;
+  padding-left: 4px !important;
+}
+
+/* 練習音声参考エリアのスタイル */
+.practice-reference {
+  border-top: 2px solid #e0e0e0;
+  margin: 16px 8px 0 8px;
+  padding: 16px;
+}
+
+.practice-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #424242;
+  margin: 0 0 12px 0;
+  padding: 4px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.practice-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.practice-label {
+  min-width: 70px;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.practice-audio {
+  flex: 1;
+  height: 32px;
+}
+.practice-audio-list {
+  padding: 16px;
+}
+.full-width-layout {
+  display: flex;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  height: 100vh;
+}
+.rubric-panel {
+  width: 50%;
+  border-right: 1px solid #ddd;
+}
+.sticky-rubric {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.assessment-panel {
+  width: 50%;
+  height: 100vh;
+  overflow-y: auto;
+}
+.practice-layout {
+  display: flex;
+  flex-direction: column;
+}
+.rubric-section {
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+}
+.assessment-section {
+  flex: 1;
+}
+.audio-form-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  vertical-align: top !important;
+  height: auto !important;
+}
+tr {
+  height: auto !important;
+}
+tbody tr {
+  height: auto !important;
+}
+
 </style>

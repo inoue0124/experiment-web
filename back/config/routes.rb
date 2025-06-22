@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   # assessment
   get    '/assessments/search',  to: 'assessments#search'
+  get    '/assessments/practice/:workflow_id', to: 'assessments#getPracticeAssessmentData'
   get    '/assessments/:workflow_id', to: 'assessments#getAssessment'
   get    '/assessments/data/:workflow_id', to: 'assessments#getAssessmentData'
   post   '/assessments/data/:workflow_id', to: 'assessments#updateAssessmentData'
