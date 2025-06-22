@@ -8,6 +8,7 @@
       <iframe 
         :src="`${form_url}`"
         width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0"
+        @load="onIframeLoad"
       >
         読み込んでいます…
       </iframe>
@@ -23,7 +24,7 @@
       </ConfirmDialog>
 
       <div align="center">
-        <v-btn color="primary" @click="next">次へ進む</v-btn>
+        <v-btn color="primary" @click="next" :disabled="isLoading">次へ進む</v-btn>
       </div>
     </v-col>
   </v-row>
@@ -44,7 +45,8 @@ export default {
 
   data() {
     return {
-      form_url: ""
+      form_url: "",
+      isLoading: true
     }
   },
 
@@ -62,6 +64,9 @@ export default {
       WorkflowApi.complete(this.$route.params.id).then((res) => {
         this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
       })
+    },
+    onIframeLoad() {
+      this.isLoading = false
     }
   }
 }
