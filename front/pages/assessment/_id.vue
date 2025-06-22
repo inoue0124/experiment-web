@@ -35,8 +35,6 @@
         </v-col>
       </v-row>
 
-      {{ test_url }}
-
       <!-- 使用方法の案内 -->
       <v-alert
         v-if="t_assessment.is_practice === false"
