@@ -18,7 +18,7 @@
           ></PdfViewer>
         </v-col>
         <v-col v-else class="pa-0 text-center" cols="10">
-          <img class="mb-4 sticky" :src="instruction_file_url" />
+          <img class="mb-4 sticky" :src="instruction_file_url" style="max-width: 100%; height: auto;" />
         </v-col>
       </v-row>
 
