@@ -5,7 +5,15 @@
 
       <h1 align="center" class="mb-16">アンケート</h1>
 
-      <iframe 
+      <v-alert
+        type="info"
+        outlined
+        class="mb-4"
+      >
+        フォーム画面が表示されるまでに少し時間がかかりますので、お待ちください。
+      </v-alert>
+
+      <iframe
         :src="`${form_url}`"
         width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0"
         @load="onIframeLoad"
@@ -41,7 +49,8 @@ export default {
   middleware: 'redirector',
 
   components: {
-    ConfirmDialog
+    ConfirmDialog,
+    StepProgress
   },
 
   data() {
@@ -56,7 +65,7 @@ export default {
     QuestionnaireApi.getQuestionnaire(this.$route.params.id).then((res) => {
       this.form_url = res.url
     })
-    
+
     // 最初のワークフローかどうかをチェック
     WorkflowApi.getWork().then((res) => {
       this.isFirstWorkflow = res.is_first_workflow || false
