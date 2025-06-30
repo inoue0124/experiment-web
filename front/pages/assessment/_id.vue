@@ -44,7 +44,7 @@
       >
         <div class="d-flex align-center">
           <span>
-            左側にルーブリック、右側に評価フォームが表示されます。右側は下にスクロールして全ての項目を評価してください。
+            左側にルーブリック、右側に評価フォームが表示されます。右側は下にスクロールして全ての項目を評価してください。コメントも必須です。なお、途中でログアウトしても（このサイトを閉じても）途中までの記録は残ります。
           </span>
         </div>
       </v-alert>
@@ -102,7 +102,7 @@
         <v-simple-table>
       <template v-slot:default>
         <tbody>
-          <tr v-for="item in samples" :key="item.file_number" align="center">
+          <tr v-for="item in samples" :key="item.file_number" align="center" :class="{ 'error-highlight': validationErrors[item.file_number] }">
             <td>
               <span v-if="t_assessment.is_practice === true">レベル</span>
               {{ item.file_number }}
@@ -162,7 +162,7 @@
 
     <!-- ナビゲーションボタン -->
     <div align="center" class="mt-10">
-      <v-btn color="primary" @click="prev">前へ戻る</v-btn>
+      <v-btn v-if="!isFirstWorkflow" color="primary" @click="prev">前へ戻る</v-btn>
       <v-btn color="primary" @click="next">次へ進む</v-btn>
     </div>
   </div>
@@ -204,11 +204,18 @@ export default {
       samples: null,
       autoSaveTimer: null,
       practiceData: [],
+      validationErrors: {},
+      isFirstWorkflow: false
     }
   },
 
   mounted() {
     this.getAssessmentData()
+    
+    // 最初のワークフローかどうかをチェック
+    WorkflowApi.getWork().then((res) => {
+      this.isFirstWorkflow = res.is_first_workflow || false
+    })
   },
 
   destroyed() {
@@ -225,15 +232,39 @@ export default {
         ).then((res) => {
           // スコアが0のときバリデーションエラーにする
           let isValid = true
+          let hasEmptyComment = false
+          this.validationErrors = {}
+          
           this.samples.forEach((item) => {
+            let hasError = false
             if (item.score === 0) {
               isValid = false
+              hasError = true
+            }
+            if (!item.comment || item.comment.trim() === '') {
+              hasEmptyComment = true
+              hasError = true
+            }
+            if (hasError) {
+              this.validationErrors[item.file_number] = true
             }
           })
-          if (!isValid) {
-            alert('すべての音声のレベルを判定して下さい。\n※右側の画面を下にスクロールして、すべての項目を確認してください。')
+          
+          if (!isValid || hasEmptyComment) {
+            let message = ''
+            if (!isValid && hasEmptyComment) {
+              message = 'すべての音声のレベルを判定し、コメントを記入してください。\n※右側の画面を下にスクロールして、すべての項目を確認してください。'
+            } else if (!isValid) {
+              message = 'すべての音声のレベルを判定して下さい。\n※右側の画面を下にスクロールして、すべての項目を確認してください。'
+            } else {
+              message = 'すべての音声にコメントを記入してください。\n※右側の画面を下にスクロールして、すべての項目を確認してください。'
+            }
+            alert(message)
             return
           }
+          
+          // エラーがなければ、バリデーションエラーをクリア
+          this.validationErrors = {}
           WorkflowApi.complete(this.$route.params.id).then((res) => {
             clearInterval(this.autoSaveTimer)
             this.$router.push(
@@ -255,7 +286,7 @@ export default {
         AssessmentApi.updateAssessmentData(
           this.$route.params.id,
           this.samples
-        ).then((res) => {
+        ).then(() => {
           WorkflowApi.undo().then((res) => {
             clearInterval(this.autoSaveTimer)
             this.$router.push(
@@ -268,6 +299,12 @@ export default {
           this.$router.push(
             `/${res.work.name.toLowerCase()}/${res.workflow.id}`
           )
+        }).catch((error) => {
+          if (error.response && error.response.data && error.response.data.error) {
+            alert(error.response.data.error)
+          } else {
+            alert('エラーが発生しました')
+          }
         })
       }
     },
@@ -424,6 +461,7 @@ tr:nth-child(odd) td {
 .practice-item {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-bottom: 8px;
   gap: 8px;
 }
@@ -436,7 +474,7 @@ tr:nth-child(odd) td {
 }
 
 .practice-audio {
-  flex: 1;
+  width: 300px;
   height: 32px;
 }
 .practice-audio-list {
@@ -487,6 +525,21 @@ tr {
 }
 tbody tr {
   height: auto !important;
+}
+
+/* バリデーションエラーのハイライト */
+.error-highlight .v-radio-group {
+  border: 2px solid #ff5252;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.error-highlight .v-textarea {
+  border: 2px solid #ff5252;
+}
+
+.error-highlight .v-input__slot {
+  border-color: #ff5252 !important;
 }
 
 </style>

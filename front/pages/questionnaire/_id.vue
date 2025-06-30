@@ -24,6 +24,7 @@
       </ConfirmDialog>
 
       <div align="center">
+        <v-btn v-if="!isFirstWorkflow" color="primary" @click="prev">前へ戻る</v-btn>
         <v-btn color="primary" @click="next" :disabled="isLoading">次へ進む</v-btn>
       </div>
     </v-col>
@@ -46,13 +47,19 @@ export default {
   data() {
     return {
       form_url: "",
-      isLoading: true
+      isLoading: true,
+      isFirstWorkflow: false
     }
   },
 
   mounted() {
     QuestionnaireApi.getQuestionnaire(this.$route.params.id).then((res) => {
       this.form_url = res.url
+    })
+    
+    // 最初のワークフローかどうかをチェック
+    WorkflowApi.getWork().then((res) => {
+      this.isFirstWorkflow = res.is_first_workflow || false
     })
   },
 
@@ -67,6 +74,19 @@ export default {
     },
     onIframeLoad() {
       this.isLoading = false
+    },
+    prev() {
+      WorkflowApi.undo().then((res) => {
+        this.$router.push(
+          `/${res.work.name.toLowerCase()}/${res.workflow.id}`
+        )
+      }).catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          alert(error.response.data.error)
+        } else {
+          alert('エラーが発生しました')
+        }
+      })
     }
   }
 }

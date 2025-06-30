@@ -26,6 +26,7 @@
       </v-row>
 
       <div align="center" class="mt-10">
+        <v-btn v-if="!isFirstWorkflow" color="primary" @click="prev">前へ戻る</v-btn>
         <v-btn color="primary" @click="next">次へ進む</v-btn>
       </div>
     </v-col>
@@ -47,11 +48,17 @@ export default {
   data() {
     return {
       instruction_file_url: '',
+      isFirstWorkflow: false
     }
   },
 
   mounted() {
     this.getInstructionData()
+    
+    // 最初のワークフローかどうかをチェック
+    WorkflowApi.getWork().then((res) => {
+      this.isFirstWorkflow = res.is_first_workflow || false
+    })
   },
 
   destroyed() {
@@ -62,6 +69,19 @@ export default {
     next() {
       WorkflowApi.complete(this.$route.params.id).then((res) => {
         this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      })
+    },
+    prev() {
+      WorkflowApi.undo().then((res) => {
+        this.$router.push(
+          `/${res.work.name.toLowerCase()}/${res.workflow.id}`
+        )
+      }).catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          alert(error.response.data.error)
+        } else {
+          alert('エラーが発生しました')
+        }
       })
     },
     getInstructionData() {
