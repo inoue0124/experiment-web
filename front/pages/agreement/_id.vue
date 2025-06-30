@@ -24,6 +24,7 @@
 
         </v-form>
 
+        <v-btn v-if="!isFirstWorkflow" color="primary" @click="prev">前へ戻る</v-btn>
         <v-btn color="primary" type="submit" @click="next">次へ進む</v-btn>
 
         <v-card class="mt-16">
@@ -54,13 +55,19 @@ export default {
   data: () => ({
     isAgree: false,
     claim_text: '',
-    name: ''
+    name: '',
+    isFirstWorkflow: false
   }),
 
   mounted() {
     AgreementApi.getAgreement(this.$route.params.id).then((res) => {
       //this.claim_text = res.text.replace(/<p><br><\/p>/g, '')
       this.claim_text = res.text
+    })
+    
+    // 最初のワークフローかどうかをチェック
+    WorkflowApi.getWork().then((res) => {
+      this.isFirstWorkflow = res.is_first_workflow || false
     })
   },
 
@@ -72,6 +79,19 @@ export default {
           this.$router.push(res.work.name.toLowerCase())
         })
       }
+    },
+    prev() {
+      WorkflowApi.undo().then((res) => {
+        this.$router.push(
+          `/${res.work.name.toLowerCase()}/${res.workflow.id}`
+        )
+      }).catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          alert(error.response.data.error)
+        } else {
+          alert('エラーが発生しました')
+        }
+      })
     }
   }
 }

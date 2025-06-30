@@ -185,6 +185,7 @@
           
 
           <div align="center">
+            <v-btn v-if="!isFirstWorkflow" color="primary" @click="prev">前へ戻る</v-btn>
             <v-btn color="primary" @click="next">次へ進む</v-btn>
           </div>
 
@@ -232,7 +233,8 @@ export default {
       teaching_years_selection: [...Array(40).keys()].map(i => ++i),
       teach_speaking_experience_selection: ["担当したことがある", "担当したことがない（１年未満の場合はこちら。）"],
       is_japan_selection: ["日本", "日本以外"],
-      institute_selection: ["日本語学校", "高等教育機関（大学など）", "中等教育機関（中学や高校など）", "プライベート", "その他"]
+      institute_selection: ["日本語学校", "高等教育機関（大学など）", "中等教育機関（中学や高校など）", "プライベート", "その他"],
+      isFirstWorkflow: false
     }
   },
 
@@ -244,6 +246,11 @@ export default {
           this.d_facesheet = res
         }
       })
+    })
+    
+    // 最初のワークフローかどうかをチェック
+    WorkflowApi.getWork().then((res) => {
+      this.isFirstWorkflow = res.is_first_workflow || false
     })
   },
 
@@ -264,6 +271,52 @@ export default {
             })
           })
         }
+      }
+    },
+    prev() {
+      // データを保存してから前へ戻る
+      if (this.d_facesheet.id) {
+        FacesheetApi.updateDFacesheet(this.$route.params.id, this.d_facesheet).then(() => {
+          WorkflowApi.undo().then((res) => {
+            this.$router.push(
+              `/${res.work.name.toLowerCase()}/${res.workflow.id}`
+            )
+          }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+              alert(error.response.data.error)
+            } else {
+              alert('エラーが発生しました')
+            }
+          })
+        })
+      } else if (this.d_facesheet.name || this.d_facesheet.email || this.d_facesheet.gender || this.d_facesheet.age) {
+        // 入力されたデータがある場合は保存
+        FacesheetApi.createDFacesheet(this.$route.params.id, this.d_facesheet).then(() => {
+          WorkflowApi.undo().then((res) => {
+            this.$router.push(
+              `/${res.work.name.toLowerCase()}/${res.workflow.id}`
+            )
+          }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+              alert(error.response.data.error)
+            } else {
+              alert('エラーが発生しました')
+            }
+          })
+        })
+      } else {
+        // データがない場合はそのまま戻る
+        WorkflowApi.undo().then((res) => {
+          this.$router.push(
+            `/${res.work.name.toLowerCase()}/${res.workflow.id}`
+          )
+        }).catch((error) => {
+          if (error.response && error.response.data && error.response.data.error) {
+            alert(error.response.data.error)
+          } else {
+            alert('エラーが発生しました')
+          }
+        })
       }
     }
   }

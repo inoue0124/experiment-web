@@ -43,6 +43,7 @@
         ></ClientFileUploader>
       </div>
 
+      <v-btn v-if="!isFirstWorkflow" color="primary" @click="prev">前へ戻る</v-btn>
       <v-btn color="primary" @click="next">次へ進む</v-btn>
     </v-col>
   </v-row>
@@ -66,6 +67,7 @@ export default {
     return {
       user: {},
       isSecondTime: false,
+      isFirstWorkflow: false
     }
   },
 
@@ -77,6 +79,11 @@ export default {
       if (res) {
         this.isSecondTime = res.is_second_time
       }
+    })
+    
+    // 最初のワークフローかどうかをチェック
+    WorkflowApi.getWork().then((res) => {
+      this.isFirstWorkflow = res.is_first_workflow || false
     })
   },
 
@@ -124,6 +131,19 @@ export default {
       }
       WorkflowApi.complete(this.$route.params.id).then((res) => {
         this.$router.push(`/${res.work.name.toLowerCase()}/${res.workflow.id}`)
+      })
+    },
+    prev() {
+      WorkflowApi.undo().then((res) => {
+        this.$router.push(
+          `/${res.work.name.toLowerCase()}/${res.workflow.id}`
+        )
+      }).catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          alert(error.response.data.error)
+        } else {
+          alert('エラーが発生しました')
+        }
       })
     },
   },
