@@ -6,7 +6,7 @@
       <h1 class="mb-16">振り込み情報</h1>
 
       <p style="text-align: left">
-        謝金のお振込に必要な以下の支払い調書、振込先情報ファイルをダウンロードし、必要事項を記入の上アップロードしてください。(ファイル名は変更しないで下さい。)
+        謝金のお振込に必要な以下の支払い調書、振込先情報ファイルをダウンロードし、必要事項を記入の上アップロードしてください。(ファイル名は変更しないで下さい。ファイル名は、「支払い調書.xlsx」と「振込先情報.xlsx」です。)
       </p>
 
       <h3 class="mt-16" align="left">支払い調書</h3>
@@ -80,7 +80,7 @@ export default {
         this.isSecondTime = res.is_second_time
       }
     })
-    
+
     // 最初のワークフローかどうかをチェック
     WorkflowApi.getWork().then((res) => {
       this.isFirstWorkflow = res.is_first_workflow || false
