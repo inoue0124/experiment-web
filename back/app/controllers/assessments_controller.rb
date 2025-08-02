@@ -179,11 +179,20 @@ class AssessmentsController < ApplicationController
       # CSVヘッダー
       y << "実験ID,実験名,評価ID,ユーザID,サンプルID,評価値,理由1位,理由2位,コメント,作成日時\n"
       
-      # find_eachでバッチ処理（メモリ効率化）
-      @assessment_query
-        .order('t_experiment_id ASC').order('t_user_id ASC').order('t_assessment_id ASC').order('file_number ASC')
-        .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*")
-        .find_each(batch_size: 1000) do |record|
+      # バッチ処理でメモリ効率化
+      offset = 0
+      batch_size = 1000
+      
+      loop do
+        batch = @assessment_query
+          .order('t_experiment_id ASC, t_user_id ASC, t_assessment_id ASC, file_number ASC')
+          .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*")
+          .limit(batch_size)
+          .offset(offset)
+        
+        break if batch.empty?
+        
+        batch.each do |record|
           
         # CSVの行を生成
         row = [
@@ -199,7 +208,10 @@ class AssessmentsController < ApplicationController
           record.updated_at.strftime('%Y/%m/%d %H:%M:%S')
         ].join(',')
         
-        y << "#{row}\n"
+          y << "#{row}\n"
+        end
+        
+        offset += batch_size
       end
     end
   end
