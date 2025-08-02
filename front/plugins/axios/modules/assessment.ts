@@ -21,4 +21,11 @@ export default {
   searchAssessments(params:Object) {
     return axios.$get(`assessments/search`, { params: params })
   },
+
+  downloadCSV(params:Object) {
+    return axios.get(`assessments/download`, { 
+      params: params,
+      responseType: 'blob'
+    })
+  },
 }

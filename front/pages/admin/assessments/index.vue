@@ -144,44 +144,19 @@ export default {
     },
 
     downloadCSV() {
-      AssessmentApi.searchAssessments({
+      AssessmentApi.downloadCSV({
         t_experiment_id: this.search_exp_id,
         t_assessment_id: this.search_assess_id,
         t_user_id: this.search_user_id,
-      }).then((res) => {
-        let assessments = res.data
-        var csv =
-          '\ufeff' +
-          '実験ID,実験名,評価ID,ユーザID,サンプルID,評価値,理由1位,理由2位,コメント,作成日時\n'
-        assessments.forEach((el) => {
-          var line =
-            el['t_experiment_id'] +
-            ',' +
-            this.escapeForCSV(el['name']) +
-            ',' +
-            el['t_assessment_id'] +
-            ',' +
-            el['t_user_id'] +
-            ',' +
-            el['file_number'] +
-            ',' +
-            el['score'] +
-            ',' +
-            el['reason_first'] +
-            ',' +
-            el['reason_second'] +
-            ',' +
-            this.escapeForCSV(el['comment']) +
-            ',' +
-            new Date(el['updated_at']).toLocaleString() +
-            '\n'
-          csv += line
-        })
-        let blob = new Blob([csv], { type: 'text/csv' })
-        let link = document.createElement('a')
+      }).then((response) => {
+        // Blobデータからダウンロードリンクを作成
+        const blob = new Blob([response.data], { type: 'text/csv' })
+        const link = document.createElement('a')
         link.href = window.URL.createObjectURL(blob)
         link.download = 'assessment_list.csv'
         link.click()
+        // メモリリークを防ぐためURLを解放
+        window.URL.revokeObjectURL(link.href)
       })
     },
 

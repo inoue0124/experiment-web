@@ -146,4 +146,69 @@ class AssessmentsController < ApplicationController
       count: @count
     }
   end
+
+  # GET /assessments/download
+  def download_csv
+    require 'csv'
+    
+    # 検索条件を設定
+    @assessment_query = TExperiment.joins(t_workflows: { t_assessments: :d_assessments } )
+
+    if params[:t_experiment_id]
+      @assessment_query = @assessment_query.where(id: params[:t_experiment_id])
+    end
+
+    if params[:t_assessment_id]
+      @assessment_query = @assessment_query.where("t_assessment_id=#{params[:t_assessment_id]}")
+    end
+
+    if params[:t_user_id]
+      @assessment_query = @assessment_query.where("t_user_id=#{params[:t_user_id]}")
+    end
+
+    # ヘッダー設定
+    headers['Content-Type'] = 'text/csv; charset=UTF-8'
+    headers['Content-Disposition'] = 'attachment; filename="assessment_list.csv"'
+    headers['Cache-Control'] = 'no-cache'
+    
+    # ストリーミングレスポンス
+    self.response_body = Enumerator.new do |y|
+      # BOM for Excel
+      y << "\uFEFF"
+      
+      # CSVヘッダー
+      y << "実験ID,実験名,評価ID,ユーザID,サンプルID,評価値,理由1位,理由2位,コメント,作成日時\n"
+      
+      # find_eachでバッチ処理（メモリ効率化）
+      @assessment_query
+        .order('t_experiment_id ASC').order('t_user_id ASC').order('t_assessment_id ASC').order('file_number ASC')
+        .select("t_experiments.*, t_workflows.*, t_assessments.*, d_assessments.*")
+        .find_each(batch_size: 1000) do |record|
+          
+        # CSVの行を生成
+        row = [
+          record.t_experiment_id,
+          escape_csv(record.name),
+          record.t_assessment_id,
+          record.t_user_id,
+          record.file_number,
+          record.score,
+          record.reason_first,
+          record.reason_second,
+          escape_csv(record.comment),
+          record.updated_at.strftime('%Y/%m/%d %H:%M:%S')
+        ].join(',')
+        
+        y << "#{row}\n"
+      end
+    end
+  end
+
+  private
+
+  def escape_csv(str)
+    return '' if str.nil?
+    # ダブルクォートをエスケープして、全体をダブルクォートで囲む
+    "\"#{str.to_s.gsub('"', '""')}\""
+  end
 end
