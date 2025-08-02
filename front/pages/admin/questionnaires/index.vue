@@ -2,6 +2,9 @@
   <v-data-table
     :headers="headers"
     :items="questionnaires"
+    :footer-props="{
+      'items-per-page-options': [10, 50, 100, 200]
+    }"
     class="elevation-1 my-16"
   >
 

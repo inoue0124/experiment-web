@@ -5,6 +5,9 @@
     :options.sync="options"
     :server-items-length="all_data_count"
     :loading="loading"
+    :footer-props="{
+      'items-per-page-options': [10, 50, 100, 200]
+    }"
     class="elevation-1 my-16"
   >
     <template v-slot:top>
